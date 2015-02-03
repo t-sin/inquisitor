@@ -24,14 +24,22 @@ Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
 
 ## Usage
 
+Put in ASDF-path and type your REPL:
 
-## Installation
+    (require :inquisitor)
 
 
 ## Author
 
-* gray (shinichi.tanaka45@gmail.com)
+* [Shiro Kawai](https://github.com/shirok) - original code of encoding detection for [Gauche](https://github.com/shirok/Gauche/tree/master/ext/charconv)
+* [Masayuki Onjo](http://lispuser.net/index) - [porting](http://lispuser.net/commonlisp/japanese.html#sec-2.1) from Gauche to Common Lisp
+* [zqwell](https://github.com/zqwell) - [porting](https://github.com/zqwell/guess) multilingual encoding detection from [libguess](https://github.com/kaniini/libguess)
+* gray (shinichi.tanaka45@gmail.com) - adding line-break detection and wrapping external-format
+
 
 ## Copyright
 
+Copyright (c) 2000-2007 Shiro Kawai (shiro@acm.org)
+Copyright (c) 2007 Masayuki Onjo (onjo@lispuser.net)
+Copyright (c) 2011 zqwell (zqwell@gmail.com)
 Copyright (c) 2015 gray (shinichi.tanaka45@gmail.com)
