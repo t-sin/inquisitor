@@ -18,10 +18,17 @@
   :version "0.1"
   :author "gray"
   :license ""
-  :depends-on (:cl-annot)
+  :depends-on (:anaphora
+               :cl-annot)
   :components ((:module "src"
                 :components
-                ((:file "inquisitor"))))
+                ((:module "encoding"
+                  :components
+                  ((:file "keyword")
+                   (:file "dfa" :depends-on ("keyword"))
+                   (:file "table" :depends-on ("dfa"))
+                   (:file "guess" :depends-on ("dfa" "table"))))
+                 (:file "inquisitor"))))
   :description "Encoding/end-of-line detecter and wrapper of external-format for Common Lisp"
   :long-description
   #.(with-open-file (stream (merge-pathnames
