@@ -62,7 +62,8 @@
     #+ecl 'ext:iso-2022-jp
     #+sbcl nil
     #+ccl nil
-    #-(and clisp ecl sbcl ccl) :jis)
+    #+abcl :iso-2022-jp
+    #-(and clisp ecl sbcl ccl abcl) :jis)
 
   ;; (defun jis-keyword ())
 
@@ -72,6 +73,7 @@
     #+ecl nil
     ;; #+sbcl :euc-jp
     ;; #+ccl :euc-jp
+    ;; #+abcl :euc-jp
     #-(and clisp ecl) :euc-jp)
   (defun sjis-keyword ()
     ;; #+lispworks :sjis
@@ -79,6 +81,7 @@
     #+ecl 'ext:cp932
     ;; #+sbcl :sjis
     #+ccl :cp932
+    #+abcl :|Shift_JIS|
     #-(and clisp ecl ccl) :sjis)
   (defun utf8-keyword ()
     ;; #+lispworks :utf-8
@@ -86,6 +89,7 @@
     ;; #+ecl :utf-8
     ;; #+sbcl :utf-8
     ;; #+ccl :utf-8
+    ;; #+abcl :utf-8
     #-clisp :utf-8)
 
 ;;;; unicode
@@ -95,20 +99,23 @@
     ;; #+ecl :ucs-2le
     ;; #+sbcl :ucs-2le
     ;; #+ccl :ucs-2le
-    #-clisp :ucs-2le)
+    #+abcl :utf-16le
+    #-(and clisp abcl) :ucs-2le)
   (defun ucs-2be-keyword ()
     ;; #+lispworks :unicode ; default endian is :little-endian
     #+clisp 'charset:unicode-16-big-endian
     ;; #+ecl :ucs-2be
     ;; #+sbcl :ucs-2be
     ;; #+ccl :ucs-2be
-    #-clisp :ucs-2be)
+    #+abcl :utf-16be
+    #-(and clisp abcl) :ucs-2be)
   (defun utf16-keyword ()
     ;; #+lispworks nil
     #+clisp 'charset:utf-16
     ;; #+ecl nil
     #+sbcl :utf-16be ; or :utf-16le
     #+ccl :utf-16
+    #+abcl :utf-16
     #-(and clisp sbcl ccl) nil)
 
 ;;;; taiwanese (:tw)
