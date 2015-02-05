@@ -10,7 +10,7 @@ Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
 
 ## Goal
 
-* encoding/line-break detection
+* encoding/end-of-line detection
 * external-format abstraction
   * make external-format for each implementations
   * make external-format from byte-array, stream and pathname (with auto-detection)
@@ -34,7 +34,7 @@ Put in ASDF-path and type your REPL:
 * [Shiro Kawai](https://github.com/shirok) - original code of encoding detection for [Gauche](https://github.com/shirok/Gauche/tree/master/ext/charconv)
 * [Masayuki Onjo](http://lispuser.net/index) - [porting](http://lispuser.net/commonlisp/japanese.html#sec-2.1) from Gauche to Common Lisp
 * [zqwell](https://github.com/zqwell) - [porting](https://github.com/zqwell/guess) multilingual encoding detection from [libguess](https://github.com/kaniini/libguess)
-* gray (shinichi.tanaka45@gmail.com) - adding line-break detection and wrapping external-format
+* gray (shinichi.tanaka45@gmail.com) - adding end-of-line detection and wrapping external-format
 
 
 ## Copyright
