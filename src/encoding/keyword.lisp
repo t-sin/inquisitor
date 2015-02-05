@@ -60,8 +60,10 @@
     ;; #+lispworks :jis
     #+clisp 'charset:iso-2022-jp
     #+ecl 'ext:iso-2022-jp
-    #+sbcl nil
-    #+ccl nil
+    #+sbcl (values :jis ; sbcl cannot treat JIS
+                   :cannot-treat)
+    #+ccl  (values :jis ; ccl cannot treat JIS
+                   :cannot-treat)
     #+abcl :iso-2022-jp
     #-(and clisp ecl sbcl ccl abcl) :jis)
 
@@ -70,7 +72,8 @@
   (defun eucj-keyword ()
     ;; #+lispworks :euc-jp
     #+clisp 'charset:euc-jp
-    #+ecl nil
+    #+ecl (values :euc-jp ; ecl cannot treat EUC-JP
+                  :cannot-treat)
     ;; #+sbcl :euc-jp
     ;; #+ccl :euc-jp
     ;; #+abcl :euc-jp

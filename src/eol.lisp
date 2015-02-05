@@ -23,30 +23,33 @@
   ;; #+lispworks :lf
   #+clisp :unix
   ;; #+ecl :lf
-  ;; #+sbcl nil ; sbcl cannot treat line-breaks
+  #+sbcl (values :lf ; sbcl cannot treat line-breaks
+                 :cannot-treat)
   #+ccl :unix
   ;; #+abcl :lf
-  #-(and clisp ccl) :lf)
+  #-(and clisp sbcl ccl) :lf)
 
 @export
 (defun cr-keyword ()
   ;; #+lispworks :cr
   #+clisp :mac
   ;; #+ecl :cr
-  ;; #+sbcl nil ; sbcl cannot treat line-breaks
+  #+sbcl (values :cr ; sbcl cannot treat line-breaks
+                 :cannot-treat)
   #+ccl :macos
   ;; #+abcl :cr
-  #-(and clisp ccl) :cr)
+  #-(and clisp sbcl ccl) :cr)
 
 @export
 (defun crlf-keyword ()
   ;; #+lispworks :crlf
   #+clisp :dos
   ;; #+ecl :crlf
-  ;; #+sbcl nil ; sbcl cannot treat line-breaks
+  #+sbcl (values :cr ; sbcl cannot treat line-breaks
+                 :cannot-treat)
   #+ccl :dos
   ;; #+abcl :crlf
-  #-(and clisp ccl) :crlf)
+  #-(and clisp sbcl ccl) :crlf)
 
 
 @export
