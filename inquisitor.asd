@@ -28,6 +28,7 @@
                    (:file "dfa" :depends-on ("keyword"))
                    (:file "table" :depends-on ("dfa"))
                    (:file "guess" :depends-on ("dfa" "table"))))
+                 (:file "eol")
                  (:file "inquisitor"))))
   :description "Encoding/end-of-line detecter and wrapper of external-format for Common Lisp"
   :long-description
