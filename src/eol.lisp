@@ -27,7 +27,7 @@
                  :cannot-treat)
   #+ccl :unix
   ;; #+abcl :lf
-  #-(and clisp sbcl ccl) :lf)
+  #-(or clisp sbcl ccl) :lf)
 
 @export
 (defun cr-keyword ()
@@ -38,7 +38,7 @@
                  :cannot-treat)
   #+ccl :macos
   ;; #+abcl :cr
-  #-(and clisp sbcl ccl) :cr)
+  #-(or clisp sbcl ccl) :cr)
 
 @export
 (defun crlf-keyword ()
@@ -49,7 +49,7 @@
                  :cannot-treat)
   #+ccl :dos
   ;; #+abcl :crlf
-  #-(and clisp sbcl ccl) :crlf)
+  #-(or clisp sbcl ccl) :crlf)
 
 
 @export
