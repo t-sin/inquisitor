@@ -60,6 +60,11 @@
 
 
 @export
+(defun list-available-scheme ()
+  '(:jp :tw :cn :kr :ru :ar :tr :gr :hw :pl :bl))
+
+
+@export
 (defun ces-guess-from-vector (vector scheme)
   (case scheme
     (:jp (guess-jp vector)) ;; japanese 
