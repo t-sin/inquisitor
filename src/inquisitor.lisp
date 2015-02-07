@@ -1,10 +1,32 @@
 (in-package :cl-user)
 (defpackage inquisitor
   (:use :cl
-        :cl-annot))
+        :cl-annot)
+  (:import-from :inquisitor.encoding.guess
+                :ces-guess-from-vector
+                :list-available-scheme))
 (in-package :inquisitor)
 
 (enable-annot-syntax)
+
+
+@export
+(defparameter *detecting-buffer-size* 1000)
+
+
+(defmacro with-byte-array ((var dim) &body body)
+  `(let ((,var (make-array ,dim
+                           :element-type '(unsigned-byte 8))))
+     ,@body))
+
+(defun byte-array-p (vec)
+  (and (typep vec 'vector)
+       (equal (array-element-type vec) '(unsigned-byte 8))))
+
+(defun byte-input-stream-p (stream)
+  (and (typep stream 'stream)
+       (input-stream-p stream)
+       (equal (stream-element-type stream) '(unsigned-byte 8))))
 
 
 @export
@@ -18,3 +40,9 @@
   #+abcl `(,enc :eol-style ,eol)
   #-(or clisp ecl sbcl ccl abcl) (error "your implementation is not supported."))
 
+@export
+(defun detect-encoding (stream scheme)
+  (when (byte-input-stream-p stream)
+    (with-byte-array (vec *detecting-buffer-size*)
+      (read-sequence vec stream)
+      (ces-guess-from-vector vec scheme))))
