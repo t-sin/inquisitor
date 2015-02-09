@@ -15,11 +15,11 @@
 (in-package :inquisitor-asd)
 
 (defsystem inquisitor
-  :version "0.1"
+  :version "0.2"
   :author "gray"
   :license ""
-  :depends-on (:anaphora
-               :alexandria
+  :depends-on (:alexandria
+               :anaphora
                :cl-annot)
   :components ((:module "src"
                 :components
