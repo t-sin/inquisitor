@@ -71,3 +71,26 @@
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
       (eol-guess-from-vector vec))))
+
+
+@export
+(defmethod detect-external-format ((vec vector) (scheme symbol))
+  (when (byte-array-p vec)
+    (let ((enc (ces-guess-from-vector vec scheme))
+          (eol (eol-guess-from-vector vec)))
+      (make-external-format enc eol))))
+
+@export
+(defmethod detect-external-format ((stream stream) (scheme symbol))
+  (when (byte-input-stream-p stream)
+    (with-byte-array (vec *detecting-buffer-size*)
+      (read-sequence vec stream)
+      (detect-external-format vec scheme))))
+
+@export
+(defmethod detect-external-format ((path pathname) (scheme symbol))
+  (with-open-file (in path
+                   :direction :input
+                   :element-type '(unsigned-byte))
+    (detect-external-format in scheme)))
+  
