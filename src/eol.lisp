@@ -53,13 +53,15 @@
 
 
 @export
-(defun eol-guess-from-vector (vec &aux (len (length buffer)))
-  (when (eq (array-element-type vec) 'character)
-    (loop for i of-type fixnum from 0 below len do
-         (if (eq (aref vec (the fixnum i)) #\Return)
-             (if (and (< (1+ (the fixnum i)) len)
-                      (eq (aref vec (the fixnum (1+ i))) #\Newline))
-                 (return (crlf-keyword))
-                 (return (cr-keyword))))
-         (when (eq (aref vec (the fixnum i)) #\Newline)
-           (return (lf-keyword))))))
+(defun eol-guess-from-vector (buffer &aux (len (length buffer)))
+  (loop for i of-type fixnum from 0 below len do
+       (if (eq (aref buffer (the fixnum i))
+               (the fixnum (char-code #\Return)))
+           (if (and (< (1+ (the fixnum i)) len)
+                    (eq (aref buffer (the fixnum (1+ i)))
+                        (the fixnum (char-code #\Newline))))
+               (return (crlf-keyword))
+               (return (cr-keyword))))
+       (if (eq (aref buffer (the fixnum i))
+               (the fixnum (char-code #\Newline)))
+           (return (lf-keyword)))))
