@@ -22,11 +22,91 @@ Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
   * Armed Bear Common Lisp
 
 
-## Usage
+## Installation
 
 Put in ASDF-path and type your REPL:
 
     (require :inquisitor)
+
+
+## Usage
+
+### Detecting encoding
+
+To detect encoding, use `(inquisitor:detect-encoding stream scheme)`.
+About `scheme', see `Encoding scheme`.
+
+for example:
+
+    (with-open-file (in "/path/to/utf8-lf.ja"
+                     :direction :input
+                     :element-type '(unsigned-byte 8))
+      (inquisitor:detect-encoding in :jp))
+    =>:UTF-8 ; SBCL's external-format
+
+#### Encoding scheme
+
+Scheme is a language speaking-world to detect encoding.
+Supported scheme is as follows:
+
+* :jp -- japanese
+* :tw -- taiwanese
+* :cn -- chinese
+* :kr -- korean
+* :ru -- russian
+* :ar -- arabic
+* :tr -- turkish
+* :gr -- greek
+* :hw -- hebrew
+* :pl -- polish
+* :bl -- baltic
+
+
+### Detecting end-of-line type
+
+    (with-open-file (in "/path/to/utf8-lf.ja"
+                     :direction :input
+                     :element-type '(unsigned-byte 8))
+      (inquisitor:detect-end-of-line in))
+    =>:LF
+      :CANNOT-TREAT ; SBCL can't treat end-of-line with external-format
+
+#### If you want to know eol is available on your implementation
+
+Use `inquisitor.eol:eol-available-p`.
+
+
+### Making external-format implementation independently
+
+    (inquisitor:make-external-format
+      (inquisitor.encoding.keyword:utf8-keyword) ; implementation independent name of UTF-8
+      (inquisitor.eol:lf-keyword)) ; implementation independent name of LF
+    =>:UTF-8 ; on SBCL
+    =>#<EXTERNAL-FORMAT :CP932/:DOS #xxxxxxxxxxx> ; on CCL
+
+
+#### Auto detecting and making external-format, from vector, stream and pathname
+
+In case of vector (on CCL):
+
+    (inquisitor:detect-external-format
+              (encode-string-to-octets "公的な捜索係、調査官がいる。
+    わたしは彼らが任務を遂行しているおころを見た。")
+              :jp)
+    =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+
+In case of stream (on CCL):
+
+    (with-open-file (in "/path/to/utf8-lf.ja"
+                     :direction :input
+                     :element-type '(unsigned-byte 8))
+       (inquisitor:detect-external-format in :jp)
+    =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+
+In case of pathname (on CCL):
+
+    (inquisitor:detect-external-format "/path/to/utf8-lf.ja" :jp)
+    =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
 
 
 ## Author
