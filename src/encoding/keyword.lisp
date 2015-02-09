@@ -55,6 +55,7 @@
     (funcall (symbol-function (find-symbol (string-upcase (format nil "~A-keyword" (symbol-name enc))) :inquisitor.encoding.keyword))))
   
 ;;;; japanese (:jp)
+  @export
   (defun iso-2022-jp-keyword () ;; jis
     ;; #+allegro :jis
     ;; #+lispworks :jis
@@ -69,6 +70,7 @@
 
   ;; (defun jis-keyword ())
 
+  @export
   (defun eucj-keyword ()
     ;; #+lispworks :euc-jp
     #+clisp 'charset:euc-jp
@@ -78,6 +80,7 @@
     ;; #+ccl :euc-jp
     ;; #+abcl :euc-jp
     #-(or clisp ecl) :euc-jp)
+  @export
   (defun sjis-keyword ()
     ;; #+lispworks :sjis
     #+clisp 'charset:shift-jis
@@ -86,6 +89,7 @@
     #+ccl :cp932
     #+abcl :|Shift_JIS|
     #-(or clisp ecl ccl) :sjis)
+  @export
   (defun utf8-keyword ()
     ;; #+lispworks :utf-8
     #+clisp 'charset:utf-8
@@ -96,6 +100,7 @@
     #-clisp :utf-8)
 
 ;;;; unicode
+  @export
   (defun ucs-2le-keyword ()
     ;; #+lispworks :unicode ; default endian is :little-endian
     #+clisp 'charset:unicode-16-little-endian
@@ -104,6 +109,7 @@
     ;; #+ccl :ucs-2le
     #+abcl :utf-16le
     #-(or clisp abcl) :ucs-2le)
+  @export
   (defun ucs-2be-keyword ()
     ;; #+lispworks :unicode ; default endian is :little-endian
     #+clisp 'charset:unicode-16-big-endian
@@ -112,6 +118,7 @@
     ;; #+ccl :ucs-2be
     #+abcl :utf-16be
     #-(or clisp abcl) :ucs-2be)
+  @export
   (defun utf16-keyword ()
     ;; #+lispworks nil
     #+clisp 'charset:utf-16
@@ -122,47 +129,72 @@
     #-(or clisp sbcl ccl) nil)
 
 ;;;; taiwanese (:tw)
+  @export
   (defun big5-keyword () :big5)
+  @export
   (defun iso-2022-tw-keyword () :iso-2022-tw)
 
 ;;;; chinese (:cn)
+  @export
   (defun gb2312-keyword      () :gb2312)
+  @export
   (defun gb18030-keyword     () :gb18030)
+  @export
   (defun iso-2022-cn-keyword () :iso-2022-cn)
   
 ;;;; korean (:kr)
+  @export
   (defun euck-keyword  () :euc-kr)
+  @export
   (defun johab-keyword () :johab)
+  @export
   (defun iso-2022-kr-keyword () :iso-2022-kr)
   
 ;;;; arabic (:ar)
+  @export
   (defun iso8859-6-keyword () :iso8859-6)
+  @export
   (defun cp1256-keyword    () :cp1256)
 
 ;;;; greek (:gr)
+  @export
   (defun iso8859-7-keyword () :iso8859-7)
+  @export
   (defun cp1253-keyword    () :cp1253)
 
 ;;;; hebrew (:hw)
+  @export
   (defun iso8859-8-keyword () :iso8859-8)
+  @export
   (defun cp1255-keyword    () :cp1255)
 
 ;;;; turkish (:tr)
+  @export
   (defun iso8859-9-keyword () :iso8859-9)
+  @export
   (defun cp1254-keyword    () :cp1254)
 
 ;;;; russian (:ru)
+  @export
   (defun iso8859-5-keyword () :iso8859-5)
+  @export
   (defun koi8-r-keyword    () :koi8-r)
+  @export
   (defun koi8-u-keyword    () :koi8-u)
+  @export
   (defun cp866-keyword     () :cp866)
+  @export
   (defun cp1251-keyword    ()  :cp1251)
 
 ;;;; polish (:pl)
+  @export
   (defun iso8859-2-keyword ()  :iso8859-2)
+  @export
   (defun cp1250-keyword    ()  :cp1250)
 
 ;;;; baltic (:bl)
+  @export
   (defun iso8859-13-keyword ()  :iso8859-13)
+  @export
   (defun cp1257-keyword     ()  :cp1257)
   ) ;; eval-when
