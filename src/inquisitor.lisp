@@ -4,7 +4,14 @@
         :cl-annot)
   (:import-from :inquisitor.encoding.guess
                 :ces-guess-from-vector
-                :list-available-scheme))
+                :list-available-scheme)
+  (:import-from :inquisitor.encoding.keyword
+                :utf8-keyword
+                :ucs-2le-keyword
+                :ucs-2be-keyword
+                :utf16-keyword)
+  (:import-from :inquisitor.eol
+                :eol-guess-from-vector))
 (in-package :inquisitor)
 
 (enable-annot-syntax)
@@ -40,9 +47,17 @@
   #+abcl `(,enc :eol-style ,eol)
   #-(or clisp ecl sbcl ccl abcl) (error "your implementation is not supported."))
 
+
 @export
 (defun detect-encoding (stream scheme)
   (when (byte-input-stream-p stream)
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
       (ces-guess-from-vector vec scheme))))
+
+@export
+(defun detect-end-of-line (stream)
+  (when (byte-input-stream-p stream)
+    (with-byte-array (vec *detecting-buffer-size*)
+      (read-sequence vec stream)
+      (eol-guess-from-vector vec))))
