@@ -37,6 +37,14 @@
 
 
 @export
+(defun unicode-p (encoding)
+  (member encoding
+          (list (utf8-keyword)
+                (ucs-2le-keyword)
+                (ucs-2be-keyword)
+                (utf16-keyword))))
+
+@export
 (defun make-external-format (enc eol)
   #+clisp (ext:make-encoding :charset enc
                              :line-terminator eol)
