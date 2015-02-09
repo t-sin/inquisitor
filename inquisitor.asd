@@ -19,6 +19,7 @@
   :author "gray"
   :license ""
   :depends-on (:anaphora
+               :alexandria
                :cl-annot)
   :components ((:module "src"
                 :components

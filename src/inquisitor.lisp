@@ -11,7 +11,9 @@
                 :ucs-2be-keyword
                 :utf16-keyword)
   (:import-from :inquisitor.eol
-                :eol-guess-from-vector))
+                :eol-guess-from-vector)
+  (:import-from :alexandria
+                :type=))
 (in-package :inquisitor)
 
 (enable-annot-syntax)
@@ -28,12 +30,12 @@
 
 (defun byte-array-p (vec)
   (and (typep vec 'vector)
-       (equal (array-element-type vec) '(unsigned-byte 8))))
+       (type= (array-element-type vec) '(unsigned-byte 8))))
 
 (defun byte-input-stream-p (stream)
   (and (typep stream 'stream)
        (input-stream-p stream)
-       (equal (stream-element-type stream) '(unsigned-byte 8))))
+       (type= (stream-element-type stream) '(unsigned-byte 8))))
 
 
 @export
