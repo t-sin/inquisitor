@@ -130,9 +130,28 @@
 
 ;;;; taiwanese (:tw)
   @export
-  (defun big5-keyword () :big5)
+  (defun big5-keyword ()
+    #+clisp 'charset:big5
+    #+ecl 'ext:cp950
+    #+sbcl (values :big5
+                   :cannot-treat)
+    #+ccl (values :big5
+                  :cannot-treat)
+    #+abcl :|Big5|
+    #-(and clisp sbcl) :big5)
   @export
-  (defun iso-2022-tw-keyword () :iso-2022-tw)
+  (defun iso-2022-tw-keyword ()
+    #+clisp (values :iso-2022-tw
+                    :cannot-treat)
+    #+ecl (values :iso-2022-tw
+                  :cannot-treat)
+    #+sbcl (values :iso-2022-tw
+                   :cannot-treat)
+    #+ccl (values :iso-2022-tw
+                   :cannot-treat)
+    #+abcl (values :iso-2022-tw
+                   :cannot-treat)
+    :iso-2022-tw)
 
 ;;;; chinese (:cn)
   @export
