@@ -61,11 +61,9 @@
     ;; #+lispworks :jis
     #+clisp 'charset:iso-2022-jp
     #+ecl 'ext:iso-2022-jp
-    #+sbcl (values :jis ; sbcl cannot treat JIS
-                   :cannot-treat)
-    #+ccl  (values :jis ; ccl cannot treat JIS
-                   :cannot-treat)
     #+abcl :iso-2022-jp
+    #+(or sbcl ccl) (values :jis ; these implementations cannot treat JIS
+                            :cannot-treat)
     #-(or clisp ecl sbcl ccl abcl) :jis)
 
   ;; (defun jis-keyword ())
@@ -133,25 +131,16 @@
   (defun big5-keyword ()
     #+clisp 'charset:big5
     #+ecl 'ext:cp950
-    #+sbcl (values :big5
-                   :cannot-treat)
-    #+ccl (values :big5
-                  :cannot-treat)
     #+abcl :|Big5|
+    #+(or sbcl ccl) (values :big5 ; these implementations cannot treat big5
+                            :cannot-treat)
     #-(and clisp sbcl) :big5)
   @export
   (defun iso-2022-tw-keyword ()
-    #+clisp (values :iso-2022-tw
-                    :cannot-treat)
-    #+ecl (values :iso-2022-tw
-                  :cannot-treat)
-    #+sbcl (values :iso-2022-tw
-                   :cannot-treat)
-    #+ccl (values :iso-2022-tw
-                   :cannot-treat)
-    #+abcl (values :iso-2022-tw
-                   :cannot-treat)
-    :iso-2022-tw)
+    #+(or clisp ecl sbcl ccl abcl) ; these  implementations cannot treat iso-2022 tiwanese
+    (values :iso-2022-tw
+            :cannot-treat)
+    #-(or clisp ecl sbcl ccl abcl) :iso-2022-tw)
 
 ;;;; chinese (:cn)
   @export
