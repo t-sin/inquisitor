@@ -137,7 +137,7 @@
     #-(and clisp sbcl) :big5)
   @export
   (defun iso-2022-tw-keyword ()
-    #+(or clisp ecl sbcl ccl abcl) ; these  implementations cannot treat iso-2022 tiwanese
+    #+(or clisp ecl sbcl ccl abcl) ; these implementations cannot treat iso-2022-tw
     (values :iso-2022-tw
             :cannot-treat)
     #-(or clisp ecl sbcl ccl abcl) :iso-2022-tw)
