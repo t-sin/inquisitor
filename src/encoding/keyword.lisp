@@ -170,11 +170,26 @@
   
 ;;;; korean (:kr)
   @export
-  (defun euck-keyword  () :euc-kr)
+  (defun euck-keyword ()
+    #+clisp 'charset:euc-kr
+    ; #+abcl :euc-kr
+    #+(or ecl sbcl ccl) ; these implementations cannot treat euc-kr
+    (values :euc-kr :cannot-treat)
+    #-(or clisp ecl sbcl ccl) :euc-kr)
   @export
-  (defun johab-keyword () :johab)
+  (defun johab-keyword ()
+    #+clisp 'charset:johab
+    #+ecl 'ext:cp949
+    #+abcl :|x-Johab|
+    #+(or sbcl ccl) ; these implementations cannot treat johab
+    (values :johab :cannot-treat)
+    #-(or clisp ecl sbcl ccl abcl) :johab)
   @export
-  (defun iso-2022-kr-keyword () :iso-2022-kr)
+  (defun iso-2022-kr-keyword ()
+    #+clisp 'charset:iso-2022-kr
+    #+(or ecl sbcl ccl abcl) ; these implementations cannot treat iso-2022-kr
+    (values :iso-2022-kr :cannot-treat)
+    #-(or clisp ecl sbcl ccl abcl) :iso-2022-kr)
   
 ;;;; arabic (:ar)
   @export
