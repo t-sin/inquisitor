@@ -147,26 +147,26 @@
   @export
   (defun gb2312-keyword ()
     #+clisp 'charset:euc-cn
-    #+ccl :gb2312
-    #+abcl :gb2312
+    ; #+ccl :gb2312
+    ; #+abcl :gb2312
     #+(or ecl sbcl) ; these implementations cannot treat gb2312 (EUC-CN)
     (values :gb2312 ; but ecl, sbcl (and ccl) can treat GBK
             :cannot-treat)
-    #-(or clisp ecl sbcl ccl abcl) :gb2312)
+    #-(or clisp ecl sbcl) :gb2312)
   @export
   (defun gb18030-keyword ()
     #+clisp 'charset:gb18030
-    #+abcl :gb18030
+    ; #+abcl :gb18030
     #+(or ecl sbcl ccl) ; these implementations cannot treat gb18030
     (values :gb18030
             :cannot-treat)
-    #-(or clisp ecl sbcl ccl abcl) :gb18030)
+    #-(or clisp ecl sbcl ccl) :gb18030)
   @export
   (defun iso-2022-cn-keyword ()
     #+clisp 'charset:iso-2022-cn
     #+(or ecl sbcl ccl) ; these implementations cannot treat iso-2022-cn
-    #+abcl :iso-2022-cn
-    #-(or clisp ecl sbcl ccl abcl) :iso-2022-cn)
+    ; #+abcl :iso-2022-cn
+    #-(or clisp ecl sbcl ccl) :iso-2022-cn)
   
 ;;;; korean (:kr)
   @export
