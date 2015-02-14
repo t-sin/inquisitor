@@ -193,9 +193,22 @@
   
 ;;;; arabic (:ar)
   @export
-  (defun iso8859-6-keyword () :iso8859-6)
+  (defun iso8859-6-keyword ()
+    #+clisp 'charset:iso-8859-6
+    #+ecl 'ext:iso-8859-6
+    ; #+sbcl :iso-8859-6
+    ; #+ccl :iso-8859-6
+    ; #+abcl :iso-8859-6
+    #-(or clisp ecl):iso8859-6)
   @export
-  (defun cp1256-keyword    () :cp1256)
+  (defun cp1256-keyword ()
+    #+clisp 'charset:cp1256
+    #+ecl 'ext:ms-arab
+    ; #+sbcl :cp1256
+    #+ccl (values :cp1256
+                  :cannot-treat)
+    #+abcl :|windows-1256|
+    #-(or clisp ecl ccl abcl) :cp1256)
 
 ;;;; greek (:gr)
   @export
