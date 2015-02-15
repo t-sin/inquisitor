@@ -212,9 +212,22 @@
 
 ;;;; greek (:gr)
   @export
-  (defun iso8859-7-keyword () :iso8859-7)
+  (defun iso8859-7-keyword ()
+    #+clisp 'charset:iso-8859-7
+    #+ecl 'ext:iso-8859-7
+    ; #+sbcl :iso-8859-7
+    ; #+ccl :iso-8859-7
+    ; #+abcl :iso-8859-7
+    #-(or clisp ecl) :iso-8859-7)
   @export
-  (defun cp1253-keyword    () :cp1253)
+  (defun cp1253-keyword ()
+    #+clisp 'charset:cp1253
+    #+ecl 'ext:ms-greek
+    #+sbcl :cp1253
+    #+ccl (values :cp1253
+                  :cannot-treat)
+    #+abcl  :|windows-1253|
+    #-(or clisp ecl ccl abcl) :cp1253)
 
 ;;;; hebrew (:hw)
   @export
