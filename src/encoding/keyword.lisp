@@ -199,7 +199,8 @@
     ; #+sbcl :iso-8859-6
     ; #+ccl :iso-8859-6
     ; #+abcl :iso-8859-6
-    #-(or clisp ecl):iso8859-6)
+    #+(or sbcl ccl abcl) :iso-8859-6
+    #-(or clisp sbcl ccl abcl ecl) :iso8859-6)
   @export
   (defun cp1256-keyword ()
     #+clisp 'charset:cp1256
