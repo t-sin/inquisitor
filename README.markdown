@@ -91,7 +91,7 @@ In case of vector (on CCL):
 
     (inquisitor:detect-external-format
               (encode-string-to-octets "公的な捜索係、調査官がいる。
-    わたしは彼らが任務を遂行しているおころを見た。")
+    わたしは彼らが任務を遂行しているところを見た。")
               :jp)
     =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
 
