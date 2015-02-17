@@ -232,9 +232,23 @@
 
 ;;;; hebrew (:hw)
   @export
-  (defun iso8859-8-keyword () :iso8859-8)
+  (defun iso8859-8-keyword ()
+    #+clisp 'charset:iso-8859-8
+    #+ecl 'ext:iso-8859-8
+    ; #+sbcl :iso-8859-8
+    ; #+ccl :iso-8859-8
+    ; #+abcl :iso-8859-8
+    #+(or sbcl ccl abcl) :iso-8859-8
+    #-(or clisp ecl sbcl ccl abcl) :iso8859-8)
   @export
-  (defun cp1255-keyword    () :cp1255)
+  (defun cp1255-keyword ()
+    #+clisp 'charset:cp1255
+    #+ecl 'ext:ms-hebr
+    ; #+sbcl :cp1255
+    #+ccl (values :cp1255
+                  :cannot-treat)
+    #+abcl :|windows-1255|
+    #-(or clisp ecl ccl abcl) :cp1255)
 
 ;;;; turkish (:tr)
   @export
