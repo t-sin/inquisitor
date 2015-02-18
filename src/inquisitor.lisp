@@ -91,6 +91,6 @@
 (defmethod detect-external-format ((path pathname) (scheme symbol))
   (with-open-file (in path
                    :direction :input
-                   :element-type '(unsigned-byte))
+                   :element-type '(unsigned-byte 8))
     (detect-external-format in scheme)))
   
