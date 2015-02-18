@@ -252,9 +252,23 @@
 
 ;;;; turkish (:tr)
   @export
-  (defun iso8859-9-keyword () :iso8859-9)
+  (defun iso8859-9-keyword ()
+    #+clisp 'charset:iso-8859-9
+    #+ecl 'ext:iso-8859-9
+    ; #+sbcl :iso-8859-9
+    ; #+ccl :iso-8859-9
+    ; #+abcl :iso-8859-9
+    #+(or sbcl ccl abcl) :iso-8859-9
+    #-(or clisp ecl sbcl ccl abcl) :iso8859-9)
   @export
-  (defun cp1254-keyword    () :cp1254)
+  (defun cp1254-keyword()
+    #+clisp 'charset:cp1254
+    #+ecl 'ext:ms-turk
+    ; #+sbcl :cp1254
+    #+ccl (values :cp1254
+                  :cannot-treat)
+    #+abcl :|windows-1254|
+    #-(or clisp ecl ccl abcl) :cp1254)
 
 ;;;; russian (:ru)
   @export
