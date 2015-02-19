@@ -165,6 +165,7 @@
   (defun iso-2022-cn-keyword ()
     #+clisp 'charset:iso-2022-cn
     #+(or ecl sbcl ccl) ; these implementations cannot treat iso-2022-cn
+    (values :iso-2022-cn :cannot-treat)
     ; #+abcl :iso-2022-cn
     #-(or clisp ecl sbcl ccl) :iso-2022-cn)
   
