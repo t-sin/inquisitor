@@ -272,15 +272,48 @@
 
 ;;;; russian (:ru)
   @export
-  (defun iso8859-5-keyword () :iso8859-5)
+  (defun iso8859-5-keyword ()
+    #+clisp 'charset:iso8859-5
+    #+ecl 'ext:iso-8859-5
+    ; #+sbcl :iso-8859-5
+    ; #+ccl :iso-8859-5
+    ; #+abcl :iso-8859-5
+    #+(or sbcl ccl abcl) :iso-8859-5
+    #-(or clisp ecl sbcl ccl abcl) :iso8859-5)
   @export
-  (defun koi8-r-keyword    () :koi8-r)
+  (defun koi8-r-keyword ()
+    #+clisp 'charset:koi8-r
+    #+sbcl :koi8-r
+    #+(or ecl ccl) (values :koi8-r
+                           :cannot-treat)
+    ; #+abcl :koi8-r
+    #-(or clisp sbcl ecl ccl) :koi8-r)
   @export
-  (defun koi8-u-keyword    () :koi8-u)
+  (defun koi8-u-keyword ()
+    #+clisp 'charset:koi8-u
+    ; #+sbcl :koi8-u
+    ; #+abcl :koi8-u
+    #+(or ecl ccl) (values :koi8-u
+                           :cannot-treat)
+    #-(or clisp ecl ccl) :koi8-u)
   @export
-  (defun cp866-keyword     () :cp866)
+  (defun cp866-keyword ()
+    #+clisp 'charset:cp866
+    #+ecl 'ext:cp866
+    ; #+sbcl :cp866
+    #+ccl (values :cp866
+                  :cannot-treat)
+    #+abcl :ibm866
+    #-(or clisp ecl ccl abcl) :cp866)
   @export
-  (defun cp1251-keyword    ()  :cp1251)
+  (defun cp1251-keyword ()
+    #+clisp 'charset:cp1251
+    #+ecl 'ext:ms-cyrl
+    ; #+sbcl :cp1251
+    #+ccl (values :cp1251
+                  :cannot-treat)
+    #+abcl :|windows-1251|
+    #-(or clisp ecl ccl abcl) :cp1251)
 
 ;;;; polish (:pl)
   @export
