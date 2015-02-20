@@ -318,9 +318,23 @@
 
 ;;;; polish (:pl)
   @export
-  (defun iso8859-2-keyword ()  :iso8859-2)
+  (defun iso8859-2-keyword ()
+    #+clisp 'charset:iso-8859-2
+    #+ecl 'ext:iso-8859-2
+    ; #+sbcl :iso-8859-2
+    ; #+ccl :iso-8859-2
+    ; #+abcl :iso-8859-2
+    #+(or sbcl ccl abcl) :iso-8859-2
+    #-(or clisp ecl sbcl ccl abcl) :iso8859-2)
   @export
-  (defun cp1250-keyword    ()  :cp1250)
+  (defun cp1250-keyword ()
+    #+clisp 'charset:cp1250
+    #+ecl 'ext:ms-ee
+    ; #+sbcl :cp1250
+    #+ccl (values :cp1250
+                  :cannot-treat)
+    #+abcl :|windows-1250|
+    #-(or clisp ecl ccl abcl) :cp1250)
 
 ;;;; baltic (:bl)
   @export
