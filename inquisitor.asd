@@ -17,7 +17,7 @@
 (defsystem inquisitor
   :version "0.2"
   :author "gray"
-  :license ""
+  :license "MIT"
   :depends-on (:alexandria
                :anaphora
                :cl-annot)

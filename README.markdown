@@ -122,4 +122,9 @@ In case of pathname (on CCL):
 Copyright (c) 2000-2007 Shiro Kawai (shiro@acm.org)  
 Copyright (c) 2007 Masayuki Onjo (onjo@lispuser.net)  
 Copyright (c) 2011 zqwell (zqwell@gmail.com)  
-Copyright (c) 2015 gray (shinichi.tanaka45@gmail.com)
+Copyright (c) 2015 gray (shinichi.tanaka45@gmail.com
+
+
+## License
+
+Licensed under the MIT License.
