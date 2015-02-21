@@ -338,7 +338,21 @@
 
 ;;;; baltic (:bl)
   @export
-  (defun iso8859-13-keyword ()  :iso8859-13)
+  (defun iso8859-13-keyword ()
+    #+clisp 'charset:iso-8859-13
+    #+ecl 'ext:iso-8859-13
+    ; #+sbcl :iso-8859-13
+    ; #+ccl :iso-8859-13
+    ; #+abcl :iso-8859-13
+    #+(or sbcl ccl abcl) :iso-8859-13
+    #-(or clisp ecl) :iso8859-13)
   @export
-  (defun cp1257-keyword     ()  :cp1257)
+  (defun cp1257-keyword ()
+    #+clisp 'charset:cp1257
+    #+ecl 'ext:winbaltrim
+    ; #+sbcl :cp1257
+    #+ccl (values :cp1257
+                  :cannot-treat)
+    #+abcl :|windows-1257|
+    #-(or clisp ecl ccl abcl) :cp1257)
   ) ;; eval-when
