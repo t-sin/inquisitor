@@ -3,9 +3,8 @@
 Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
 
 
-> "The Library is a sphere whose exact center is any one of its hexagons and whose circumference is inaccessible."
-
-[_"The Library of Babel"_ by _Jorge Luis Borges_](http://hyperdiscordia.crywalt.com/library_of_babel.html)
+> The Library is a sphere whose exact center is any one of its hexagons and whose circumference is inaccessible.
+> -- ["The Library of Babel" by Jorge Luis Borges](http://hyperdiscordia.crywalt.com/library_of_babel.html)
 
 
 ## Goal
