@@ -1,13 +1,14 @@
 (in-package :cl-user)
 (defpackage inquisitor.eol
-  (:use :cl
-        :cl-annot))
+  (:use :cl)
+  (:export :eol-available-p
+           :lf-keyword
+           :cr-keyword
+           :crlf-keyword
+           :eol-guess-from-vector))
 (in-package :inquisitor.eol)
 
-(enable-annot-syntax)
 
-
-@export
 (defun eol-available-p ()
   ;; #+allegro
   ;; #+lispworks
@@ -18,7 +19,6 @@
   #+abcl t)
 
 
-@export
 (defun lf-keyword ()
   ;; #+lispworks :lf
   #+clisp :unix
@@ -29,7 +29,6 @@
   ;; #+abcl :lf
   #-(or clisp sbcl ccl) :lf)
 
-@export
 (defun cr-keyword ()
   ;; #+lispworks :cr
   #+clisp :mac
@@ -40,7 +39,6 @@
   ;; #+abcl :cr
   #-(or clisp sbcl ccl) :cr)
 
-@export
 (defun crlf-keyword ()
   ;; #+lispworks :crlf
   #+clisp :dos
@@ -52,7 +50,6 @@
   #-(or clisp sbcl ccl) :crlf)
 
 
-@export
 (defun eol-guess-from-vector (buffer &aux (len (length buffer)))
   (loop for i of-type fixnum from 0 below len
      finally (return (lf-keyword))

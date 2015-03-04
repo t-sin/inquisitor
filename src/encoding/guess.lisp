@@ -41,7 +41,6 @@
 (in-package :cl-user)
 (defpackage inquisitor.encoding.guess
   (:use :cl
-        :cl-annot
         :inquisitor.encoding.keyword
         :inquisitor.encoding.table)
   (:import-from :inquisitor.encoding.dfa
@@ -53,18 +52,16 @@
   (:import-from :anaphora
                 :aif
                 :awhen
-                :it))
+                :it)
+  (:export :list-available-scheme
+           :ces-guess-from-vector))
 (in-package :inquisitor.encoding.guess)
 
-(enable-annot-syntax)
 
-
-@export
 (defun list-available-scheme ()
   '(:jp :tw :cn :kr :ru :ar :tr :gr :hw :pl :bl))
 
 
-@export
 (defun ces-guess-from-vector (vector scheme)
   (case scheme
     (:jp (guess-jp vector)) ;; japanese 

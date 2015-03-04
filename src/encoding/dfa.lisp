@@ -40,15 +40,21 @@
 
 (in-package :cl-user)
 (defpackage inquisitor.encoding.dfa
-  (:use :cl
-        :cl-annot)
+  (:use :cl)
   (:import-from :inquisitor.encoding.keyword
                 :enc-name->keyword)
   (:import-from :alexandria
-                :with-gensyms))
+                :with-gensyms)
+  (:export :define-dfa
+           :dfa-init
+           :dfa-name
+           :dfa-process
+           :dfa-top
+           :dfa-none
+
+           :generate-order))
 (in-package :inquisitor.encoding.dfa)
 
-(enable-annot-syntax)
 
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
@@ -102,7 +108,6 @@
 
 ;;;;;; DFA
 
-  @export
   (defmacro define-dfa (name &body states)
     (let ((name-st (intern (string-upcase (format nil "+~A-ST+" name))))
 	  (name-ar (intern (string-upcase (format nil "+~A-AR+" name)))))
@@ -129,11 +134,9 @@
 
 ;;;; DFA Utility
 
-@export
 (defmacro dfa-init (dfa-st dfa-ar dfa-name)
   `(vector ,dfa-st ,dfa-ar 0 1.0d0 ,dfa-name))
 
-@export
 (defmacro dfa-name (dfa)   `(svref ,dfa 4))
 (defmacro score (dfa)  `(svref ,dfa 3))
 (defmacro state (dfa)  `(svref ,dfa 2))
@@ -153,7 +156,6 @@
 		 (score ,dfa) (* (the double-float (score ,dfa))
 				 (the single-float (cdr (svref (arcs ,dfa) temp)))))))))
 
-@export
 (defmacro dfa-process (order ch)
   (with-gensyms (gorder gch)
      `(let ((,gorder ,order)
@@ -175,7 +177,6 @@
 	       (return-from dfa-alone nil)))
   t)
 
-@export
 (defun dfa-top (order)
   (let ((top nil))
     (loop for dfa in order do
@@ -185,14 +186,12 @@
 	  (setf top dfa)))
     top))
 
-@export
 (defun dfa-none (order)
   (dolist (d order)
     (if (dfa-alive d)
 	(return-from dfa-none nil)))
   t)
 
-@export
 (defmacro generate-order (&rest encodings)
   `(list
     ,@(mapcar (lambda (enc)

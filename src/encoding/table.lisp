@@ -40,13 +40,10 @@
 
 (in-package :cl-user)
 (defpackage inquisitor.encoding.table
-  (:use :cl
-        :cl-annot)
+  (:use :cl)
   (:import-from :inquisitor.encoding.dfa
                 :define-dfa))
 (in-package :inquisitor.encoding.table)
-
-(enable-annot-syntax)
 
 
 ;;;;; state date from Gauche's guess.scm

@@ -19,8 +19,7 @@
   :author "gray"
   :license "MIT"
   :depends-on (:alexandria
-               :anaphora
-               :cl-annot)
+               :anaphora)
   :components ((:module "src"
                 :components
                 ((:module "encoding"
