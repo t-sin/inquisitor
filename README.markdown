@@ -78,8 +78,8 @@ Use `inquisitor.eol:eol-available-p`.
 ### Making external-format implementation independently
 
     (inquisitor:make-external-format
-      (inquisitor.encoding.keyword:utf8-keyword) ; implementation independent name of UTF-8
-      (inquisitor.eol:lf-keyword)) ; implementation independent name of LF
+      (inquisitor.keyword:utf8-keyword) ; implementation independent name of UTF-8
+      (inquisitor.keyword:lf-keyword)) ; implementation independent name of LF
     =>:UTF-8 ; on SBCL
     =>#<EXTERNAL-FORMAT :CP932/:DOS #xxxxxxxxxxx> ; on CCL
 
