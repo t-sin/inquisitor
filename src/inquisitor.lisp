@@ -21,8 +21,6 @@
            :detect-external-format))
 (in-package :inquisitor)
 
-(enable-annot-syntax)
-
 
 (defparameter *detecting-buffer-size* 1000)
 
