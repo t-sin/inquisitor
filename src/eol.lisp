@@ -43,7 +43,7 @@
   ;; #+lispworks :crlf
   #+clisp :dos
   ;; #+ecl :crlf
-  #+sbcl (values :cr ; sbcl cannot treat line-breaks
+  #+sbcl (values :crlf ; sbcl cannot treat line-breaks
                  :cannot-treat)
   #+ccl :dos
   ;; #+abcl :crlf
