@@ -15,7 +15,7 @@
 (in-package :inquisitor-asd)
 
 (defsystem inquisitor
-  :version "0.2"
+  :version "0.5"
   :author "gray"
   :license "MIT"
   :depends-on (:alexandria
