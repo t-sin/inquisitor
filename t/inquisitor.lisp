@@ -49,8 +49,8 @@
 
   (test-enc "dat/ja/sjis-crlf.ja" :jp (sjis-keyword))
 
-  (test-enc "dat/ja/utf16-be-lf.ja" :jp (ucs-2be-keyword))
-  (test-enc "dat/ja/utf16-le-lf.ja" :jp (ucs-2le-keyword))
+  (test-enc "dat/ja/ucs2-be-lf.ja" :jp (ucs-2be-keyword))
+  (test-enc "dat/ja/ucs2-le-lf.ja" :jp (ucs-2le-keyword))
   (test-enc "dat/ja/utf16-lf.ja" :jp (utf16-keyword)) ; not UCS-2 because of surrogate pair
 
   (test-enc "dat/ja/utf8-cr.ja" :jp (utf8-keyword))
