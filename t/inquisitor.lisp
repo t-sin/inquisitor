@@ -57,6 +57,16 @@
   (test-enc "dat/ja/utf8-crlf.ja" :jp (utf8-keyword))
   (test-enc "dat/ja/utf8-lf.ja" :jp (utf8-keyword)))
 
+(subtest "encoding -- gr"
+  (test-enc "dat/empty.txt" :gr (utf8-keyword))
+  (test-enc "dat/ascii.txt" :gr (utf8-keyword))
+
+  (test-enc "dat/gr/iso8859-7.gr" :gr (iso8859-7-keyword))
+  (diag "in range of greek character, cp1253 is subset of iso8859-7, probably")
+  (test-enc "dat/gr/cp1253.gr" :gr (cp1253-keyword))
+
+  (test-enc "dat/gr/utf8-lf.gr" :gr (utf8-keyword)))
+
 (subtest "encoding -- hw"
   (test-enc "dat/empty.txt" :hw (utf8-keyword))
   (test-enc "dat/ascii.txt" :hw (utf8-keyword))
