@@ -63,12 +63,12 @@
 
   (subtest "with vowels"
     (diag "iso8859-8 does not has vowels (called 'nikud')")
-    (test-enc "dat/hw/cp1255_with-vowels.hw" :hw (cp1255-keyword))
+    (test-enc "dat/hw/cp1255-lf_with-vowels.hw" :hw (cp1255-keyword))
     (test-enc "dat/hw/utf8-lf_with-vowels.hw" :hw (utf8-keyword)))
 
   (subtest "without vowels"
-    (test-enc "dat/hw/iso8859-8_without-vowels.hw" :hw (iso8859-8-keyword))
-    (test-enc "dat/hw/cp1255_without-vowels.hw" :hw (cp1255-keyword))
+    (test-enc "dat/hw/iso8859-8-lf_without-vowels.hw" :hw (iso8859-8-keyword))
+    (test-enc "dat/hw/cp1255-lf_without-vowels.hw" :hw (cp1255-keyword))
     (test-enc "dat/hw/utf8-lf_without-vowels.hw" :hw (utf8-keyword))))
 
 
