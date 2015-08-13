@@ -57,6 +57,14 @@
   (test-enc "dat/ja/utf8-crlf.ja" :jp (utf8-keyword))
   (test-enc "dat/ja/utf8-lf.ja" :jp (utf8-keyword)))
 
+(subtest "encoding -- ar"
+  (test-enc "dat/empty.txt" :ar (utf8-keyword))
+  (test-enc "dat/ascii.txt" :ar (utf8-keyword))
+
+  (test-enc "dat/ar/iso8859-6-lf.ar" :ar (iso8859-6-keyword))
+  (test-enc "dat/ar/cp1256-lf.ar" :ar (cp1256-keyword))
+  (test-enc "dat/ar/utf8-lf.ar" :ar (utf8-keyword)))
+
 (subtest "encoding -- gr"
   (test-enc "dat/empty.txt" :gr (utf8-keyword))
   (test-enc "dat/ascii.txt" :gr (utf8-keyword))
