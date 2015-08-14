@@ -89,5 +89,12 @@
     (test-enc "dat/hw/cp1255-lf_without-vowels.hw" :hw (cp1255-keyword))
     (test-enc "dat/hw/utf8-lf_without-vowels.hw" :hw (utf8-keyword))))
 
+(subtest "encoding -- tr"
+  (test-enc "dat/empty.txt" :tr (utf8-keyword))
+  (test-enc "dat/ascii.txt" :tr (utf8-keyword))
+
+  (test-enc "dat/tr/iso8859-9-lf.tr" :tr (iso8859-9-keyword))
+  (test-enc "dat/tr/cp1254-lf.tr" :tr (cp1254-keyword))
+  (test-enc "dat/tr/utf8-lf.tr" :tr (utf8-keyword)))
 
 (finalize)
