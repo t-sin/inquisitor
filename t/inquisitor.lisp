@@ -109,8 +109,8 @@
   (test-enc "dat/ru/utf8-lf.ru" :ru (utf8-keyword)))
 
 (subtest "encoding -- pl"
-  (test-enc "dat/empty.txt" :bl (utf8-keyword))
-  (test-enc "dat/ascii.txt" :bl (utf8-keyword))
+  (test-enc "dat/empty.txt" :pl (utf8-keyword))
+  (test-enc "dat/ascii.txt" :pl (utf8-keyword))
 
   (test-enc "dat/pl/iso8859-2-lf.pl" :pl (iso8859-2-keyword))
   (test-enc "dat/pl/cp1250-lf.pl" :pl (cp1250-keyword))
