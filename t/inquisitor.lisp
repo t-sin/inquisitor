@@ -97,6 +97,14 @@
   (test-enc "dat/tr/cp1254-lf.tr" :tr (cp1254-keyword))
   (test-enc "dat/tr/utf8-lf.tr" :tr (utf8-keyword)))
 
+(subtest "encoding -- pl"
+  (test-enc "dat/empty.txt" :bl (utf8-keyword))
+  (test-enc "dat/ascii.txt" :bl (utf8-keyword))
+
+  (test-enc "dat/pl/iso8859-2-lf.pl" :pl (iso8859-2-keyword))
+  (test-enc "dat/pl/cp1250-lf.pl" :pl (cp1250-keyword))
+  (test-enc "dat/pl/utf8-lf.pl" :pl (utf8-keyword)))
+
 (subtest "encoding -- bl"
   (test-enc "dat/empty.txt" :bl (utf8-keyword))
   (test-enc "dat/ascii.txt" :bl (utf8-keyword))
