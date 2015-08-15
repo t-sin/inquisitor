@@ -57,6 +57,15 @@
   (test-enc "dat/ja/utf8-crlf.ja" :jp (utf8-keyword))
   (test-enc "dat/ja/utf8-lf.ja" :jp (utf8-keyword)))
 
+(subtest "encoding -- cn"
+  (test-enc "dat/empty.txt" :cn (utf8-keyword))
+  (test-enc "dat/ascii.txt" :cn (utf8-keyword))
+
+  (test-enc "dat/cn/gb2312-lf.cn" :cn (gb2312-keyword))
+  (test-enc "dat/cn/gb18030-lf.cn" :cn (gb18030-keyword))
+  (test-enc "dat/cn/iso2022-cn-lf.cn" :cn (iso-2022-cn-keyword))
+  (test-enc "dat/cn/utf8-lf.cn" :cn (utf8-keyword)))
+
 (subtest "encoding -- ar"
   (test-enc "dat/empty.txt" :ar (utf8-keyword))
   (test-enc "dat/ascii.txt" :ar (utf8-keyword))
