@@ -97,6 +97,17 @@
   (test-enc "dat/tr/cp1254-lf.tr" :tr (cp1254-keyword))
   (test-enc "dat/tr/utf8-lf.tr" :tr (utf8-keyword)))
 
+(subtest "encoding -- ru"
+  (test-enc "dat/empty.txt" :ru (utf8-keyword))
+  (test-enc "dat/ascii.txt" :ru (utf8-keyword))
+
+  (test-enc "dat/ru/iso8859-5-lf.ru" :ru (iso8859-5-keyword))
+  (test-enc "dat/ru/koi8-r-lf.ru" :ru (koi8-r-keyword))
+  (test-enc "dat/ru/koi8-u-lf.ru" :ru (koi8-u-keyword))
+  (test-enc "dat/ru/cp866-lf.ru" :ru (cp866-keyword))
+  (test-enc "dat/ru/cp1251-lf.ru" :ru (cp1251-keyword))
+  (test-enc "dat/ru/utf8-lf.ru" :ru (utf8-keyword)))
+
 (subtest "encoding -- pl"
   (test-enc "dat/empty.txt" :bl (utf8-keyword))
   (test-enc "dat/ascii.txt" :bl (utf8-keyword))
