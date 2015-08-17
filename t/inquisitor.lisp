@@ -66,6 +66,15 @@
   (test-enc "dat/cn/iso2022-cn-lf.cn" :cn (iso-2022-cn-keyword))
   (test-enc "dat/cn/utf8-lf.cn" :cn (utf8-keyword)))
 
+(subtest "encoding -- kr"
+  (test-enc "dat/empty.txt" :kr (utf8-keyword))
+  (test-enc "dat/ascii.txt" :kr (utf8-keyword))
+
+  (test-enc "dat/kr/euckr-lf.kr" :kr (euck-keyword))
+  (test-enc "dat/kr/johab-lf.kr" :kr (johab-keyword))
+  (test-enc "dat/kr/iso2022kr-lf.kr" :kr (iso-2022-kr-keyword))
+  (test-enc "dat/kr/utf8-lf.kr" :kr (utf8-keyword)))
+
 (subtest "encoding -- ar"
   (test-enc "dat/empty.txt" :ar (utf8-keyword))
   (test-enc "dat/ascii.txt" :ar (utf8-keyword))
