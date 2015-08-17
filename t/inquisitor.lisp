@@ -57,6 +57,15 @@
   (test-enc "dat/ja/utf8-crlf.ja" :jp (utf8-keyword))
   (test-enc "dat/ja/utf8-lf.ja" :jp (utf8-keyword)))
 
+(subtest "encoding -- tw"
+  (test-enc "dat/empty.txt" :tw (utf8-keyword))
+  (test-enc "dat/ascii.txt" :tw (utf8-keyword))
+
+  (test-enc "dat/tw/big5-lf.tw" :tw (big5-keyword))
+  (diag "iso2022 is equivalent to euc-tw, probably... (https://en.wikipedia.org/wiki/CNS_11643)")
+  (test-enc "dat/tw/euctw-lf.tw" :tw (iso-2022-tw-keyword))
+  (test-enc "dat/tw/utf8-lf.tw" :tw (utf8-keyword)))
+
 (subtest "encoding -- cn"
   (test-enc "dat/empty.txt" :cn (utf8-keyword))
   (test-enc "dat/ascii.txt" :cn (utf8-keyword))
