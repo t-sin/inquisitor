@@ -1,5 +1,8 @@
 # Inquisitor
 
+[![Circle CI](https://circleci.com/gh/t-sin/inquisitor.svg?style=svg)](https://circleci.com/gh/t-sin/inquisitor)
+[![Coverage Status](https://coveralls.io/repos/t-sin/inquisitor/badge.svg?branch=master&service=github)](https://coveralls.io/github/t-sin/inquisitor?branch=master)
+
 Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
 
 
