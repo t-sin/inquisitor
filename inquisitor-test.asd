@@ -12,6 +12,7 @@
   :author "gray"
   :license ""
   :depends-on (:inquisitor
+               :babel
                :prove)
   :components ((:module "t"
                 :components

@@ -3,7 +3,9 @@
   (:use :cl
         :inquisitor
         :inquisitor.keyword
-        :prove))
+        :prove)
+  (:import-from :babel
+                :string-to-octets))
 (in-package :inquisitor-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
@@ -163,5 +165,29 @@
   (test-enc "dat/bl/cp1257-lf.bl" :bl (cp1257-keyword))
   (test-enc "dat/bl/utf8-lf.bl" :bl (utf8-keyword)))
 
+(subtest "detect-external-format"
+  (subtest "vector"
+    (diag "when not byte-array")
+    (is-error (detect-external-format "string" :jp) 'error)
+    (diag "when cannot treat the encodings (how do I cause it...?)")
+    (is-error (detect-external-format "" :jp) 'error)
+    (let ((str (string-to-octets "string")))
+      (is (detect-external-format str :jp) (utf8-keyword))))
+
+  (subtest "stream"
+    (with-output-to-string (out)
+      (is-error (detect-external-format out :jp) 'error))
+    (with-input-from-string (in "string")
+      (is-error (detect-external-format in :jp) 'error))
+    (with-open-file (in (merge-pathnames "dat/ascii.txt" *load-truename*)
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (is (detect-external-format in :jp) (utf8-keyword))))
+
+  (subtest "pathname"
+    (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
+    (is (detect-external-format
+         (merge-pathnames "dat/ascii.txt" *load-truename*) :jp)
+        (utf8-keyword))))
 
 (finalize)
