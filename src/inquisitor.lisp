@@ -84,10 +84,11 @@
       (error (format nil "supplied vector is not a byte array."))))
 
 (defmethod detect-external-format ((stream stream) (scheme symbol))
-  (when (byte-input-stream-p stream)
-    (with-byte-array (vec *detecting-buffer-size*)
-      (read-sequence vec stream)
-      (detect-external-format vec scheme))))
+  (if (byte-input-stream-p stream)
+      (with-byte-array (vec *detecting-buffer-size*)
+        (read-sequence vec stream)
+        (detect-external-format vec scheme))
+      (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-external-format ((path pathname) (scheme symbol))
   (with-open-file (in path
