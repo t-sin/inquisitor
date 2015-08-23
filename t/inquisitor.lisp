@@ -13,6 +13,10 @@
 (plan 14)
 
 
+(defun get-test-data (pathname)
+  (merge-pathnames pathname *load-truename*))
+
+
 (subtest "make-external-format"
   (let* ((utf8 (utf8-keyword))
          (lf (lf-keyword)))
@@ -26,7 +30,7 @@
 
 (subtest "end-of-line"
   (flet ((test-eol (path eol)
-           (with-open-file (in (merge-pathnames path *load-truename*)
+           (with-open-file (in (get-test-data path)
                             :direction :input
                             :element-type '(unsigned-byte 8))
              (is (detect-end-of-line in) eol))))
@@ -42,7 +46,7 @@
 
 ;;;; encoding
 (defun test-enc (path scm enc)
-  (with-open-file (in (merge-pathnames path *load-truename*)
+  (with-open-file (in (get-test-data path)
                    :direction :input
                    :element-type '(unsigned-byte 8))
     (multiple-value-bind (encoding treatable)
@@ -179,15 +183,14 @@
       (is-error (detect-external-format out :jp) 'error))
     (with-input-from-string (in "string")
       (is-error (detect-external-format in :jp) 'error))
-    (with-open-file (in (merge-pathnames "dat/ascii.txt" *load-truename*)
+    (with-open-file (in (get-test-data "dat/ascii.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (is (detect-external-format in :jp) (utf8-keyword))))
 
   (subtest "pathname"
     (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
-    (is (detect-external-format
-         (merge-pathnames "dat/ascii.txt" *load-truename*) :jp)
+    (is (detect-external-format (get-test-data "dat/ascii.txt") :jp)
         (utf8-keyword))))
 
 (finalize)
