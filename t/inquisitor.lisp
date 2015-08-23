@@ -8,7 +8,19 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 12)
+(plan 14)
+
+
+(subtest "make-external-format"
+  (let* ((utf8 (utf8-keyword))
+         (lf (lf-keyword)))
+    (is (make-external-format utf8 lf)
+        #+clisp (ext:make-encoding :charset utf8 :line-terminator lf)
+        #+ecl (list utf8 lf)
+        #+sbcl utf8
+        #+ccl (ccl:make-external-format :character-encoding utf8
+                                        :line-termination lf)
+        #+abcl (list utf8 :eol-style lf))))
 
 (subtest "end-of-line"
   (flet ((test-eol (path eol)
