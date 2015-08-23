@@ -19,7 +19,8 @@
   :author "gray"
   :license "MIT"
   :depends-on (:alexandria
-               :anaphora)
+               :anaphora
+               :metabang-bind)
   :components ((:module "src"
                 :components
                 ((:module "encoding"

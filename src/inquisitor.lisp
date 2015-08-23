@@ -13,6 +13,8 @@
                 :eol-guess-from-vector)
   (:import-from :alexandria
                 :type=)
+  (:import-from :metabang-bind
+                :bind)
   (:export :*detecting-buffer-size*
            :unicode-p
            :make-external-format
@@ -72,10 +74,14 @@
 
 
 (defmethod detect-external-format ((vec vector) (scheme symbol))
-  (when (byte-array-p vec)
-    (let ((enc (ces-guess-from-vector vec scheme))
-          (eol (eol-guess-from-vector vec)))
-      (make-external-format enc eol))))
+  (if (byte-array-p vec)
+      (bind (((:values enc enc-ct) (ces-guess-from-vector vec scheme))
+             ((:values eol eol-ct) (eol-guess-from-vector vec)))
+        (if enc-ct
+            (error (format nil "unsupported on ~a: ~{~a~^, ~}"
+                           (lisp-implementation-type) enc))
+            (make-external-format enc eol)))
+      (error (format nil "supplied vector is not a byte array."))))
 
 (defmethod detect-external-format ((stream stream) (scheme symbol))
   (when (byte-input-stream-p stream)
