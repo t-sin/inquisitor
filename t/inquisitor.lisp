@@ -176,7 +176,8 @@
     (diag "when cannot treat the encodings (how do I cause it...?)")
     (is-error (detect-external-format "" :jp) 'error)
     (let ((str (string-to-octets "string")))
-      (is (detect-external-format str :jp) (utf8-keyword))))
+      (is (detect-external-format str :jp)
+          (make-external-format (utf8-keyword) (lf-keyword)))))
 
   (subtest "stream"
     (with-output-to-string (out)
@@ -186,11 +187,12 @@
     (with-open-file (in (get-test-data "dat/ascii.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (is (detect-external-format in :jp) (utf8-keyword))))
+      (is (detect-external-format in :jp)
+          (make-external-format (utf8-keyword) (lf-keyword)))))
 
   (subtest "pathname"
     (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
     (is (detect-external-format (get-test-data "dat/ascii.txt") :jp)
-        (utf8-keyword))))
+        (make-external-format (utf8-keyword) (lf-keyword)))))
 
 (finalize)
