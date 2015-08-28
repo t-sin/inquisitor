@@ -112,7 +112,7 @@
     ;; #+allegro :jis
     ;; #+lispworks :jis
     #+clisp 'charset:iso-2022-jp
-    #+ecl 'ext:iso-2022-jp
+    #+ecl :iso-2022-jp
     #+abcl :iso-2022-jp
     #+(or sbcl ccl) (values :jis ; these implementations cannot treat JIS
                             :cannot-treat)
@@ -132,7 +132,7 @@
   (defun sjis-keyword ()
     ;; #+lispworks :sjis
     #+clisp 'charset:shift-jis
-    #+ecl 'ext:cp932
+    #+ecl :cp932
     ;; #+sbcl :sjis
     #+ccl :cp932
     #+abcl :|Shift_JIS|
@@ -175,7 +175,7 @@
 ;;;; taiwanese (:tw)
   (defun big5-keyword ()
     #+clisp 'charset:big5
-    #+ecl 'ext:cp950
+    #+ecl :cp950
     #+abcl :|Big5|
     #+(or sbcl ccl) (values :big5 ; these implementations cannot treat big5
                             :cannot-treat)
@@ -219,7 +219,7 @@
     #-(or clisp ecl sbcl ccl) :euc-kr)
   (defun johab-keyword ()
     #+clisp 'charset:johab
-    #+ecl 'ext:cp949
+    #+ecl :cp949
     #+abcl :|x-Johab|
     #+(or sbcl ccl) ; these implementations cannot treat johab
     (values :johab :cannot-treat)
@@ -233,7 +233,7 @@
 ;;;; arabic (:ar)
   (defun iso8859-6-keyword ()
     #+clisp 'charset:iso-8859-6
-    #+ecl 'ext:iso-8859-6
+    #+ecl :iso-8859-6
     ; #+sbcl :iso-8859-6
     ; #+ccl :iso-8859-6
     ; #+abcl :iso-8859-6
@@ -241,7 +241,7 @@
     #-(or clisp sbcl ccl abcl ecl) :iso8859-6)
   (defun cp1256-keyword ()
     #+clisp 'charset:cp1256
-    #+ecl 'ext:ms-arab
+    #+ecl :ms-arab
     ; #+sbcl :cp1256
     #+ccl (values :cp1256
                   :cannot-treat)
@@ -251,14 +251,14 @@
 ;;;; greek (:gr)
   (defun iso8859-7-keyword ()
     #+clisp 'charset:iso-8859-7
-    #+ecl 'ext:iso-8859-7
+    #+ecl :iso-8859-7
     ; #+sbcl :iso-8859-7
     ; #+ccl :iso-8859-7
     ; #+abcl :iso-8859-7
     #-(or clisp ecl) :iso-8859-7)
   (defun cp1253-keyword ()
     #+clisp 'charset:cp1253
-    #+ecl 'ext:ms-greek
+    #+ecl :ms-greek
     #+sbcl :cp1253
     #+ccl (values :cp1253
                   :cannot-treat)
@@ -268,7 +268,7 @@
 ;;;; hebrew (:hw)
   (defun iso8859-8-keyword ()
     #+clisp 'charset:iso-8859-8
-    #+ecl 'ext:iso-8859-8
+    #+ecl :iso-8859-8
     ; #+sbcl :iso-8859-8
     ; #+ccl :iso-8859-8
     ; #+abcl :iso-8859-8
@@ -276,7 +276,7 @@
     #-(or clisp ecl sbcl ccl abcl) :iso8859-8)
   (defun cp1255-keyword ()
     #+clisp 'charset:cp1255
-    #+ecl 'ext:ms-hebr
+    #+ecl :ms-hebr
     ; #+sbcl :cp1255
     #+ccl (values :cp1255
                   :cannot-treat)
@@ -286,7 +286,7 @@
 ;;;; turkish (:tr)
   (defun iso8859-9-keyword ()
     #+clisp 'charset:iso-8859-9
-    #+ecl 'ext:iso-8859-9
+    #+ecl :iso-8859-9
     ; #+sbcl :iso-8859-9
     ; #+ccl :iso-8859-9
     ; #+abcl :iso-8859-9
@@ -294,7 +294,7 @@
     #-(or clisp ecl sbcl ccl abcl) :iso8859-9)
   (defun cp1254-keyword ()
     #+clisp 'charset:cp1254
-    #+ecl 'ext:ms-turk
+    #+ecl :ms-turk
     ; #+sbcl :cp1254
     #+ccl (values :cp1254
                   :cannot-treat)
@@ -304,7 +304,7 @@
 ;;;; russian (:ru)
   (defun iso8859-5-keyword ()
     #+clisp 'charset:iso8859-5
-    #+ecl 'ext:iso-8859-5
+    #+ecl :iso-8859-5
     ; #+sbcl :iso-8859-5
     ; #+ccl :iso-8859-5
     ; #+abcl :iso-8859-5
@@ -326,7 +326,7 @@
     #-(or clisp ecl ccl) :koi8-u)
   (defun cp866-keyword ()
     #+clisp 'charset:cp866
-    #+ecl 'ext:cp866
+    #+ecl :cp866
     ; #+sbcl :cp866
     #+ccl (values :cp866
                   :cannot-treat)
@@ -334,7 +334,7 @@
     #-(or clisp ecl ccl abcl) :cp866)
   (defun cp1251-keyword ()
     #+clisp 'charset:cp1251
-    #+ecl 'ext:ms-cyrl
+    #+ecl :ms-cyrl
     ; #+sbcl :cp1251
     #+ccl (values :cp1251
                   :cannot-treat)
@@ -344,7 +344,7 @@
 ;;;; polish (:pl)
   (defun iso8859-2-keyword ()
     #+clisp 'charset:iso-8859-2
-    #+ecl 'ext:iso-8859-2
+    #+ecl :iso-8859-2
     ; #+sbcl :iso-8859-2
     ; #+ccl :iso-8859-2
     ; #+abcl :iso-8859-2
@@ -352,7 +352,7 @@
     #-(or clisp ecl sbcl ccl abcl) :iso8859-2)
   (defun cp1250-keyword ()
     #+clisp 'charset:cp1250
-    #+ecl 'ext:ms-ee
+    #+ecl :ms-ee
     ; #+sbcl :cp1250
     #+ccl (values :cp1250
                   :cannot-treat)
@@ -362,7 +362,7 @@
 ;;;; baltic (:bl)
   (defun iso8859-13-keyword ()
     #+clisp 'charset:iso-8859-13
-    #+ecl 'ext:iso-8859-13
+    #+ecl :iso-8859-13
     ; #+sbcl :iso-8859-13
     ; #+ccl :iso-8859-13
     ; #+abcl :iso-8859-13
@@ -370,7 +370,7 @@
     #-(or clisp ecl) :iso8859-13)
   (defun cp1257-keyword ()
     #+clisp 'charset:cp1257
-    #+ecl 'ext:winbaltrim
+    #+ecl :winbaltrim
     ; #+sbcl :cp1257
     #+ccl (values :cp1257
                   :cannot-treat)
