@@ -303,7 +303,7 @@
 
 ;;;; russian (:ru)
   (defun iso8859-5-keyword ()
-    #+clisp 'charset:iso8859-5
+    #+clisp 'charset:iso-8859-5
     #+ecl :iso-8859-5
     ; #+sbcl :iso-8859-5
     ; #+ccl :iso-8859-5
