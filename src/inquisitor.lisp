@@ -1,5 +1,6 @@
 (in-package :cl-user)
 (defpackage inquisitor
+  (:nicknames :inq)
   (:use :cl)
   (:import-from :inquisitor.encoding.guess
                 :ces-guess-from-vector
