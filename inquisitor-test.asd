@@ -16,7 +16,10 @@
                :prove)
   :components ((:module "t"
                 :components
-                ((:test-file "inquisitor"))))
+                ((:file "util")
+                 (:test-file "eol" :depends-on ("util"))
+                 (:test-file "encoding" :depends-on ("util"))
+                 (:test-file "inquisitor" :depends-on ("util")))))
 
   :defsystem-depends-on (:prove-asdf)
   :perform (test-op :after (op c)
