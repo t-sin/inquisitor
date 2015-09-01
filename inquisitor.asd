@@ -31,7 +31,8 @@
                    (:file "guess" :depends-on ("dfa" "table"))))
                  (:file "eol")
                  (:file "keyword" :depends-on ("encoding" "eol"))
-                 (:file "inquisitor"))))
+                 (:file "util")
+                 (:file "inquisitor" :depends-on ("util")))))
   :description "Encoding/end-of-line detecter and wrapper of external-format for Common Lisp"
   :long-description
   #.(with-open-file (stream (merge-pathnames
