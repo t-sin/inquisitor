@@ -12,7 +12,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 11)
+(plan 12)
 
 
 (defun test-enc (path scm enc)
@@ -28,6 +28,9 @@
           (diag (format nil " ; ~a cannot treat ~a"
                         (lisp-implementation-type)
                         encoding)))))))
+
+(subtest "encoding -- not supported scheme"
+  (is-error (test-enc "dat/empty.txt" :not-supported (utf8-keyword)) 'error))
 
 (subtest "encoding -- jp"
   (test-enc "dat/empty.txt" :jp (utf8-keyword))
