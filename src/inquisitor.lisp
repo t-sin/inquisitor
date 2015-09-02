@@ -21,6 +21,7 @@
   (:export :*detecting-buffer-size*
            :unicode-p
            :make-external-format
+           :list-available-scheme
            :detect-encoding
            :detect-end-of-line
            :detect-external-format))
