@@ -58,24 +58,28 @@
 (in-package :inquisitor.encoding.guess)
 
 
-(defun list-available-scheme ()
-  '(:jp :tw :cn :kr :ru :ar :tr :gr :hw :pl :bl))
+(defparameter +schemes+
+  '((:jp guess-jp) ;; japanese
+    (:tw guess-tw) ;; taiwanese
+    (:cn guess-cn) ;; chinese
+    (:kr guess-kr) ;; korean
+    (:ru guess-ru) ;; russian
+    (:ar guess-ar) ;; arabic
+    (:tr guess-tr) ;; turkish
+    (:gr guess-gr) ;; greek
+    (:hw guess-hw) ;; hebrew
+    (:pl guess-pl) ;; polish
+    (:bl guess-bl))) ;; baltic
 
+(defun list-available-scheme ()
+  (mapcar #'car +schemes+))
 
 (defun ces-guess-from-vector (vector scheme)
-  (case scheme
-    (:jp (guess-jp vector)) ;; japanese 
-    (:tw (guess-tw vector)) ;; taiwanese
-    (:cn (guess-cn vector)) ;; chinese
-    (:kr (guess-kr vector)) ;; korean 
-    (:ru (guess-ru vector)) ;; russian
-    (:ar (guess-ar vector)) ;; arabic 
-    (:tr (guess-tr vector)) ;; turkish
-    (:gr (guess-gr vector)) ;; greek  
-    (:hw (guess-hw vector)) ;; hebrew 
-    (:pl (guess-pl vector)) ;; polish 
-    (:bl (guess-bl vector)) ;; baltic 
-    (t   (error (format nil "scheme parameter (~A): not supported." scheme)))))
+  (macrolet ((guess (fn-name) `(funcall ,fn-name vector)))
+    (let ((fn-name (cadr (find scheme +schemes+ :key #'car))))
+      (if fn-name
+          (guess fn-name)
+          (error (format nil "scheme parameter (~A): not supported." scheme))))))
 
 
 (defun guess-jp (buffer &aux (len (length buffer)))
