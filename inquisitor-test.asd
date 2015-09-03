@@ -10,7 +10,7 @@
 
 (defsystem inquisitor-test
   :author "gray"
-  :license ""
+  :license "MIT"
   :depends-on (:inquisitor
                :babel
                :prove)
