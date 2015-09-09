@@ -55,11 +55,23 @@
       (read-sequence vec stream)
       (ces-guess-from-vector vec scheme))))
 
+(defmethod detect-encoding ((path pathname) (scheme symbol))
+  (with-open-file (in path
+                   :direction :input
+                   :element-type '(unsigned-byte 8))
+    (detect-encoding in scheme)))
+
 (defmethod detect-end-of-line ((stream stream))
   (when (byte-input-stream-p stream)
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
       (eol-guess-from-vector vec))))
+
+(defmethod detect-end-of-line ((path pathname))
+  (with-open-file (in path
+                   :direction :input
+                   :element-type '(unsigned-byte 8))
+    (detect-end-of-line in)))
 
 (defmethod detect-external-format ((vec vector) (scheme symbol))
   (if (byte-array-p vec)
