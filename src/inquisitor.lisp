@@ -49,18 +49,17 @@
   #-(or clisp ecl sbcl ccl abcl) (error "your implementation is not supported."))
 
 
-(defun detect-encoding (stream scheme)
+(defmethod detect-encoding ((stream stream) (scheme symbol))
   (when (byte-input-stream-p stream)
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
       (ces-guess-from-vector vec scheme))))
 
-(defun detect-end-of-line (stream)
+(defmethod detect-end-of-line ((stream stream))
   (when (byte-input-stream-p stream)
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
       (eol-guess-from-vector vec))))
-
 
 (defmethod detect-external-format ((vec vector) (scheme symbol))
   (if (byte-array-p vec)
