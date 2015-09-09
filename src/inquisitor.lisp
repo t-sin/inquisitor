@@ -24,7 +24,8 @@
            :list-available-scheme
            :detect-encoding
            :detect-end-of-line
-           :detect-external-format))
+           :detect-external-format
+           :detect-external-format-from-file))
 (in-package :inquisitor)
 
 
@@ -91,8 +92,13 @@
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-external-format ((path pathname) (scheme symbol))
+  (detect-external-format-from-file path scheme nil))
+
+(defun detect-external-format-from-file (path scheme &optional all-scan-p)
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
-    (detect-external-format in scheme)))
-  
+    (if all-scan-p
+        (let ((*detecting-buffer-size* (file-length in)))
+          (detect-external-format in scheme))
+        (detect-external-format in scheme))))
