@@ -52,10 +52,11 @@
 
 
 (defmethod detect-encoding ((stream stream) (scheme symbol))
-  (when (byte-input-stream-p stream)
+  (if (byte-input-stream-p stream)
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
-      (ces-guess-from-vector vec scheme))))
+      (ces-guess-from-vector vec scheme))
+    (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-encoding ((path pathname) (scheme symbol))
   (with-open-file (in path
@@ -64,10 +65,11 @@
     (detect-encoding in scheme)))
 
 (defmethod detect-end-of-line ((stream stream))
-  (when (byte-input-stream-p stream)
+  (if (byte-input-stream-p stream)
     (with-byte-array (vec *detecting-buffer-size*)
       (read-sequence vec stream)
-      (eol-guess-from-vector vec))))
+      (eol-guess-from-vector vec))
+    (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-end-of-line ((path pathname))
   (with-open-file (in path
