@@ -53,7 +53,7 @@
 (defun eol-guess-from-vector (buffer)
   (let ((len (length buffer)))
     (loop for i of-type fixnum from 0 below len
-       finally (return (lf-keyword))
+       finally (return nil)
        do (if (eq (aref buffer (the fixnum i))
                   (the fixnum (char-code #\Return)))
               (if (and (< (1+ (the fixnum i)) len)
