@@ -11,6 +11,7 @@
                 :ucs-2be-keyword
                 :utf16-keyword)
   (:import-from :inquisitor.eol
+                :eol-available-p
                 :eol-guess-from-vector)
   (:import-from :inquisitor.util
                 :with-byte-array
