@@ -28,9 +28,9 @@
 (test-eol "dat/ja/utf8-crlf.ja" (crlf-keyword))
 (test-eol "dat/ja/utf8-lf.ja" (lf-keyword))
 
-(subtest "If file has no newline then return LF"
-  (test-eol "dat/ascii.txt" (lf-keyword))
-  (test-eol "dat/empty.txt" (lf-keyword)))
+(subtest "If file has no newline then return NIL"
+  (test-eol "dat/ascii.txt" nil)
+  (test-eol "dat/empty.txt" nil))
 
 
 (finalize)
