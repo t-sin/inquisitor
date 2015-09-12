@@ -13,13 +13,15 @@
   :license "MIT"
   :depends-on (:inquisitor
                :babel
+               :drakma
                :prove)
   :components ((:module "t"
                 :components
-                ((:file "util")
-                 (:test-file "eol" :depends-on ("util"))
-                 (:test-file "encoding" :depends-on ("util"))
-                 (:test-file "inquisitor" :depends-on ("util")))))
+                ((:file "test-util")
+                 (:test-file "util" :depends-on ("test-util"))
+                 (:test-file "eol" :depends-on ("test-util"))
+                 (:test-file "encoding" :depends-on ("test-util"))
+                 (:test-file "inquisitor" :depends-on ("test-util")))))
 
   :defsystem-depends-on (:prove-asdf)
   :perform (test-op :after (op c)
