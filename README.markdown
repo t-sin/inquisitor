@@ -17,6 +17,7 @@ Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
 * external-format abstraction
   * make external-format for each implementations
   * make external-format from byte-array, stream and pathname (with auto-detection)
+  * abstract external-format of babel and flexi-stream
 * many implementations (installable with [CIM](https://github.com/KeenS/CIM)) support
   * GNU CLISP
   * Embeddable Common Lisp
