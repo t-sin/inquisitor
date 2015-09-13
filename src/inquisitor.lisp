@@ -16,7 +16,8 @@
   (:import-from :inquisitor.util
                 :with-byte-array
                 :byte-array-p
-                :byte-input-stream-p)
+                :byte-input-stream-p
+                :file-position-changable-p)
   (:import-from :metabang-bind
                 :bind)
   (:export :*detecting-buffer-size*
@@ -53,9 +54,11 @@
 
 (defmethod detect-encoding ((stream stream) (scheme symbol))
   (if (byte-input-stream-p stream)
-      (with-byte-array (vec *detecting-buffer-size*)
-        (read-sequence vec stream)
-        (ces-guess-from-vector vec scheme))
+      (if (file-position-changable-p stream)
+          (with-byte-array (vec *detecting-buffer-size*)
+            (read-sequence vec stream)
+            (ces-guess-from-vector vec scheme))
+          (error (format nil "supplied stream is not file-position changable.")))
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-encoding ((path pathname) (scheme symbol))
@@ -66,9 +69,11 @@
 
 (defmethod detect-end-of-line ((stream stream))
   (if (byte-input-stream-p stream)
-      (with-byte-array (vec *detecting-buffer-size*)
-        (read-sequence vec stream)
-        (eol-guess-from-vector vec))
+      (if (file-position-changable-p stream)
+          (with-byte-array (vec *detecting-buffer-size*)
+            (read-sequence vec stream)
+            (eol-guess-from-vector vec))
+          (error (format nil "supplied stream is not file-position changable.")))
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-end-of-line ((path pathname))
@@ -89,9 +94,11 @@
 
 (defmethod detect-external-format ((stream stream) (scheme symbol))
   (if (byte-input-stream-p stream)
-      (with-byte-array (vec *detecting-buffer-size*)
-        (read-sequence vec stream)
-        (detect-external-format vec scheme))
+      (if (file-position-changable-p stream)
+          (with-byte-array (vec *detecting-buffer-size*)
+            (read-sequence vec stream)
+            (detect-external-format vec scheme))
+                    (error (format nil "supplied stream is not file-position changable.")))
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-external-format ((path pathname) (scheme symbol))
