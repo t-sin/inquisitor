@@ -26,6 +26,48 @@
                                         :line-termination lf)
         #+abcl (list utf8 :eol-style lf))))
 
+(subtest "detect-encoding"
+  (subtest "for stream"
+    (with-open-file (in (get-test-data "dat/ascii.txt")
+                        :direction :input)
+      (is-error (detect-encoding in :jp) 'error))
+    (let ((s (drakma:http-request "http://cliki.net"
+                                  :want-stream t
+                                  :force-binary t)))
+      (is-error (detect-encoding s :jp) 'error))
+
+    (with-open-file (in (get-test-data "dat/ascii.txt")
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (let ((pos (file-position in)))
+        (is (detect-encoding in :jp) (utf8-keyword))
+        (is (file-position in) pos))))
+
+  (subtest "for pathname"
+    (is (detect-encoding (get-test-data "dat/ascii.txt") :jp)
+        (utf8-keyword))))
+
+(subtest "detect-end-of-line"
+  (subtest "for stream"
+    (with-open-file (in (get-test-data "dat/ascii.txt")
+                        :direction :input)
+      (is-error (detect-end-of-line in) 'error))
+    (let ((s (drakma:http-request "http://cliki.net"
+                                  :want-stream t
+                                  :force-binary t)))
+      (is-error (detect-end-of-line s) 'error))
+
+    (with-open-file (in (get-test-data "dat/ascii.txt")
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (let ((pos (file-position in)))
+        (is (detect-end-of-line in) nil)
+        (is (file-position in) pos))))
+
+  (subtest "for pathname"
+    (is (detect-end-of-line (get-test-data "dat/ascii.txt"))
+        nil)))
+
 (subtest "detect external-format --- from vector"
   (diag "when not byte-array")
   (is-error (detect-external-format "string" :jp) 'error)
@@ -43,8 +85,10 @@
   (with-open-file (in (get-test-data "dat/ascii.txt")
                       :direction :input
                       :element-type '(unsigned-byte 8))
-    (is (detect-external-format in :jp)
-        (make-external-format (utf8-keyword) (lf-keyword)))))
+    (let ((pos (file-position in)))
+      (is (detect-external-format in :jp)
+          (make-external-format (utf8-keyword) (lf-keyword)))
+      (is (file-position in) pos))))
 
 (subtest "detect external-format --- from pathname"
   (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
