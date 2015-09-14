@@ -31,9 +31,6 @@
 (in-package :inquisitor)
 
 
-(defparameter *detecting-buffer-size* 1000)
-
-
 (defun unicode-p (encoding)
   (member encoding
           (list (utf8-keyword)
@@ -51,6 +48,8 @@
   #+abcl `(,enc :eol-style ,eol)
   #-(or clisp ecl sbcl ccl abcl) (error "your implementation is not supported."))
 
+
+(defparameter *detecting-buffer-size* 1000)
 
 (defmethod detect-encoding ((stream stream) (scheme symbol))
   (if (byte-input-stream-p stream)
@@ -74,10 +73,13 @@
   (if (byte-input-stream-p stream)
       (if (file-position-changable-p stream)
           (let ((pos (file-position stream)))
-            (with-byte-array (vec *detecting-buffer-size*)
-              (read-sequence vec stream)
+            (with-byte-array (vec 500)
               (prog1
-                  (eol-guess-from-vector vec)
+                  (loop for n = (read-sequence vec stream)
+                     with eol = (eol-guess-from-vector vec)
+                     until (or (zerop n)
+                               (not (null eol)))
+                     finally (return eol))
                 (file-position stream pos))))
           (error (format nil "supplied stream is not file-position changable.")))
       (error (format nil "supplied stream is not a byte input stream."))))
