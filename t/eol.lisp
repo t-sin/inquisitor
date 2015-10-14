@@ -2,7 +2,6 @@
 (defpackage inquisitor.eol-test
   (:use :cl
         :inquisitor.eol
-        :inquisitor.keyword
         :prove)
   (:import-from :inquisitor.util
                 :with-byte-array)
@@ -24,9 +23,9 @@
       (is (eol-guess-from-vector vec) eol))))
 
 
-(test-eol "dat/ja/utf8-cr.ja" (cr-keyword))
-(test-eol "dat/ja/utf8-crlf.ja" (crlf-keyword))
-(test-eol "dat/ja/utf8-lf.ja" (lf-keyword))
+(test-eol "dat/ja/utf8-cr.ja" :cr)
+(test-eol "dat/ja/utf8-crlf.ja" :crlf)
+(test-eol "dat/ja/utf8-lf.ja" :lf)
 
 (subtest "If file has no newline then return NIL"
   (test-eol "dat/ascii.txt" nil)
