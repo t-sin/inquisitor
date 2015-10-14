@@ -73,7 +73,7 @@
   (is-error (detect-external-format "" :jp) 'error)
   (let ((str (string-to-octets "string")))
     (is (detect-external-format str :jp)
-        (make-external-format (name-on-impl :utf8) (name-on-impl lf))))
+        (make-external-format (name-on-impl :utf8) (name-on-impl lf)))))
 
 (subtest "detect external-format --- from stream"
   (with-output-to-string (out)

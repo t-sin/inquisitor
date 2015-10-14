@@ -41,8 +41,6 @@
 (in-package :cl-user)
 (defpackage inquisitor.encoding.dfa
   (:use :cl)
-  (:import-from :inquisitor.encoding.keyword
-                :enc-name->keyword)
   (:import-from :alexandria
                 :with-gensyms)
   (:export :define-dfa
@@ -197,6 +195,6 @@
     ,@(mapcar (lambda (enc)
 		(let ((dfa-st (find-symbol (string-upcase (format nil "+~A-ST+" (symbol-name enc))) :inquisitor.encoding.table))
 		      (dfa-ar (find-symbol (string-upcase (format nil "+~A-AR+" (symbol-name enc))) :inquisitor.encoding.table))
-		      (dfa-name (enc-name->keyword enc)))
+		      (dfa-name enc))
 		  `(dfa-init ,dfa-st ,dfa-ar ,dfa-name)))
 		  encodings)))
