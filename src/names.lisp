@@ -242,7 +242,34 @@
      ;; #+sbcl :cp1257
      #+ccl :cannot-treat
      #+abcl :|windows-1257|
-     #-(or clisp ecl ccl abcl) :cp1257))))
+     #-(or clisp ecl ccl abcl) :cp1257)
+
+    ;;; end of line
+    ((:lf :eol)
+     ;; #+lispworks :lf
+     #+clisp :unix
+     ;; #+ecl :lf
+     #+sbcl :cannot-treat
+     #+ccl :unix
+     ;; #+abcl :lf
+     #-(or clisp sbcl ccl) :lf)
+    ((:cr :eol)
+     ;; #+lispworks :cr
+     #+clisp :mac
+     ;; #+ecl :cr
+     #+sbcl :cannot-treat
+     #+ccl :macos
+     ;; #+abcl :cr
+     #-(or clisp sbcl ccl) :cr)
+    ((:crlf :eol)
+     ;; #+lispworks :crlf
+     #+clisp :dos
+     ;; #+ecl :crlf
+     #+sbcl :cannot-treat
+    #+ccl :dos
+    ;; #+abcl :crlf
+    #-(or clisp sbcl ccl) :crlf)))
+
 
 
 
