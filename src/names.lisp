@@ -1,6 +1,6 @@
 (in-package :cl-user)
 (defpackage inquisitor.names
-  (:nickname :inq.names)
+  (:nicknames :inq.names)
   (:export :name-on-impl)
   (:use :cl))
 (in-package :inquisitor.names)
