@@ -6,8 +6,14 @@
 (in-package :inquisitor.names)
 
 
+(defun available-encodings ()
+  (loop :for name :in +names-on-impls+
+        :unless (eq (cdar name) :eol)
+        :collect (caar name)))
+
 (defun name-on-impl (name)
-  nil)
+  (cdr (find-if (lambda (n) (eq name (caar n))) +names-on-impls+)))
+
 
 (defvar +names-on-impls+
   '(;;; unicode
