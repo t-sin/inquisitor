@@ -25,12 +25,10 @@
                 :components
                 ((:module "encoding"
                   :components
-                  ((:file "keyword")
-                   (:file "dfa" :depends-on ("keyword"))
+                  ((:file "dfa")
                    (:file "table" :depends-on ("dfa"))
                    (:file "guess" :depends-on ("dfa" "table"))))
                  (:file "eol")
-                 (:file "keyword" :depends-on ("encoding" "eol"))
                  (:file "util")
                  (:file "inquisitor" :depends-on ("util")))))
   :description "Encoding/end-of-line detecter and of external-format wrapper for Common Lisp"
