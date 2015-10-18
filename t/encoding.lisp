@@ -40,7 +40,7 @@
   (test-enc "dat/empty.txt" :jp :utf8)
   (test-enc "dat/ascii.txt" :jp :utf8)
 
-  (test-enc "dat/ja/eucjp-lf.ja" :jp :eucj-keyword)
+  (test-enc "dat/ja/eucjp-lf.ja" :jp :euc-jp)
 
   (test-enc "dat/ja/jis-lf.ja" :jp :iso2022-jp)
 
