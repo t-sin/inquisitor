@@ -55,7 +55,14 @@
       :iso8859-13
       :cp1257))
 
-(subtest "unicode")
+(subtest "unicode"
+  (is (name-on-impl :utf8)
+      #+clisp 'charset:utf-8
+      ;; #+ecl :utf-8
+      ;; #+sbcl :utf-8
+      ;; #+ccl :utf-8
+      ;; #+abcl :utf-8
+      #-clisp :utf-8))
 
 (subtest "japanese")
 
