@@ -62,7 +62,25 @@
       ;; #+sbcl :utf-8
       ;; #+ccl :utf-8
       ;; #+abcl :utf-8
-      #-clisp :utf-8))
+      #-clisp :utf-8)
+  (is (name-on-impl :ucs-2le)
+      #+clisp 'charset:unicode-16-big-endian  ;; = ucs-2 = unicode-16
+      #+ecl :ucs-2le  ;; = :utf-16le
+      #+sbcl nil
+      #+ccl nil
+      #+abcl nil)
+  (is (name-on-impl :ucs-2be)
+      #+clisp 'charset:unicode-16-big-endian
+      #+ecl :ucs-2be  ;; = :utf-16be
+      #+sbcl nil
+      #+ccl nil
+      #+abcl nil)
+  (is (name-on-impl :utf16)
+      #+clisp 'charset:utf-16
+      #+ecl utf-16  ;; = :ucs-2
+      #+sbcl nil
+      #+ccl nil
+      #+abcl nil))
 
 (subtest "japanese")
 
