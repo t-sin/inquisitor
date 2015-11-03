@@ -104,7 +104,19 @@
       #+ccl :windows-31j
       #+abcl :|x-MS932_0213|))
 
-(subtest "tiwanese")
+(subtest "tiwanese"
+ (is (name-on-impl :big5)
+      #+clisp 'charset:big5
+      #+ecl :windows-cp950
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :|Big5|)
+ (is (name-on-impl :iso2022-tw)
+      #+clisp 'charset:euc-tw
+      #+ecl +cannot-treat+
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :|x-EUC-TW|))
 
 (subtest "chinese")
 
