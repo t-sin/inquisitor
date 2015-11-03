@@ -65,22 +65,22 @@
       #-clisp :utf-8)
   (is (name-on-impl :ucs-2le)
       #+clisp 'charset:unicode-16-big-endian  ;; = ucs-2 = unicode-16
-      #+ecl :ucs-2le  ;; = :utf-16le
-      #+sbcl nil
-      #+ccl nil
-      #+abcl nil)
+      #+ecl :utf-16le  ;; = :ucs-2le
+      #+sbcl :utf-16le
+      #+ccl :utf-16le
+      #+abcl :utf-16le)
   (is (name-on-impl :ucs-2be)
       #+clisp 'charset:unicode-16-big-endian
-      #+ecl :ucs-2be  ;; = :utf-16be
-      #+sbcl nil
-      #+ccl nil
-      #+abcl nil)
+      #+ecl :utf-16be  ;; = :ucs-2be
+      #+sbcl :utf-16be
+      #+ccl :utf-16be
+      #+abcl :utf-16be)
   (is (name-on-impl :utf16)
       #+clisp 'charset:utf-16
-      #+ecl utf-16  ;; = :ucs-2
-      #+sbcl nil
-      #+ccl nil
-      #+abcl nil))
+      #+ecl :utf-16  ;; = :ucs-2
+      #+sbcl :cannot-treat
+      #+ccl :utf-16
+      #+abcl :utf-16))
 
 (subtest "japanese")
 
