@@ -102,7 +102,7 @@
       #+ecl :windows-cp932
       #+sbcl :shift_jis
       #+ccl :windows-31j
-      #+abcl :|Shift_JIS|))
+      #+abcl :|x-MS932_0213|))
 
 (subtest "tiwanese")
 
