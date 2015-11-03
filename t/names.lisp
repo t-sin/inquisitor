@@ -118,7 +118,25 @@
       #+ccl +cannot-treat+
       #+abcl :|x-EUC-TW|))
 
-(subtest "chinese")
+(subtest "chinese"
+ (is (name-on-impl :gb2312)  ;; = EUC-CN, GBK, cp936
+      #+clisp 'charset:gbk
+      #+ecl :windows-cp936
+      #+sbcl :gbk
+      #+ccl :cp936
+      #+abcl :gbk)
+ (is (name-on-impl :gb18030)
+      #+clisp 'charset:gb18030
+      #+ecl +cannot-treat+
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :gb18030)
+ (is (name-on-impl :iso2022-cn)
+      #+clisp 'charset:
+      #+ecl +cannot-treat+
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :iso-2022-cn))
 
 (subtest "korean")
 
