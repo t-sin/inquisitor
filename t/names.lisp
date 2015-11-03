@@ -132,7 +132,7 @@
       #+ccl +cannot-treat+
       #+abcl :gb18030)
  (is (name-on-impl :iso2022-cn)
-      #+clisp 'charset:
+      #+clisp 'charset:iso-2022-cn
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
