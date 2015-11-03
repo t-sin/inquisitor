@@ -138,7 +138,25 @@
       #+ccl +cannot-treat+
       #+abcl :iso-2022-cn))
 
-(subtest "korean")
+(subtest "korean"
+ (is (name-on-impl :euc-kr)
+      #+clisp 'charset::euc-kr
+      #+ecl windows-cp949
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :euc-kr)
+ (is (name-on-impl :johab)
+      #+clisp 'charset:johab
+      #+ecl +cannot-treat+
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :|x-Johab|)
+ (is (name-on-impl :iso2022-kr)
+      #+clisp 'charset:iso-2022-kr
+      #+ecl +cannot-treat+
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :iso-2022-kr))
 
 (subtest "arabic")
 
