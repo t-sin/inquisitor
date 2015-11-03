@@ -55,6 +55,8 @@
       :iso8859-13
       :cp1257))
 
+(defvar +cannot-treat+ :cannot-treat)
+
 (subtest "unicode"
   (is (name-on-impl :utf8)
       #+clisp 'charset:utf-8
@@ -78,11 +80,29 @@
   (is (name-on-impl :utf16)
       #+clisp 'charset:utf-16
       #+ecl :utf-16  ;; = :ucs-2
-      #+sbcl :cannot-treat
+      #+sbcl +cannot-treat+
       #+ccl :utf-16
       #+abcl :utf-16))
 
-(subtest "japanese")
+(subtest "japanese"
+ (is (name-on-impl :iso2022-jp)
+      #+clisp 'charset:iso-2022-jp
+      #+ecl +cannot-treat+
+      #+sbcl +cannot-treat+
+      #+ccl +cannot-treat+
+      #+abcl :iso-2022-jp)
+ (is (name-on-impl :euc-jp)
+      #+clisp 'charset:euc-jp
+      #+ecl +cannot-treat+
+      #+sbcl :euc-jp
+      #+ccl :euc-jp
+      #+abcl :euc-jp)
+ (is (name-on-impl :cp932)
+      #+clisp 'charset:cp932
+      #+ecl :windows-cp932
+      #+sbcl :shift_jis
+      #+ccl :windows-31j
+      #+abcl :|Shift_JIS|))
 
 (subtest "tiwanese")
 
