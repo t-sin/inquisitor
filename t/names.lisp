@@ -140,7 +140,7 @@
 
 (subtest "korean"
  (is (name-on-impl :euc-kr)
-      #+clisp 'charset::euc-kr
+      #+clisp 'charset:euc-kr
       #+ecl windows-cp949
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
