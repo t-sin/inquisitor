@@ -158,7 +158,19 @@
       #+ccl +cannot-treat+
       #+abcl :iso-2022-kr))
 
-(subtest "arabic")
+(subtest "arabic"
+ (is (name-on-impl :iso8859-6)
+      #+clisp 'charset:iso-8859-6
+      #+ecl :iso-8859-6
+      #+sbcl :iso-8859-6
+      #+ccl :iso-8859-6
+      #+abcl :iso-8859-6)
+ (is (name-on-impl :cp1256)
+      #+clisp 'charset:windows-1256
+      #+ecl :windows-cp1256
+      #+sbcl :cp1256
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1256|))
 
 (subtest "greek")
 
