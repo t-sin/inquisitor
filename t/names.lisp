@@ -246,7 +246,19 @@
       #+ccl +cannot-treat+
       #+abcl :|windows-1251|))
 
-(subtest "polish")
+(subtest "polish"
+  (is (name-on-impl :iso8859-2)
+      #+clisp 'charset:iso8859-2
+      #+ecl :iso8859-2
+      #+sbcl :iso8859-2
+      #+ccl :iso8859-2
+      #+abcl :iso8859-2)
+  (is (name-on-impl :cp1250)
+      #+clisp 'charset:windows-1250
+      #+ecl :windows-cp1250
+      #+sbcl :cp1250
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1250|))
 
 (subtest "baltic")
 
