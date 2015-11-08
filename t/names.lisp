@@ -172,7 +172,19 @@
       #+ccl +cannot-treat+
       #+abcl :|windows-1256|))
 
-(subtest "greek")
+(subtest "greek"
+ (is (name-on-impl :iso8859-7)
+      #+clisp 'charset:iso8859-7
+      #+ecl :iso8859-7
+      #+sbcl :iso8859-7
+      #+ccl :iso8859-7
+      #+abcl :iso8859-7)
+ (is (name-on-impl :cp1253)
+      #+clisp 'charset::windows-1253
+      #+ecl :windows-cp1253
+      #+sbcl cp1253
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1253|)
 
 (subtest "hebrew")
 
