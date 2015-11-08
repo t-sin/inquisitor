@@ -184,9 +184,21 @@
       #+ecl :windows-cp1253
       #+sbcl cp1253
       #+ccl +cannot-treat+
-      #+abcl :|windows-1253|)
+      #+abcl :|windows-1253|))
 
-(subtest "hebrew")
+(subtest "hebrew"
+  (is (name-on-impl :iso8859-8)
+      #+clisp 'charset:iso8859-8
+      #+ecl :iso8859-8
+      #+sbcl :iso8859-8
+      #+ccl :iso8859-8
+      #+abcl :iso8859-8)
+  (is (name-on-impl :cp1255)
+      #+clisp 'charset:windows-1255
+      #+ecl :windows-cp1255
+      #+sbcl :cp1255
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1255|))
 
 (subtest "turkish")
 
