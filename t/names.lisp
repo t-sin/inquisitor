@@ -260,7 +260,19 @@
       #+ccl +cannot-treat+
       #+abcl :|windows-1250|))
 
-(subtest "baltic")
+(subtest "baltic"
+  (is (name-on-impl :iso8859-13)
+      #+clisp 'charset:iso8859-13
+      #+ecl :iso8859-13
+      #+sbcl :iso8859-13
+      #+ccl :iso8859-13
+      #+abcl :iso8859-13)
+  (is (name-on-impl :cp1257)
+      #+clisp 'charset:windows-1257
+      #+ecl :windows-cp1257
+      #+sbcl :cp1257
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1257|))
 
 (subtest "end of line")
 
