@@ -214,7 +214,37 @@
       #+ccl +cannot-treat+
       #+abcl :|windows-1254|))
 
-(subtest "russian")
+(subtest "russian"
+  (is (name-on-impl :iso8859-5)
+      #+clisp 'charset:iso8859-5
+      #+ecl :iso8859-5
+      #+sbcl :iso8859-5
+      #+ccl :iso8859-5
+      #+abcl :iso8859-5)
+  (is (name-on-impl :koi8-r)
+      #+clisp 'charset:koi8-r
+      #+ecl +cannot-treat+
+      #+sbcl :koi8-r
+      #+ccl +cannot-treat+
+      #+abcl :koi8-r)
+  (is (name-on-impl :koi8-u)
+      #+clisp 'charset:koi8-u
+      #+ecl +cannot-treat+
+      #+sbcl :koi8-u
+      #+ccl +cannot-treat+
+      #+abcl :koi8-u)
+  (is (name-on-impl :cp866)
+      #+clisp 'charset:cp866
+      #+ecl :dos-cp866
+      #+sbcl :cp866
+      #+ccl +cannot-treat+
+      #+abcl :ibm866)
+  (is (name-on-impl :cp1251)
+      #+clisp 'charset:windows-1251
+      #+ecl :windows-cp1251
+      #+sbcl :cp1251
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1251|))
 
 (subtest "polish")
 
