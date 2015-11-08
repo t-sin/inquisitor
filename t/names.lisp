@@ -274,7 +274,24 @@
       #+ccl +cannot-treat+
       #+abcl :|windows-1257|))
 
-(subtest "end of line")
-
+(subtest "end of line"
+  (is (name-on-impl :lf)
+      #+clisp :unix
+      #+ecl :lf
+      #+sbcl +cannot-treat+
+      #+ccl :unix
+      #+abcl :lf)
+  (is (name-on-impl :cr)
+      #+clisp :mac
+      #+ecl :cr
+      #+sbcl +cannot-treat+
+      #+ccl :macos
+      #+abcl :cr)
+  (is (name-on-impl :crlf)
+      #+clisp :dos
+      #+ecl :crlf
+      #+sbcl +cannot-treat+
+      #+ccl :dos
+      #+abcl :crlf))
 
 (finalize)
