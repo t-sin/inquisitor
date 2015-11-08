@@ -200,7 +200,19 @@
       #+ccl +cannot-treat+
       #+abcl :|windows-1255|))
 
-(subtest "turkish")
+(subtest "turkish"
+  (is (name-on-impl :iso8859-9)
+      #+clisp 'charset:iso8859-9
+      #+ecl :iso8859-9
+      #+sbcl :iso8859-9
+      #+ccl :iso8859-9
+      #+abcl :iso8859-9)
+  (is (name-on-impl :cp1254)
+      #+clisp 'charset:windows-1254
+      #+ecl :windows-cp1254
+      #+sbcl cp1254
+      #+ccl +cannot-treat+
+      #+abcl :|windows-1254|))
 
 (subtest "russian")
 
