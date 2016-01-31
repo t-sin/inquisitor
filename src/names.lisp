@@ -19,37 +19,19 @@
 (defvar +names-on-impls+
   '(;;; unicode
     ((:utf8 . :unicode) .
-     ;; #+lispworks :utf-8
      #+clisp 'charset:utf-8
-     ;; #+ecl :utf-8
-     ;; #+sbcl :utf-8
-     ;; #+ccl :utf-8
-     ;; #+abcl :utf-8
      #-clisp :utf-8)
     ((:ucs-2le . :unicode) .
-     ;; #+lispworks :unicode ; default endian is :little-endian
      #+clisp 'charset:unicode-16-little-endian
-     ;; #+ecl :ucs-2le
-     ;; #+sbcl :ucs-2le
-     ;; #+ccl :ucs-2le
-     #+abcl :utf-16le
-     #-(or clisp abcl) :ucs-2le)
+     #-clisp :utf-16le)
     ((:ucs-2be . :unicode) .
-     ;; #+lispworks :unicode ; default endian is :little-endian
      #+clisp 'charset:unicode-16-big-endian
-     ;; #+ecl :ucs-2be
-     ;; #+sbcl :ucs-2be
-     ;; #+ccl :ucs-2be
-     #+abcl :utf-16be
-     #-(or clisp abcl) :ucs-2be)
+     #-clisp :utf-16be)
     ((:utf16 . :unicode) .
-     ;; #+lispworks nil
      #+clisp 'charset:utf-16
-     ;; #+ecl nil
-     #+sbcl :utf-16be ; or :utf-16le
      #+ccl :utf-16
      #+abcl :utf-16
-     #-(or clisp sbcl ccl) :cannot-treat)
+     #-(or clisp ccl) :cannot-treat)
 
     ;;; japanese
     ((:iso2022-jp . :jp) .  ; jis
