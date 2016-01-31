@@ -51,12 +51,11 @@
      #-(or clisp ecl) :euc-jp)
     ((:cp932 . :jp) .
      ;; #+lispworks :sjis
-     #+clisp 'charset:shift-jis
-     #+ecl :cp932
-     ;; #+sbcl :sjis
-     #+ccl :cp932
-     #+abcl :|Shift_JIS|
-     #-(or clisp ecl ccl) :sjis)
+     #+clisp 'charset:cp932
+     #+ecl :windows-cp932
+     #+sbcl :shift_jis
+     #+ccl :windows-31j
+     #+abcl :|x-MS932_0213|)
 
     ;;; taiwanese
     ((:big5 . :tw) .
