@@ -60,11 +60,10 @@
 (subtest "unicode"
   (is (name-on-impl :utf8)
       #+clisp 'charset:utf-8
-      ;; #+ecl :utf-8
-      ;; #+sbcl :utf-8
-      ;; #+ccl :utf-8
-      ;; #+abcl :utf-8
-      #-clisp :utf-8)
+      #+ecl :utf-8
+      #+sbcl :utf-8
+      #+ccl :utf-8
+      #+abcl :utf-8)
   (is (name-on-impl :ucs-2le)
       #+clisp 'charset:unicode-16-big-endian  ;; = ucs-2 = unicode-16
       #+ecl :utf-16le  ;; = :ucs-2le
