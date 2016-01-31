@@ -60,11 +60,11 @@
     ;;; taiwanese
     ((:big5 . :tw) .
      #+clisp 'charset:big5
-     #+ecl :cp950
+     #+ecl :windows-cp950
      #+abcl :|Big5|
-     #+(or sbcl ccl) :cannot-treat)
-    ((:iso2022-tw :tw)
-     #+(or clisp ecl sbcl ccl abcl) :cannot-treat)
+     #-(or clisp ecl abcl) :cannot-treat)
+    ((:iso2022-tw :tw) .
+     :cannot-treat)
 
     ;;; chinese
     ((:gb2312 . :cn) .
