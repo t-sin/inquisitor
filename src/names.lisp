@@ -68,21 +68,19 @@
 
     ;;; chinese
     ((:gb2312 . :cn) .
-     #+clisp 'charset:euc-cn
-     ;; #+ccl :gb2312
-     ;; #+abcl :gb2312
-     #+(or ecl sbcl) :cannot-treat
-     #-(or clisp ecl sbcl) :gb2312)
+     #+clisp 'charset:gbk
+     #+ecl :windows-cp936
+     #+sbcl :gbk
+     #+ccl :cp936
+     #+abcl :gbk)
     ((:gb18030 . :cn) .
      #+clisp 'charset:gb18030
-     ;; #+abcl :gb18030
-     #+(or ecl sbcl ccl) :cannot-treat
-     #-(or clisp ecl sbcl ccl) :gb18030)
+     #+abcl :gb18030
+     #-(or clisp abcl) :cannot-treat)
     ((:iso2022-cn . :cn) .
      #+clisp 'charset:iso-2022-cn
-     #+(or ecl sbcl ccl) :cannot-treat
-     ;; #+abcl :iso-2022-cn
-     #-(or clisp ecl sbcl ccl) :iso-2022-cn)
+     #+abcl :iso-2022-cn
+     #-(or clisp abcl) :cannot-treat)
 
     ;;; korean
     ((:euc-kr . :kr) .
