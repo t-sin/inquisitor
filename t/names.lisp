@@ -173,11 +173,11 @@
 
 (subtest "greek"
  (is (name-on-impl :iso8859-7)
-      #+clisp 'charset:iso8859-7
-      #+ecl :iso8859-7
-      #+sbcl :iso8859-7
-      #+ccl :iso8859-7
-      #+abcl :iso8859-7)
+      #+clisp 'charset:iso-8859-7
+      #+ecl :iso-8859-7
+      #+sbcl :iso-8859-7
+      #+ccl :iso-8859-7
+      #+abcl :iso-8859-7)
  (is (name-on-impl :cp1253)
       #+clisp 'charset:windows-1253
       #+ecl :windows-cp1253
@@ -187,11 +187,11 @@
 
 (subtest "hebrew"
   (is (name-on-impl :iso8859-8)
-      #+clisp 'charset:iso8859-8
-      #+ecl :iso8859-8
-      #+sbcl :iso8859-8
-      #+ccl :iso8859-8
-      #+abcl :iso8859-8)
+      #+clisp 'charset:iso-8859-8
+      #+ecl :iso-8859-8
+      #+sbcl :iso-8859-8
+      #+ccl :iso-8859-8
+      #+abcl :iso-8859-8)
   (is (name-on-impl :cp1255)
       #+clisp 'charset:windows-1255
       #+ecl :windows-cp1255
@@ -201,11 +201,11 @@
 
 (subtest "turkish"
   (is (name-on-impl :iso8859-9)
-      #+clisp 'charset:iso8859-9
-      #+ecl :iso8859-9
-      #+sbcl :iso8859-9
-      #+ccl :iso8859-9
-      #+abcl :iso8859-9)
+      #+clisp 'charset:iso-8859-9
+      #+ecl :iso-8859-9
+      #+sbcl :iso-8859-9
+      #+ccl :iso-8859-9
+      #+abcl :iso-8859-9)
   (is (name-on-impl :cp1254)
       #+clisp 'charset:windows-1254
       #+ecl :windows-cp1254
@@ -215,11 +215,11 @@
 
 (subtest "russian"
   (is (name-on-impl :iso8859-5)
-      #+clisp 'charset:iso8859-5
-      #+ecl :iso8859-5
-      #+sbcl :iso8859-5
-      #+ccl :iso8859-5
-      #+abcl :iso8859-5)
+      #+clisp 'charset:iso-8859-5
+      #+ecl :iso-8859-5
+      #+sbcl :iso-8859-5
+      #+ccl :iso-8859-5
+      #+abcl :iso-8859-5)
   (is (name-on-impl :koi8-r)
       #+clisp 'charset:koi8-r
       #+ecl +cannot-treat+
@@ -247,11 +247,11 @@
 
 (subtest "polish"
   (is (name-on-impl :iso8859-2)
-      #+clisp 'charset:iso8859-2
-      #+ecl :iso8859-2
-      #+sbcl :iso8859-2
-      #+ccl :iso8859-2
-      #+abcl :iso8859-2)
+      #+clisp 'charset:iso-8859-2
+      #+ecl :iso-8859-2
+      #+sbcl :iso-8859-2
+      #+ccl :iso-8859-2
+      #+abcl :iso-8859-2)
   (is (name-on-impl :cp1250)
       #+clisp 'charset:windows-1250
       #+ecl :windows-cp1250
@@ -261,11 +261,11 @@
 
 (subtest "baltic"
   (is (name-on-impl :iso8859-13)
-      #+clisp 'charset:iso8859-13
-      #+ecl :iso8859-13
-      #+sbcl :iso8859-13
-      #+ccl :iso8859-13
-      #+abcl :iso8859-13)
+      #+clisp 'charset:iso-8859-13
+      #+ecl :iso-8859-13
+      #+sbcl :iso-8859-13
+      #+ccl :iso-8859-13
+      #+abcl :iso-8859-13)
   (is (name-on-impl :cp1257)
       #+clisp 'charset:windows-1257
       #+ecl :windows-cp1257
