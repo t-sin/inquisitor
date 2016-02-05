@@ -102,15 +102,10 @@
     ;;; arabic
     ((:iso8859-6 . :ar) .
      #+clisp 'charset:iso-8859-6
-     ;; #+ecl :iso-8859-6
-     ;; #+sbcl :iso-8859-6
-     ;; #+ccl :iso-8859-6
-     ;; #+abcl :iso-8859-6
      #-clisp :iso-8859-6)
     ((:cp1256 . :ar) .
      #+clisp 'charset:cp1256
      #+ecl :ms-arab
-     ;; #+sbcl :cp1256
      #+ccl :cannot-treat
      #+abcl :|windows-1256|
      #-(or clisp ecl ccl abcl) :cp1256)
