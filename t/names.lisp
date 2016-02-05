@@ -209,7 +209,7 @@
   (is (name-on-impl :cp1254)
       #+clisp 'charset:windows-1254
       #+ecl :windows-cp1254
-      #+sbcl cp1254
+      #+sbcl :cp1254
       #+ccl +cannot-treat+
       #+abcl :|windows-1254|))
 
