@@ -31,7 +31,7 @@
      #+clisp 'charset:utf-16
      #+ccl :utf-16
      #+abcl :utf-16
-     #-(or clisp ccl) :cannot-treat)
+     #-(or clisp ccl abcl) :cannot-treat)
 
     ;;; japanese
     ((:iso2022-jp . :jp) .  ; jis
@@ -61,7 +61,8 @@
      #+abcl :|Big5|
      #-(or clisp ecl abcl) :cannot-treat)
     ((:iso2022-tw :tw) .
-     :cannot-treat)
+     #+abcl :|x-EUC-TW|
+     #-abcl :cannot-treat)
 
     ;;; chinese
     ((:gb2312 . :cn) .
@@ -93,8 +94,8 @@
      #-(or clisp ecl sbcl ccl abcl) :johab)
     ((:iso2022-kr . :kr) .
      #+clisp 'charset:iso-2022-kr
-     #+(or ecl sbcl ccl abcl) :cannot-treat
-     #-(or clisp ecl sbcl ccl abcl) :iso-2022-kr)
+     #+abcl :iso-2022-kr
+     #+(or ecl sbcl ccl) :cannot-treat)
 
     ;;; arabic
     ((:iso8859-6 . :ar) .
