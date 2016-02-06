@@ -29,16 +29,17 @@
      #-clisp :utf-16be)
     ((:utf16 . :unicode) .
      #+clisp 'charset:utf-16
+     #+ecl :utf-16
      #+ccl :utf-16
-     #+abcl :utf-16
-     #-(or clisp ccl abcl) :cannot-treat)
+     #+abcl) :utf-16
+     #-(or clisp ecl ccl abcl) :cannot-treat)
 
     ;;; japanese
     ((:iso2022-jp . :jp) .  ; jis
      ;; #+allegro :jis
      ;; #+lispworks :jis
      #+clisp 'charset:iso-2022-jp
-     #+ecl :iso-2022-jp
+     #+ecl :cannot-treat
      #+abcl :iso-2022-jp
      #+(or sbcl ccl) :cannot-treat)
     ((:euc-jp . :jp) .
