@@ -59,25 +59,25 @@
 
 (subtest "unicode"
   (is (name-on-impl :utf8)
-      #+clisp 'charset:utf-8
+      #+clisp charset:utf-8
       #+ecl :utf-8
       #+sbcl :utf-8
       #+ccl :utf-8
       #+abcl :utf-8)
   (is (name-on-impl :ucs-2le)
-      #+clisp 'charset:unicode-16-big-endian  ;; = ucs-2 = unicode-16
+      #+clisp charset:unicode-16-big-endian  ;; = ucs-2 = unicode-16
       #+ecl :utf-16le  ;; = :ucs-2le
       #+sbcl :utf-16le
       #+ccl :utf-16le
       #+abcl :utf-16le)
   (is (name-on-impl :ucs-2be)
-      #+clisp 'charset:unicode-16-big-endian
+      #+clisp charset:unicode-16-big-endian
       #+ecl :utf-16be  ;; = :ucs-2be
       #+sbcl :utf-16be
       #+ccl :utf-16be
       #+abcl :utf-16be)
   (is (name-on-impl :utf16)
-      #+clisp 'charset:utf-16
+      #+clisp charset:utf-16
       #+ecl :utf-16  ;; = :ucs-2
       #+sbcl +cannot-treat+
       #+ccl :utf-16
@@ -85,19 +85,19 @@
 
 (subtest "japanese"
  (is (name-on-impl :iso2022-jp)
-      #+clisp 'charset:iso-2022-jp
+      #+clisp charset:iso-2022-jp
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
       #+abcl :iso-2022-jp)
  (is (name-on-impl :euc-jp)
-      #+clisp 'charset:euc-jp
+      #+clisp charset:euc-jp
       #+ecl +cannot-treat+
       #+sbcl :euc-jp
       #+ccl :euc-jp
       #+abcl :euc-jp)
  (is (name-on-impl :cp932)
-      #+clisp 'charset:cp932
+      #+clisp charset:cp932
       #+ecl :windows-cp932
       #+sbcl :shift_jis
       #+ccl :windows-31j
@@ -105,13 +105,13 @@
 
 (subtest "tiwanese"
  (is (name-on-impl :big5)
-      #+clisp 'charset:big5
+      #+clisp charset:big5
       #+ecl :windows-cp950
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
       #+abcl :|Big5|)
  (is (name-on-impl :iso2022-tw)
-      #+clisp 'charset:euc-tw
+      #+clisp charset:euc-tw
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
@@ -119,19 +119,19 @@
 
 (subtest "chinese"
  (is (name-on-impl :gb2312)  ;; = EUC-CN, GBK, cp936
-      #+clisp 'charset:gbk
+      #+clisp charset:gbk
       #+ecl :windows-cp936
       #+sbcl :gbk
       #+ccl :cp936
       #+abcl :gbk)
  (is (name-on-impl :gb18030)
-      #+clisp 'charset:gb18030
+      #+clisp charset:gb18030
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
       #+abcl :gb18030)
  (is (name-on-impl :iso2022-cn)
-      #+clisp 'charset:iso-2022-cn
+      #+clisp charset:iso-2022-cn
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
@@ -139,19 +139,19 @@
 
 (subtest "korean"
  (is (name-on-impl :euc-kr)
-      #+clisp 'charset:euc-kr
+      #+clisp charset:euc-kr
       #+ecl windows-cp949
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
       #+abcl :euc-kr)
  (is (name-on-impl :johab)
-      #+clisp 'charset:johab
+      #+clisp charset:johab
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
       #+abcl :|x-Johab|)
  (is (name-on-impl :iso2022-kr)
-      #+clisp 'charset:iso-2022-kr
+      #+clisp charset:iso-2022-kr
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
@@ -159,13 +159,13 @@
 
 (subtest "arabic"
  (is (name-on-impl :iso8859-6)
-      #+clisp 'charset:iso-8859-6
+      #+clisp charset:iso-8859-6
       #+ecl :iso-8859-6
       #+sbcl :iso-8859-6
       #+ccl :iso-8859-6
       #+abcl :iso-8859-6)
  (is (name-on-impl :cp1256)
-      #+clisp 'charset:windows-1256
+      #+clisp charset:windows-1256
       #+ecl :windows-cp1256
       #+sbcl :cp1256
       #+ccl +cannot-treat+
@@ -173,13 +173,13 @@
 
 (subtest "greek"
  (is (name-on-impl :iso8859-7)
-      #+clisp 'charset:iso-8859-7
+      #+clisp charset:iso-8859-7
       #+ecl :iso-8859-7
       #+sbcl :iso-8859-7
       #+ccl :iso-8859-7
       #+abcl :iso-8859-7)
  (is (name-on-impl :cp1253)
-      #+clisp 'charset:windows-1253
+      #+clisp charset:windows-1253
       #+ecl :windows-cp1253
       #+sbcl :cp1253
       #+ccl +cannot-treat+
@@ -187,13 +187,13 @@
 
 (subtest "hebrew"
   (is (name-on-impl :iso8859-8)
-      #+clisp 'charset:iso-8859-8
+      #+clisp charset:iso-8859-8
       #+ecl :iso-8859-8
       #+sbcl :iso-8859-8
       #+ccl :iso-8859-8
       #+abcl :iso-8859-8)
   (is (name-on-impl :cp1255)
-      #+clisp 'charset:windows-1255
+      #+clisp charset:windows-1255
       #+ecl :windows-cp1255
       #+sbcl :cp1255
       #+ccl +cannot-treat+
@@ -201,13 +201,13 @@
 
 (subtest "turkish"
   (is (name-on-impl :iso8859-9)
-      #+clisp 'charset:iso-8859-9
+      #+clisp charset:iso-8859-9
       #+ecl :iso-8859-9
       #+sbcl :iso-8859-9
       #+ccl :iso-8859-9
       #+abcl :iso-8859-9)
   (is (name-on-impl :cp1254)
-      #+clisp 'charset:windows-1254
+      #+clisp charset:windows-1254
       #+ecl :windows-cp1254
       #+sbcl :cp1254
       #+ccl +cannot-treat+
@@ -215,31 +215,31 @@
 
 (subtest "russian"
   (is (name-on-impl :iso8859-5)
-      #+clisp 'charset:iso-8859-5
+      #+clisp charset:iso-8859-5
       #+ecl :iso-8859-5
       #+sbcl :iso-8859-5
       #+ccl :iso-8859-5
       #+abcl :iso-8859-5)
   (is (name-on-impl :koi8-r)
-      #+clisp 'charset:koi8-r
+      #+clisp charset:koi8-r
       #+ecl +cannot-treat+
       #+sbcl :koi8-r
       #+ccl +cannot-treat+
       #+abcl :koi8-r)
   (is (name-on-impl :koi8-u)
-      #+clisp 'charset:koi8-u
+      #+clisp charset:koi8-u
       #+ecl +cannot-treat+
       #+sbcl :koi8-u
       #+ccl +cannot-treat+
       #+abcl :koi8-u)
   (is (name-on-impl :cp866)
-      #+clisp 'charset:cp866
+      #+clisp charset:cp866
       #+ecl :dos-cp866
       #+sbcl :cp866
       #+ccl +cannot-treat+
       #+abcl :ibm866)
   (is (name-on-impl :cp1251)
-      #+clisp 'charset:windows-1251
+      #+clisp charset:windows-1251
       #+ecl :windows-cp1251
       #+sbcl :cp1251
       #+ccl +cannot-treat+
@@ -247,13 +247,13 @@
 
 (subtest "polish"
   (is (name-on-impl :iso8859-2)
-      #+clisp 'charset:iso-8859-2
+      #+clisp charset:iso-8859-2
       #+ecl :iso-8859-2
       #+sbcl :iso-8859-2
       #+ccl :iso-8859-2
       #+abcl :iso-8859-2)
   (is (name-on-impl :cp1250)
-      #+clisp 'charset:windows-1250
+      #+clisp charset:windows-1250
       #+ecl :windows-cp1250
       #+sbcl :cp1250
       #+ccl +cannot-treat+
@@ -261,13 +261,13 @@
 
 (subtest "baltic"
   (is (name-on-impl :iso8859-13)
-      #+clisp 'charset:iso-8859-13
+      #+clisp charset:iso-8859-13
       #+ecl :iso-8859-13
       #+sbcl :iso-8859-13
       #+ccl :iso-8859-13
       #+abcl :iso-8859-13)
   (is (name-on-impl :cp1257)
-      #+clisp 'charset:windows-1257
+      #+clisp charset:windows-1257
       #+ecl :windows-cp1257
       #+sbcl :cp1257
       #+ccl +cannot-treat+
