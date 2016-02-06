@@ -45,9 +45,6 @@
      ;; #+lispworks :euc-jp
      #+clisp 'charset:euc-jp
      #+ecl :cannot-treat
-     ;; #+sbcl :euc-jp
-     ;; #+ccl :euc-jp
-     ;; #+abcl :euc-jp
      #-(or clisp ecl) :euc-jp)
     ((:cp932 . :jp) .
      ;; #+lispworks :sjis
@@ -113,15 +110,10 @@
     ;;; greek
     ((:iso8859-7 . :gr) .
      #+clisp 'charset:iso-8859-7
-     ;; #+ecl :iso-8859-7
-     ;; #+sbcl :iso-8859-7
-     ;; #+ccl :iso-8859-7
-     ;; #+abcl :iso-8859-7
-     #-(or clisp ) :iso-8859-7)
+     #-clisp :iso-8859-7)
     ((:cp1253 . :gr) .
      #+clisp 'charset:cp1253
      #+ecl :ms-greek
-     ;; #+sbcl :cp1253
      #+ccl :cannot-treat
      #+abcl  :|windows-1253|
      #-(or clisp ecl ccl abcl) :cp1253)
@@ -129,15 +121,10 @@
     ;;; hebrew
     ((:iso8859-8 . :hw) .
      #+clisp 'charset:iso-8859-8
-     ;; #+ecl :iso-8859-8
-     ;; #+sbcl :iso-8859-8
-     ;; #+ccl :iso-8859-8
-     ;; #+abcl :iso-8859-8
      #-clisp :iso-8859-8)
     ((:cp1255 . :hw) .
      #+clisp 'charset:cp1255
      #+ecl :ms-hebr
-     ;; #+sbcl :cp1255
      #+ccl :cannot-treat
      #+abcl :|windows-1255|
      #-(or clisp ecl ccl abcl) :cp1255)
@@ -145,15 +132,10 @@
     ;;; turkish
     ((:iso8859-9 . :tr) .
      #+clisp 'charset:iso-8859-9
-     ;; #+ecl :iso-8859-9
-     ;; #+sbcl :iso-8859-9
-     ;; #+ccl :iso-8859-9
-     ;; #+abcl :iso-8859-9
      #-clisp :iso-8859-9)
     ((:cp1254 . :tr) .
      #+clisp 'charset:cp1254
      #+ecl :ms-turk
-     ;; #+sbcl :cp1254
      #+ccl :cannot-treat
      #+abcl :|windows-1254|
      #-(or clisp ecl ccl abcl) :cp1254)
@@ -161,34 +143,25 @@
     ;;; russian
     ((:iso8859-5 . :ru) .
      #+clisp 'charset:iso-8859-5
-     ;; #+ecl :iso-8859-5
-     ;; #+sbcl :iso-8859-5
-     ;; #+ccl :iso-8859-5
-     ;; #+abcl :iso-8859-5
      #-clisp :iso-8859-5)
     ((:koi8-r . :ru) .
       #+clisp 'charset:koi8-r
       #+sbcl :koi8-r
       #+(or ecl ccl) :cannot-treat
-      ;; #+abcl :koi8-r
       #-(or clisp sbcl ecl ccl) :koi8-r)
     ((:koi8-u . :ru) .
      #+clisp 'charset:koi8-u
-     ;; #+sbcl :koi8-u
-     ;; #+abcl :koi8-u
      #+(or ecl ccl) :cannot-treat
      #-(or clisp ecl ccl) :koi8-u)
     ((:cp866 . :ru) .
      #+clisp 'charset:cp866
      #+ecl :cp866
-     ;; #+sbcl :cp866
      #+ccl :cannot-treat
      #+abcl :ibm866
      #-(or clisp ecl ccl abcl) :cp866)
     ((:cp1251 . :ru) .
      #+clisp 'charset:cp1251
      #+ecl :ms-cyrl
-     ;; #+sbcl :cp1251
      #+ccl :cannot-treat
      #+abcl :|windows-1251|
      #-(or clisp ecl ccl abcl) :cp1251)
@@ -196,15 +169,10 @@
     ;;; polish
     ((:iso8859-2 . :pl) .
      #+clisp 'charset:iso-8859-2
-     ;; #+ecl :iso-8859-2
-     ;; #+sbcl :iso-8859-2
-     ;; #+ccl :iso-8859-2
-     ;; #+abcl :iso-8859-2
      #-clisp :iso-8859-2)
     ((:cp1250 . :pl) .
      #+clisp 'charset:cp1250
      #+ecl :ms-ee
-     ;; #+sbcl :cp1250
      #+ccl :cannot-treat
      #+abcl :|windows-1250|
      #-(or clisp ecl ccl abcl) :cp1250)
@@ -212,15 +180,10 @@
     ;;; baltic
     ((:iso8859-13 . :bl) .
      #+clisp 'charset:iso-8859-13
-     ;; #+ecl :iso-8859-13
-     ;; #+sbcl :iso-8859-13
-     ;; #+ccl :iso-8859-13
-     ;; #+abcl :iso-8859-13
      #-clisp :iso-8859-13)
     ((:cp1257 . :bl) .
      #+clisp 'charset:cp1257
      #+ecl :winbaltrim
-     ;; #+sbcl :cp1257
      #+ccl :cannot-treat
      #+abcl :|windows-1257|
      #-(or clisp ecl ccl abcl) :cp1257)
@@ -229,24 +192,18 @@
     ((:lf . :eol) .
      ;; #+lispworks :lf
      #+clisp :unix
-     ;; #+ecl :lf
      #+sbcl :cannot-treat
      #+ccl :unix
-     ;; #+abcl :lf
      #-(or clisp sbcl ccl) :lf)
     ((:cr . :eol) .
      ;; #+lispworks :cr
      #+clisp :mac
-     ;; #+ecl :cr
      #+sbcl :cannot-treat
      #+ccl :macos
-     ;; #+abcl :cr
      #-(or clisp sbcl ccl) :cr)
     ((:crlf . :eol) .
      ;; #+lispworks :crlf
      #+clisp :dos
-     ;; #+ecl :crlf
      #+sbcl :cannot-treat
     #+ccl :dos
-    ;; #+abcl :crlf
     #-(or clisp sbcl ccl) :crlf)))
