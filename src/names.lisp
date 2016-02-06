@@ -62,8 +62,9 @@
      #+abcl :|Big5|
      #-(or clisp ecl abcl) :cannot-treat)
     ((:iso2022-tw :tw) .
+     #+clisp ,charset:euc-tw
      #+abcl :|x-EUC-TW|
-     #-abcl :cannot-treat)
+     #-(or clisp abcl) :cannot-treat)
 
     ;;; chinese
     ((:gb2312 . :cn) .
