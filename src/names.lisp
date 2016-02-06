@@ -31,7 +31,7 @@
      #+clisp 'charset:utf-16
      #+ecl :utf-16
      #+ccl :utf-16
-     #+abcl) :utf-16
+     #+abcl :utf-16
      #-(or clisp ecl ccl abcl) :cannot-treat)
 
     ;;; japanese
