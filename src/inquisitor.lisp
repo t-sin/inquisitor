@@ -71,7 +71,7 @@
             (with-byte-array (vec 500)
               (prog1
                   (loop for n = (read-sequence vec stream)
-                     with eol = (eol-guess-from-vector vec)
+                     for eol = (eol-guess-from-vector vec)
                      until (or (zerop n)
                                (not (null eol)))
                      finally (return eol))
