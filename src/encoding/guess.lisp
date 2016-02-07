@@ -41,7 +41,6 @@
 (in-package :cl-user)
 (defpackage inquisitor.encoding.guess
   (:use :cl
-        :inquisitor.encoding.keyword
         :inquisitor.encoding.table)
   (:import-from :inquisitor.encoding.dfa
                 :dfa-process
@@ -86,9 +85,9 @@
   (block guess-body
     ;; (let* ((eucj (dfa-init +eucj-st+ +eucj-ar+ (euc-jp)))
     ;; 	      (sjis (dfa-init +sjis-st+ +sjis-ar+ (shiftjis)))
-    ;; 	      (utf8 (dfa-init +utf8-st+ +utf8-ar+ (utf-8)))
+    ;; 	      (utf8 (dfa-init +utf8-st+ +utf8-ar+ (utf8)))
     ;; 	      (top  nil))
-    (let ((order (generate-order utf8 sjis eucj))
+    (let ((order (generate-order :utf8 :cp932 :euc-jp))
 	  (c nil))
       (declare (dynamic-extent order))
       (loop for i of-type fixnum from 0 below len do
@@ -100,7 +99,7 @@
 	  (setf c (aref buffer (the fixnum (incf i))))
 	  (when (or (= (the fixnum c) (the fixnum #x24))  ; $
 		    (= (the fixnum c) (the fixnum #x28))) ; (
-	    (return-from guess-body (iso-2022-jp-keyword))))
+	    (return-from guess-body :iso-2022-jp)))
 
 	;; special treatment of BOM
 	(when (and (= (the fixnum i) (the fixnum 0))
@@ -108,13 +107,13 @@
 		   (< (the fixnum i) (the fixnum (1- len))))
 	  (setf c (aref buffer (the fixnum (1+ i))))
 	  (when (= (the fixnum c) #xfe)
-	    (return-from guess-body (ucs-2le-keyword))))
+	    (return-from guess-body :ucs-2le)))
 	(when (and (= (the fixnum i) (the fixnum 0))
 		   (= (the fixnum c) (the fixnum #xfe))
 		   (< (the fixnum i) (the fixnum (1- len))))
 	  (setf c (aref buffer (the fixnum (1+ i))))
 	  (when (= (the fixnum c) #xff)
-	    (return-from guess-body (ucs-2be-keyword))))
+	    (return-from guess-body :ucs-2be)))
 
 	(awhen (dfa-process order c)
 	  (return-from guess-body it))
@@ -128,7 +127,7 @@
 
 (defun guess-tw (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 big5))
+    (let ((order (generate-order :utf8 :big5))
 	  (c nil))
       (declare (dynamic-extent order))
       (loop for i of-type fixnum from 0 below len do
@@ -140,7 +139,7 @@
 	  (setf c (aref buffer (the fixnum (incf i))))
 	  (when (or (= (the fixnum c) (the fixnum #x24))  ; $
 		    (= (the fixnum c) (the fixnum #x28))) ; (
-	    (return-from guess-body (iso-2022-tw-keyword))))
+	    (return-from guess-body :iso-2022-tw)))
 
 	;; special treatment of BOM
 	(when (and (= (the fixnum i) (the fixnum 0))
@@ -148,13 +147,13 @@
 		   (< (the fixnum i) (the fixnum (1- len))))
 	  (setf c (aref buffer (the fixnum (1+ i))))
 	  (when (= (the fixnum c) #xfe)
-	    (return-from guess-body (ucs-2le-keyword))))
+	    (return-from guess-body :ucs-2le)))
 	(when (and (= (the fixnum i) (the fixnum 0))
 		   (= (the fixnum c) (the fixnum #xfe))
 		   (< (the fixnum i) (the fixnum (1- len))))
 	  (setf c (aref buffer (the fixnum (1+ i))))
 	  (when (= (the fixnum c) #xff)
-	    (return-from guess-body (ucs-2be-keyword))))
+	    (return-from guess-body :ucs-2be)))
 
 	(awhen (dfa-process order c)
 	  (return-from guess-body it))
@@ -168,7 +167,7 @@
 
 (defun guess-cn (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 gb2312 gb18030)))
+    (let ((order (generate-order :utf8 :gb2312 :gb18030)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -181,7 +180,7 @@
 		  (when (and (= (the fixnum c) (the fixnum #x24))        ; $
 			     (or (= (the fixnum c2) (the fixnum #x29))   ; )
 				 (= (the fixnum c2) (the fixnum #x2B)))) ; +
-		    (return-from guess-body (iso-2022-cn-keyword)))))
+		    (return-from guess-body :iso-2022-cn))))
 
 	      ;; special treatment of BOM
 	      (when (and (= (the fixnum i) (the fixnum 0))
@@ -189,13 +188,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -209,7 +208,7 @@
 
 (defun guess-kr (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 euck johab)))
+    (let ((order (generate-order :utf8 :euc-kr :johab)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -221,7 +220,7 @@
 		      (c2 (aref buffer (the fixnum (+ i 2)))))
 		  (when (and (= (the fixnum c) (the fixnum #x24))   ; $
 			     (= (the fixnum c2) (the fixnum #x29))) ; )
-		    (return-from guess-body (iso-2022-kr-keyword)))))
+		    (return-from guess-body :iso-2022-kr))))
 
 	      ;; special treatment of BOM
 	      (when (and (= (the fixnum i) (the fixnum 0))
@@ -229,13 +228,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -248,7 +247,7 @@
 
 (defun guess-ar (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 iso8859-6 cp1256)))
+    (let ((order (generate-order :utf8 :iso-8859-6 :cp1256)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -259,13 +258,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -278,7 +277,7 @@
 
 (defun guess-gr (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 iso8859-7 cp1253)))
+    (let ((order (generate-order :utf8 :iso-8859-7 :cp1253)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -289,13 +288,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -308,8 +307,8 @@
 
 (defun guess-ru (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 cp1251 koi8-u koi8-r cp866
-			     iso8859-2 iso8859-5)))
+    (let ((order (generate-order :utf8 :cp1251 :koi8-u :koi8-r :cp866
+			     :iso-8859-2 :iso-8859-5)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -320,13 +319,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -339,7 +338,7 @@
 
 (defun guess-hw (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 iso8859-8 cp1255)))
+    (let ((order (generate-order :utf8 :iso-8859-8 :cp1255)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -350,13 +349,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -369,7 +368,7 @@
 
 (defun guess-pl (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 cp1250 iso8859-2)))
+    (let ((order (generate-order :utf8 :cp1250 :iso-8859-2)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -380,13 +379,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -400,7 +399,7 @@
 
 (defun guess-tr (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 iso8859-9 cp1254)))
+    (let ((order (generate-order :utf8 :iso-8859-9 :cp1254)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -411,13 +410,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))
@@ -431,7 +430,7 @@
 
 (defun guess-bl (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order utf8 iso8859-13 cp1257)))
+    (let ((order (generate-order :utf8 :iso-8859-13 :cp1257)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -442,13 +441,13 @@
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body (ucs-2le-keyword)))))
+		    (return-from guess-body :ucs-2le))))
 	      (when (and (= (the fixnum i) (the fixnum 0))
 			 (= (the fixnum c) (the fixnum #xfe))
 			 (< (the fixnum i) (the fixnum (1- len))))
 		(let ((c (aref buffer (the fixnum (1+ i)))))
 		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body (ucs-2be-keyword)))))
+		    (return-from guess-body :ucs-2be))))
 	      
 	      (awhen (dfa-process order c)
 		(return-from guess-body it))

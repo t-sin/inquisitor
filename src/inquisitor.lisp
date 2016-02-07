@@ -5,11 +5,6 @@
   (:import-from :inquisitor.encoding.guess
                 :ces-guess-from-vector
                 :list-available-scheme)
-  (:import-from :inquisitor.encoding.keyword
-                :utf8-keyword
-                :ucs-2le-keyword
-                :ucs-2be-keyword
-                :utf16-keyword)
   (:import-from :inquisitor.eol
                 :eol-available-p
                 :eol-guess-from-vector)
@@ -33,10 +28,10 @@
 
 (defun unicode-p (encoding)
   (member encoding
-          (list (utf8-keyword)
-                (ucs-2le-keyword)
-                (ucs-2be-keyword)
-                (utf16-keyword))))
+          (list :utf8  ;; workaround
+                :ucs-2le
+                :ucs-2be
+                :utf16)))
 
 (defun make-external-format (enc eol)
   #+clisp (ext:make-encoding :charset enc

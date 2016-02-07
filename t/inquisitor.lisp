@@ -2,7 +2,7 @@
 (defpackage inquisitor-test
   (:use :cl
         :inquisitor
-        :inquisitor.keyword
+        :inquisitor.names
         :prove)
   (:import-from :inquisitor-test.util
                 :get-test-data)
@@ -16,8 +16,8 @@
 
 
 (subtest "make-external-format"
-  (let* ((utf8 (utf8-keyword))
-         (lf (lf-keyword)))
+  (let* ((utf8 (name-on-impl :utf8))
+         (lf (name-on-impl :lf)))
     (is (make-external-format utf8 lf)
         #+clisp (ext:make-encoding :charset utf8 :line-terminator lf)
         #+ecl (list utf8 lf)
@@ -40,12 +40,11 @@
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (let ((pos (file-position in)))
-        (is (detect-encoding in :jp) (utf8-keyword))
+        (is (detect-encoding in :jp) :utf8)
         (is (file-position in) pos))))
 
   (subtest "for pathname"
-    (is (detect-encoding (get-test-data "dat/ascii.txt") :jp)
-        (utf8-keyword))))
+    (is (detect-encoding (get-test-data "dat/ascii.txt") :jp) :utf8)))
 
 (subtest "detect-end-of-line"
   (subtest "for stream"
@@ -75,7 +74,7 @@
   (is-error (detect-external-format "" :jp) 'error)
   (let ((str (string-to-octets "string")))
     (is (detect-external-format str :jp)
-        (make-external-format (utf8-keyword) (lf-keyword)))))
+        (make-external-format (name-on-impl :utf8) (name-on-impl :lf)))))
 
 (subtest "detect external-format --- from stream"
   (with-output-to-string (out)
@@ -87,13 +86,13 @@
                       :element-type '(unsigned-byte 8))
     (let ((pos (file-position in)))
       (is (detect-external-format in :jp)
-          (make-external-format (utf8-keyword) (lf-keyword)))
+          (make-external-format (name-on-impl :utf8) (name-on-impl :lf)))
       (is (file-position in) pos))))
 
 (subtest "detect external-format --- from pathname"
   (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
   (is (detect-external-format (get-test-data "dat/ascii.txt") :jp)
-      (make-external-format (utf8-keyword) (lf-keyword))))
+      (make-external-format (name-on-impl :utf8) (name-on-impl :lf))))
 
 
 (finalize)

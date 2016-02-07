@@ -282,7 +282,7 @@
 ;;; arabic
 ;;;
 
-  (define-dfa iso8859-6
+  (define-dfa iso-8859-6
     (init
      (((#x00 #x7f)) init         1.0)     ;ascii
      ((#xa0)        init         1.0)
@@ -304,7 +304,7 @@
 ;;; greek
 ;;;
 
-  (define-dfa iso8859-7
+  (define-dfa iso-8859-7
     (init
      (((#x00 #x7f)) init         1.0)     ;ascii
      (((#xa0 #xad)) init         1.0)
@@ -329,7 +329,7 @@
 ;;; hebrew
 ;;;
 
-  (define-dfa iso8859-8
+  (define-dfa iso-8859-8
     (init
      (((#x00 #x7f)) init         1.0)     ;ascii
      ((#xa0)        init         1.0)
@@ -354,7 +354,7 @@
 ;;; turkish
 ;;;
 
-  (define-dfa iso8859-9
+  (define-dfa iso-8859-9
     (init
      (((#x00 #x7f)) init         1.0)     ;ascii
      (((#xa0 #xff)) init         1.0)))
@@ -371,7 +371,7 @@
 ;;; russian
 ;;;
 
-  (define-dfa iso8859-5
+  (define-dfa iso-8859-5
     (init
      (((#x00 #x7f)) init         1.0)     ; ascii
      (((#xa0 #xff)) init         1.0)))
@@ -422,7 +422,7 @@
 ;;; polish
 ;;;
 
-  (define-dfa iso8859-2
+  (define-dfa iso-8859-2
     (init
      (((#x20 #x7e)) init          1.0)
      ((#xa1)        init          1.0)
@@ -461,7 +461,7 @@
 ;;; baltic (estonia/latvia/lithuania)
 ;;;
 
-  (define-dfa iso8859-13
+  (define-dfa iso-8859-13
     (init
      (((#x20 #x7e)) init          1.0)
      ((#xa8)        init          1.0)

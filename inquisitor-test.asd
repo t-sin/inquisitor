@@ -17,7 +17,8 @@
                :prove)
   :components ((:module "t"
                 :components
-                ((:file "test-util")
+                ((:file "names")
+                 (:file "test-util")
                  (:test-file "util" :depends-on ("test-util"))
                  (:test-file "eol" :depends-on ("test-util"))
                  (:test-file "encoding" :depends-on ("test-util"))
