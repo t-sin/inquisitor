@@ -41,7 +41,7 @@
      #+clisp ,charset:iso-2022-jp
      #+ecl :cannot-treat
      #+abcl :iso-2022-jp
-     #+(or sbcl ccl) :cannot-treat)
+     #-(or clisp ecl abcl) :cannot-treat)
     ((:euc-jp . :jp) .
      ;; #+lispworks :euc-jp
      #+clisp ,charset:euc-jp
@@ -85,14 +85,13 @@
     ;;; korean
     ((:euc-kr . :kr) .
      #+clisp ,charset:euc-kr
-     ;; #+abcl :euc-kr
-     #+(or ecl sbcl ccl) :cannot-treat
+     #+ecl :windows-cp949
+     #+(or sbcl ccl) :cannot-treat
      #-(or clisp ecl sbcl ccl) :euc-kr)
     ((:johab . :kr) .
      #+clisp ,charset:johab
-     #+ecl :cp949
      #+abcl :|x-Johab|
-     #+(or sbcl ccl) :cannot-treat
+     #+(or ecl sbcl ccl) :cannot-treat
      #-(or clisp ecl sbcl ccl abcl) :johab)
     ((:iso-2022-kr . :kr) .
      #+clisp ,charset:iso-2022-kr
@@ -105,7 +104,7 @@
      #-clisp :iso-8859-6)
     ((:cp1256 . :ar) .
      #+clisp ,charset:cp1256
-     #+ecl :ms-arab
+     #+ecl :windows-cp1256
      #+ccl :cannot-treat
      #+abcl :|windows-1256|
      #-(or clisp ecl ccl abcl) :cp1256)
@@ -116,7 +115,7 @@
      #-clisp :iso-8859-7)
     ((:cp1253 . :gr) .
      #+clisp ,charset:cp1253
-     #+ecl :ms-greek
+     #+ecl :windows-cp1253
      #+ccl :cannot-treat
      #+abcl  :|windows-1253|
      #-(or clisp ecl ccl abcl) :cp1253)
@@ -127,7 +126,7 @@
      #-clisp :iso-8859-8)
     ((:cp1255 . :hw) .
      #+clisp ,charset:cp1255
-     #+ecl :ms-hebr
+     #+ecl :windows-cp1255
      #+ccl :cannot-treat
      #+abcl :|windows-1255|
      #-(or clisp ecl ccl abcl) :cp1255)
@@ -138,7 +137,7 @@
      #-clisp :iso-8859-9)
     ((:cp1254 . :tr) .
      #+clisp ,charset:cp1254
-     #+ecl :ms-turk
+     #+ecl :windows-cp1254
      #+ccl :cannot-treat
      #+abcl :|windows-1254|
      #-(or clisp ecl ccl abcl) :cp1254)
@@ -158,13 +157,13 @@
      #-(or clisp ecl ccl) :koi8-u)
     ((:cp866 . :ru) .
      #+clisp ,charset:cp866
-     #+ecl :cp866
+     #+ecl :dos-cp866
      #+ccl :cannot-treat
      #+abcl :ibm866
      #-(or clisp ecl ccl abcl) :cp866)
     ((:cp1251 . :ru) .
      #+clisp ,charset:cp1251
-     #+ecl :ms-cyrl
+     #+ecl :windows-cp1251
      #+ccl :cannot-treat
      #+abcl :|windows-1251|
      #-(or clisp ecl ccl abcl) :cp1251)
@@ -175,7 +174,7 @@
      #-clisp :iso-8859-2)
     ((:cp1250 . :pl) .
      #+clisp ,charset:cp1250
-     #+ecl :ms-ee
+     #+ecl :windows-cp1250
      #+ccl :cannot-treat
      #+abcl :|windows-1250|
      #-(or clisp ecl ccl abcl) :cp1250)
@@ -186,7 +185,7 @@
      #-clisp :iso-8859-13)
     ((:cp1257 . :bl) .
      #+clisp ,charset:cp1257
-     #+ecl :winbaltrim
+     #+ecl :windows-cp1257
      #+ccl :cannot-treat
      #+abcl :|windows-1257|
      #-(or clisp ecl ccl abcl) :cp1257)
