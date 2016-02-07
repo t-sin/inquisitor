@@ -13,6 +13,7 @@ Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
 
 ## Goal
 
+* encoding/end-of-line name abstraction
 * encoding/end-of-line detection
 * external-format abstraction
   * make external-format for each implementations
@@ -38,15 +39,27 @@ Put in ASDF-path and type your REPL:
 ### Detecting encoding
 
 To detect encoding, use `(inquisitor:detect-encoding stream scheme)`.
-About `scheme', see `Encoding scheme`.
+About `scheme`, see `Encoding scheme`.
 
 for example:
 
-    (with-open-file (in "/path/to/utf8-lf.ja"
-                     :direction :input
-                     :element-type '(unsigned-byte 8))
-      (inquisitor:detect-encoding in :jp))
-    =>:UTF-8 ; SBCL's external-format
+```lisp
+(with-open-file (in "/path/to/utf8-lf.ja"
+                 :direction :input
+                 :element-type '(unsigned-byte 8))
+  (inquisitor:detect-encoding in :jp))
+; => :UTF8
+```
+
+You can see the list of available encodings with `inquititor.names:available-encodings`.
+
+```lisp
+(inquisitor.names:available-encodings)
+; => (:UTF8 :UCS-2LE :UCS-2BE :UTF16 :ISO-2022-JP :EUC-JP :CP932 :BIG5 :ISO-2022-TW
+;     :GB2312 :GB18030 :ISO-2022-CN :EUC-KR :JOHAB :ISO-2022-KR :ISO-8859-6 :CP1256
+;     :ISO-8859-7 :CP1253 :ISO-8859-8 :CP1255 :ISO-8859-9 :CP1254 :ISO-8859-5
+;     :KOI8-R :KOI8-U :CP866 :CP1251 :ISO-8859-2 :CP1250 :ISO-8859-13 :CP1257)
+```
 
 #### Encoding scheme
 
@@ -68,12 +81,24 @@ Supported scheme is as follows:
 
 ### Detecting end-of-line type
 
-    (with-open-file (in "/path/to/utf8-lf.ja"
-                     :direction :input
-                     :element-type '(unsigned-byte 8))
-      (inquisitor:detect-end-of-line in))
-    =>:LF
-      :CANNOT-TREAT ; SBCL can't treat end-of-line with external-format
+```lisp
+(with-open-file (in "/path/to/utf8-lf.ja"
+ :direction :input
+ :element-type '(unsigned-byte 8))
+  (inquisitor:detect-end-of-line in))
+; => :LF
+```
+
+### Getting name on your implementation
+
+```lisp
+(inquisitor.names:name-on-impl :cp932)
+; => #<ENCODING "CP932" :UNIX>  ; on CLISP
+; => :WINDOWS-CP932  ; on ECL
+; => :SHIFT_JIS  ; on SBCL
+; => :WINDOWS-31J  ; on CCL
+; => :|X-MS932_0213|  ; on ABCL
+```
 
 #### If you want to know eol is available on your implementation
 
@@ -82,36 +107,42 @@ Use `inquisitor.eol:eol-available-p`.
 
 ### Making external-format implementation independently
 
-    (inquisitor:make-external-format
-      (inquisitor.keyword:utf8-keyword) ; implementation independent name of UTF-8
-      (inquisitor.keyword:lf-keyword)) ; implementation independent name of LF
-    =>:UTF-8 ; on SBCL
-    =>#<EXTERNAL-FORMAT :CP932/:DOS #xxxxxxxxxxx> ; on CCL
-
+```lisp
+(inquisitor:make-external-format
+  (inquisitor.names:name-on-impl :utf8) ; implementation independent name of UTF-8
+  (inquisitor.names:name-on-impl :lf)) ; implementation independent name of LF
+; => :UTF-8  ; on SBCL
+; => #<EXTERNAL-FORMAT :CP932/:DOS #xxxxxxxxxxx>  ; on CCL
+```
 
 #### Auto detecting and making external-format, from vector, stream and pathname
 
 In case of vector (on CCL):
 
-    (inquisitor:detect-external-format
-              (encode-string-to-octets "公的な捜索係、調査官がいる。
-    わたしは彼らが任務を遂行しているところを見た。")
-              :jp)
-    =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+```lisp
+(inquisitor:detect-external-format
+  (encode-string-to-octets "公的な捜索係、調査官がいる。
+わたしは彼らが任務を遂行しているところを見た。")
+  :jp)
+; => #<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+```
 
 In case of stream (on CCL):
 
-    (with-open-file (in "/path/to/utf8-lf.ja"
-                     :direction :input
-                     :element-type '(unsigned-byte 8))
-       (inquisitor:detect-external-format in :jp)
-    =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+```lisp
+(with-open-file (in "/path/to/utf8-lf.ja"
+ :direction :input
+ :element-type '(unsigned-byte 8))
+   (inquisitor:detect-external-format in :jp)
+; => #<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+```
 
 In case of pathname (on CCL):
 
-    (inquisitor:detect-external-format #P"/path/to/utf8-lf.ja" :jp)
-    =>#<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
-
+```lisp
+(inquisitor:detect-external-format #P"/path/to/utf8-lf.ja" :jp)
+; =># <EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+```
 
 ## Author
 
