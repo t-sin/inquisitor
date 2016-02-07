@@ -35,7 +35,7 @@
      #-(or clisp ecl ccl abcl) :cannot-treat)
 
     ;;; japanese
-    ((:iso2022-jp . :jp) .  ; jis
+    ((:iso-2022-jp . :jp) .  ; jis
      ;; #+allegro :jis
      ;; #+lispworks :jis
      #+clisp ,charset:iso-2022-jp
@@ -61,7 +61,7 @@
      #+ecl :windows-cp950
      #+abcl :|Big5|
      #-(or clisp ecl abcl) :cannot-treat)
-    ((:iso2022-tw :tw) .
+    ((:iso-2022-tw :tw) .
      #+clisp ,charset:euc-tw
      #+abcl :|x-EUC-TW|
      #-(or clisp abcl) :cannot-treat)
@@ -77,7 +77,7 @@
      #+clisp ,charset:gb18030
      #+abcl :gb18030
      #-(or clisp abcl) :cannot-treat)
-    ((:iso2022-cn . :cn) .
+    ((:iso-2022-cn . :cn) .
      #+clisp ,charset:iso-2022-cn
      #+abcl :iso-2022-cn
      #-(or clisp abcl) :cannot-treat)
@@ -94,13 +94,13 @@
      #+abcl :|x-Johab|
      #+(or sbcl ccl) :cannot-treat
      #-(or clisp ecl sbcl ccl abcl) :johab)
-    ((:iso2022-kr . :kr) .
+    ((:iso-2022-kr . :kr) .
      #+clisp ,charset:iso-2022-kr
      #+abcl :iso-2022-kr
      #-(or clisp abcl) :cannot-treat)
 
     ;;; arabic
-    ((:iso8859-6 . :ar) .
+    ((:iso-8859-6 . :ar) .
      #+clisp ,charset:iso-8859-6
      #-clisp :iso-8859-6)
     ((:cp1256 . :ar) .
@@ -111,7 +111,7 @@
      #-(or clisp ecl ccl abcl) :cp1256)
 
     ;;; greek
-    ((:iso8859-7 . :gr) .
+    ((:iso-8859-7 . :gr) .
      #+clisp ,charset:iso-8859-7
      #-clisp :iso-8859-7)
     ((:cp1253 . :gr) .
@@ -122,7 +122,7 @@
      #-(or clisp ecl ccl abcl) :cp1253)
 
     ;;; hebrew
-    ((:iso8859-8 . :hw) .
+    ((:iso-8859-8 . :hw) .
      #+clisp ,charset:iso-8859-8
      #-clisp :iso-8859-8)
     ((:cp1255 . :hw) .
@@ -133,7 +133,7 @@
      #-(or clisp ecl ccl abcl) :cp1255)
 
     ;;; turkish
-    ((:iso8859-9 . :tr) .
+    ((:iso-8859-9 . :tr) .
      #+clisp ,charset:iso-8859-9
      #-clisp :iso-8859-9)
     ((:cp1254 . :tr) .
@@ -144,7 +144,7 @@
      #-(or clisp ecl ccl abcl) :cp1254)
 
     ;;; russian
-    ((:iso8859-5 . :ru) .
+    ((:iso-8859-5 . :ru) .
      #+clisp ,charset:iso-8859-5
      #-clisp :iso-8859-5)
     ((:koi8-r . :ru) .
@@ -170,7 +170,7 @@
      #-(or clisp ecl ccl abcl) :cp1251)
 
     ;;; polish
-    ((:iso8859-2 . :pl) .
+    ((:iso-8859-2 . :pl) .
      #+clisp ,charset:iso-8859-2
      #-clisp :iso-8859-2)
     ((:cp1250 . :pl) .
@@ -181,7 +181,7 @@
      #-(or clisp ecl ccl abcl) :cp1250)
 
     ;;; baltic
-    ((:iso8859-13 . :bl) .
+    ((:iso-8859-13 . :bl) .
      #+clisp ,charset:iso-8859-13
      #-clisp :iso-8859-13)
     ((:cp1257 . :bl) .

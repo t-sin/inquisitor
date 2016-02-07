@@ -99,7 +99,7 @@
 	  (setf c (aref buffer (the fixnum (incf i))))
 	  (when (or (= (the fixnum c) (the fixnum #x24))  ; $
 		    (= (the fixnum c) (the fixnum #x28))) ; (
-	    (return-from guess-body :iso2022-jp)))
+	    (return-from guess-body :iso-2022-jp)))
 
 	;; special treatment of BOM
 	(when (and (= (the fixnum i) (the fixnum 0))
@@ -139,7 +139,7 @@
 	  (setf c (aref buffer (the fixnum (incf i))))
 	  (when (or (= (the fixnum c) (the fixnum #x24))  ; $
 		    (= (the fixnum c) (the fixnum #x28))) ; (
-	    (return-from guess-body :iso2022-tw)))
+	    (return-from guess-body :iso-2022-tw)))
 
 	;; special treatment of BOM
 	(when (and (= (the fixnum i) (the fixnum 0))
@@ -180,7 +180,7 @@
 		  (when (and (= (the fixnum c) (the fixnum #x24))        ; $
 			     (or (= (the fixnum c2) (the fixnum #x29))   ; )
 				 (= (the fixnum c2) (the fixnum #x2B)))) ; +
-		    (return-from guess-body :iso2022-cn))))
+		    (return-from guess-body :iso-2022-cn))))
 
 	      ;; special treatment of BOM
 	      (when (and (= (the fixnum i) (the fixnum 0))
@@ -220,7 +220,7 @@
 		      (c2 (aref buffer (the fixnum (+ i 2)))))
 		  (when (and (= (the fixnum c) (the fixnum #x24))   ; $
 			     (= (the fixnum c2) (the fixnum #x29))) ; )
-		    (return-from guess-body :iso2022-kr))))
+		    (return-from guess-body :iso-2022-kr))))
 
 	      ;; special treatment of BOM
 	      (when (and (= (the fixnum i) (the fixnum 0))
@@ -247,7 +247,7 @@
 
 (defun guess-ar (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order :utf8 :iso8859-6 :cp1256)))
+    (let ((order (generate-order :utf8 :iso-8859-6 :cp1256)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -277,7 +277,7 @@
 
 (defun guess-gr (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order :utf8 :iso8859-7 :cp1253)))
+    (let ((order (generate-order :utf8 :iso-8859-7 :cp1253)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -308,7 +308,7 @@
 (defun guess-ru (buffer &aux (len (length buffer)))
   (block guess-body
     (let ((order (generate-order :utf8 :cp1251 :koi8-u :koi8-r :cp866
-			     :iso8859-2 :iso8859-5)))
+			     :iso-8859-2 :iso-8859-5)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -338,7 +338,7 @@
 
 (defun guess-hw (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order :utf8 :iso8859-8 :cp1255)))
+    (let ((order (generate-order :utf8 :iso-8859-8 :cp1255)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -368,7 +368,7 @@
 
 (defun guess-pl (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order :utf8 :cp1250 :iso8859-2)))
+    (let ((order (generate-order :utf8 :cp1250 :iso-8859-2)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -399,7 +399,7 @@
 
 (defun guess-tr (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order :utf8 :iso8859-9 :cp1254)))
+    (let ((order (generate-order :utf8 :iso-8859-9 :cp1254)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
@@ -430,7 +430,7 @@
 
 (defun guess-bl (buffer &aux (len (length buffer)))
   (block guess-body
-    (let ((order (generate-order :utf8 :iso8859-13 :cp1257)))
+    (let ((order (generate-order :utf8 :iso-8859-13 :cp1257)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
 	    for i of-type fixnum from 0 do
