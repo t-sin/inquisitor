@@ -11,7 +11,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 4)
+(plan 5)
 
 
 (defun test-eol (path eol)
@@ -26,9 +26,10 @@
 (test-eol "dat/ja/utf8-cr.ja" :cr)
 (test-eol "dat/ja/utf8-crlf.ja" :crlf)
 (test-eol "dat/ja/utf8-lf.ja" :lf)
+(test-eol "dat/ascii.txt" :lf)
 
 (subtest "If file has no newline then return NIL"
-  (test-eol "dat/ascii.txt" nil)
+  (test-eol "dat/ascii-no-eol.txt" nil)
   (test-eol "dat/empty.txt" nil))
 
 
