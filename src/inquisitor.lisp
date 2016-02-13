@@ -97,7 +97,9 @@
         (if enc-ct
             (error (format nil "unsupported on ~a: ~{~a~^, ~}"
                            (lisp-implementation-type) enc))
-            (make-external-format enc eol)))
+            (if (null eol)
+                (make-external-format enc :lf)
+                (make-external-format enc eol))))
       (error (format nil "supplied vector is not a byte array."))))
 
 (defmethod detect-external-format ((stream stream) (scheme symbol))
