@@ -1,4 +1,5 @@
 # Inquisitor
+[![Quicklisp](http://quickdocs.org/badge/inquisitor.svg)](http://quickdocs.org/inquisitor/)
 
 [![Build Status](https://travis-ci.org/t-sin/inquisitor.svg)](https://travis-ci.org/t-sin/inquisitor)
 [![Circle CI](https://circleci.com/gh/t-sin/inquisitor.svg?style=svg)](https://circleci.com/gh/t-sin/inquisitor)
