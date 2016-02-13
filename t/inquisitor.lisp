@@ -18,7 +18,7 @@
 (subtest "make-external-format"
   (let* ((utf8 (name-on-impl :utf8))
          (lf (name-on-impl :lf)))
-    (is (make-external-format utf8 lf)
+    (is (make-external-format :utf8 :lf)
         #+clisp (ext:make-encoding :charset utf8 :line-terminator lf)
         #+ecl (list utf8 lf)
         #+sbcl utf8
@@ -74,7 +74,7 @@
   (is-error (detect-external-format "" :jp) 'error)
   (let ((str (string-to-octets "string")))
     (is (detect-external-format str :jp)
-        (make-external-format (name-on-impl :utf8) (name-on-impl :lf)))))
+        (make-external-format :utf8 :lf))))
 
 (subtest "detect external-format --- from stream"
   (with-output-to-string (out)
@@ -86,13 +86,13 @@
                       :element-type '(unsigned-byte 8))
     (let ((pos (file-position in)))
       (is (detect-external-format in :jp)
-          (make-external-format (name-on-impl :utf8) (name-on-impl :lf)))
+          (make-external-format :utf8 :lf))
       (is (file-position in) pos))))
 
 (subtest "detect external-format --- from pathname"
   (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
   (is (detect-external-format (get-test-data "dat/ascii.txt") :jp)
-      (make-external-format (name-on-impl :utf8) (name-on-impl :lf))))
+      (make-external-format :utf8 :lf)))
 
 
 (finalize)
