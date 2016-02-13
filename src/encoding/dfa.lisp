@@ -193,8 +193,10 @@
 (defmacro generate-order (&rest encodings)
   `(list
     ,@(mapcar (lambda (enc)
-		(let ((dfa-st (find-symbol (string-upcase (format nil "+~A-ST+" (symbol-name enc))) :inquisitor.encoding.table))
-		      (dfa-ar (find-symbol (string-upcase (format nil "+~A-AR+" (symbol-name enc))) :inquisitor.encoding.table))
+		(let ((dfa-st (find-symbol (string-upcase (format nil "+~A-ST+" (symbol-name enc)))
+                                   :inquisitor.encoding.table))
+		      (dfa-ar (find-symbol (string-upcase (format nil "+~A-AR+" (symbol-name enc)))
+                                   :inquisitor.encoding.table))
 		      (dfa-name enc))
 		  `(dfa-init ,dfa-st ,dfa-ar ,dfa-name)))
 		  encodings)))
