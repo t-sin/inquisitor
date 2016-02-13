@@ -57,7 +57,7 @@
 ;;;
 (eval-when (:compile-toplevel :load-toplevel :execute)
 
-  (define-dfa eucj
+  (define-dfa euc-jp
     ;; first byte
     (init
      (((#x00 #x7f)) init         1.0)   ; ASCII range
@@ -78,7 +78,7 @@
 ;;; Shift_JIS
 ;;;
 
-  (define-dfa sjis
+  (define-dfa cp932
     ;; first byte
     (init
      (((#x00 #x7f)) init         1.0)        ;ascii
@@ -122,7 +122,7 @@
 ;;;
 ;;; UCS-2LE
 ;;;
-  (define-dfa ucs2le
+  (define-dfa ucs-2le
     (init
      ((#xfe) bom-be 1.0)
      ((#xff) bom-le 1.0)
@@ -137,7 +137,7 @@
 ;;;
 ;;; UCS-2BE
 ;;;
-  (define-dfa ucs2be
+  (define-dfa ucs-2be
     (init
      ((#xfe) bom-be 1.0)
      ((#xff) bom-le 1.0)
@@ -171,7 +171,7 @@
 ;;;
 
   ;; NB: for now, we just check the sequence of <ESC> $ or <ESC> '('.
-  (define-dfa jis
+  (define-dfa iso-2022-jp
     (init
      ((#x1b)        esc          1.0)
      (((#x00 #x1a)  (#x1c #x1f)) init 1.0) ;C0
@@ -248,7 +248,7 @@
 ;;; EUC-KR
 ;;;
 
-  (define-dfa euck
+  (define-dfa euc-kr
     ;; first byte
     (init
      (((#x00 #x7f)) init      1.0)   ; ASCII range

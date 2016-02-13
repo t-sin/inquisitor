@@ -60,12 +60,12 @@
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (let ((pos (file-position in)))
-        (is (detect-end-of-line in) nil)
+        (is (detect-end-of-line in) :lf)
         (is (file-position in) pos))))
 
   (subtest "for pathname"
     (is (detect-end-of-line (get-test-data "dat/ascii.txt"))
-        nil)))
+        :lf)))
 
 (subtest "detect external-format --- from vector"
   (diag "when not byte-array")
