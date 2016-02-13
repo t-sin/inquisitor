@@ -109,8 +109,8 @@ Use `inquisitor.eol:eol-available-p`.
 
 ```lisp
 (inquisitor:make-external-format
-  (inquisitor.names:name-on-impl :utf8) ; implementation independent name of UTF-8
-  (inquisitor.names:name-on-impl :lf)) ; implementation independent name of LF
+  :utf8 ; implementation independent name of UTF-8
+  :lf) ; implementation independent name of LF
 ; => :UTF-8  ; on SBCL
 ; => #<EXTERNAL-FORMAT :CP932/:DOS #xxxxxxxxxxx>  ; on CCL
 ```
