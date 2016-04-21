@@ -1,0 +1,69 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| This generates test datum for inquisitor.
+exec ros -Q -- $0 "$@"
+|#
+(defpackage :inquisitor.generate-testdata
+  (:use :cl))
+
+(ql:quickload '(:dexador)
+              :silent t)
+
+(in-package :inquisitor.generate-testdata)
+
+(defvar +libiconv-base-url+ "http://ftp.gnu.org/pub/gnu/libiconv/")
+(defvar +libiconv-tarball+ "libiconv-")
+(defvar +libiconv-version+ "1.14")
+(defvar +libiconv-extension+ ".tar.gz")
+
+(defvar +data-ext+ "txt")
+
+;;; ascii
+(defvar +ascii-data+ "Let it suffice now for me to repeat the classic dictum:~aThe Library is a sphere whose exact center is any one of its hexagons and~awhose circumference is inaccessible.")
+(defvar +eol-cr+ #\return)
+(defvar +eol-lf+ #\newline)
+(defvar +eol-crlf+ (format nil (format nil "~a~a" +eol-cr+ +eol-lf+)))
+(defvar +eol-lfcr+ (format nil (format nil "~a~a" +eol-lf+ +eol-cr+)))
+
+(defun generate-ascii-data (stream eol-string)
+  (let ((s (format nil +ascii-data+ eol-string eol-string)))
+    (loop
+       :for c :across s
+       :do (write-byte (char-code c) stream))))
+
+(defvar +dir-spec+
+  `(#p"t/data/"
+      (#p"ascii/"
+         (#p"empty" ,(lambda (stream) nil))
+         (#p"ascii" ,#'generate-ascii-data " ")
+         (#p"ascii-cr" ,#'generate-ascii-data ,+eol-cr+)
+         (#p"ascii-lf" ,#'generate-ascii-data ,+eol-lf+)
+         (#p"ascii-crlf" ,#'generate-ascii-data ,+eol-crlf+)
+         (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))))
+
+(defun generate-data (spec here)
+  (when (cdr spec)
+    (let ((path (make-pathname :name (pathname-name (car spec))
+                               :directory (pathname-directory here)
+                               :type +data-ext+))
+          (generate-fn (cadr spec))
+          (args (cddr spec)))
+      (with-open-file (out path
+                           :direction :output
+                           :if-exists :supersede
+                           :element-type '(unsigned-byte 8))
+        (apply generate-fn out args)))))
+
+(defun walk-dir-spec (dir-spec &optional (here #p"."))
+  (let ((spec (car dir-spec)))
+    (if (uiop:directory-pathname-p spec)
+        (loop
+           :for s :in (cdr dir-spec)
+           :with here := (merge-pathnames spec here)
+           :initially (ensure-directories-exist here)
+           :do (walk-dir-spec s here))
+        (generate-data dir-spec here))))
+
+(defun main (&rest argv)
+  (declare (ignorable argv)))
+;;; vim: set ft=lisp lisp:
