@@ -6,17 +6,41 @@ exec ros -Q -- $0 "$@"
 (defpackage :inquisitor.generate-testdata
   (:use :cl))
 
-(ql:quickload '(:dexador)
+(ql:quickload '(:archive
+                :chipz
+                :dexador
+                :split-sequence)
               :silent t)
 
 (in-package :inquisitor.generate-testdata)
 
+;;; non-ascii
 (defvar +libiconv-base-url+ "http://ftp.gnu.org/pub/gnu/libiconv/")
-(defvar +libiconv-tarball+ "libiconv-")
 (defvar +libiconv-version+ "1.14")
-(defvar +libiconv-extension+ ".tar.gz")
+(defvar +libiconv-extract-path+ #p"/tmp/")
 
 (defvar +data-ext+ "txt")
+
+(defun integer-to-bytes (integer)
+  (loop
+     :for (q r) := (multiple-value-list (truncate integer (expt 2 8)))
+     :with bytes := nil
+     :do (setf integer q
+               bytes (cons r bytes))
+     :while (< 0 q)
+     :finally (return (nreverse bytes))))
+
+(defun generate-non-ascii-data (stream encoding)
+  (let ((datapath (format nil "~alibiconv-~a/tests/~a.TXT"
+                          +libiconv-extract-path+
+                          +libiconv-version+
+                          encoding)))
+    (with-open-file (fin datapath :direction :input)
+      (loop
+         :for line := (read-line fin nil :eofp)
+         :until (eq line :eofp)
+         :for hex := (subseq (first (split-sequence:split-sequence #\tab line)) 2)
+         :do (write-sequence (integer-to-bytes (parse-integer hex :radix 16)) stream)))))
 
 ;;; ascii
 (defvar +ascii-data+ "Let it suffice now for me to repeat the classic dictum:~aThe Library is a sphere whose exact center is any one of its hexagons and~awhose circumference is inaccessible.")
@@ -39,7 +63,13 @@ exec ros -Q -- $0 "$@"
          (#p"ascii-cr" ,#'generate-ascii-data ,+eol-cr+)
          (#p"ascii-lf" ,#'generate-ascii-data ,+eol-lf+)
          (#p"ascii-crlf" ,#'generate-ascii-data ,+eol-crlf+)
-         (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))))
+         (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))
+      ;; (#p"unicode/"
+      ;;    (#p"utf8" ,#'generate-non-ascii-data ""))
+      (#p"ja/"
+         ;; (#p"jis" ,#'generate-non-ascii-data "")
+         (#p"eucjp" ,#'generate-non-ascii-data "EUC-JP")
+         (#p"sjis" ,#'generate-non-ascii-data "CP932"))))
 
 (defun generate-data (spec here)
   (when (cdr spec)
@@ -64,6 +94,28 @@ exec ros -Q -- $0 "$@"
            :do (walk-dir-spec s here))
         (generate-data dir-spec here))))
 
+(defun get-libiconv (iconv-path)
+  (let* ((iconv-gz (dex:get (format nil "~alibiconv-~a.tar.gz"
+                                    +libiconv-base-url+
+                                    +libiconv-version+)
+                            :want-stream t))
+         (iconv-tar (chipz:make-decompressing-stream 'chipz:gzip iconv-gz))
+         (arch (archive:open-archive 'archive:tar-archive iconv-tar
+                                     :direction :input))
+         (root-dirname))
+    (ensure-directories-exist iconv-path)
+    (let ((*default-pathname-defaults* iconv-path))
+      (loop
+         :for entry := (archive:read-entry-from-archive arch)
+         :until (null entry)
+         :when (null root-dirname)
+         :do (setf root-dirname (archive:name entry))
+         :do (archive:extract-entry arch entry)))
+    root-dirname))
+
 (defun main (&rest argv)
-  (declare (ignorable argv)))
+  (declare (ignorable argv))
+
+  (let ((libiconv-dirname)))
+  (setf libiconv-dirname (get-libincov +libiconv-extract-path+)))
 ;;; vim: set ft=lisp lisp:
