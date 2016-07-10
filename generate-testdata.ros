@@ -84,14 +84,14 @@ exec ros -Q -- $0 "$@"
                            :element-type '(unsigned-byte 8))
         (apply generate-fn out args)))))
 
-(defun walk-dir-spec (dir-spec &optional (here #p"."))
+(defun generate-datum (dir-spec &optional (here #p"."))
   (let ((spec (car dir-spec)))
     (if (uiop:directory-pathname-p spec)
         (loop
            :for s :in (cdr dir-spec)
            :with here := (merge-pathnames spec here)
            :initially (ensure-directories-exist here)
-           :do (walk-dir-spec s here))
+           :do (generate-datum s here))
         (generate-data dir-spec here))))
 
 (defun get-libiconv (iconv-path)
@@ -116,6 +116,8 @@ exec ros -Q -- $0 "$@"
 (defun main (&rest argv)
   (declare (ignorable argv))
 
-  (let ((libiconv-dirname)))
-  (setf libiconv-dirname (get-libincov +libiconv-extract-path+)))
+  (let ((libiconv-dirname))
+    (setf libiconv-dirname (get-libiconv +libiconv-extract-path+))
+
+    (generate-datum +dir-spec+ #p".")))
 ;;; vim: set ft=lisp lisp:
