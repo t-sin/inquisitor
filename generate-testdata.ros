@@ -14,12 +14,23 @@ exec ros -Q -- $0 "$@"
 
 (in-package :inquisitor.generate-testdata)
 
+;;; ascii
+(defvar +ascii-data+ "Let it suffice now for me to repeat the classic dictum:~aThe Library is a sphere whose exact center is any one of its hexagons and~awhose circumference is inaccessible.")
+(defvar +eol-cr+ #\return)
+(defvar +eol-lf+ #\newline)
+(defvar +eol-crlf+ (format nil (format nil "~a~a" +eol-cr+ +eol-lf+)))
+(defvar +eol-lfcr+ (format nil (format nil "~a~a" +eol-lf+ +eol-cr+)))
+
+(defun generate-ascii-data (stream eol-string)
+  (let ((s (format nil +ascii-data+ eol-string eol-string)))
+    (loop
+       :for c :across s
+       :do (write-byte (char-code c) stream))))
+
 ;;; non-ascii
 (defvar +libiconv-base-url+ "http://ftp.gnu.org/pub/gnu/libiconv/")
 (defvar +libiconv-version+ "1.14")
 (defvar +libiconv-extract-path+ #p"/tmp/")
-
-(defvar +data-ext+ "txt")
 
 (defun integer-to-bytes (integer)
   (loop
@@ -42,19 +53,7 @@ exec ros -Q -- $0 "$@"
          :for hex := (subseq (first (split-sequence:split-sequence #\tab line)) 2)
          :do (write-sequence (integer-to-bytes (parse-integer hex :radix 16)) stream)))))
 
-;;; ascii
-(defvar +ascii-data+ "Let it suffice now for me to repeat the classic dictum:~aThe Library is a sphere whose exact center is any one of its hexagons and~awhose circumference is inaccessible.")
-(defvar +eol-cr+ #\return)
-(defvar +eol-lf+ #\newline)
-(defvar +eol-crlf+ (format nil (format nil "~a~a" +eol-cr+ +eol-lf+)))
-(defvar +eol-lfcr+ (format nil (format nil "~a~a" +eol-lf+ +eol-cr+)))
-
-(defun generate-ascii-data (stream eol-string)
-  (let ((s (format nil +ascii-data+ eol-string eol-string)))
-    (loop
-       :for c :across s
-       :do (write-byte (char-code c) stream))))
-
+;;; generate
 (defvar +dir-spec+
   `(#p"t/data/"
       (#p"ascii/"
@@ -70,6 +69,8 @@ exec ros -Q -- $0 "$@"
          ;; (#p"jis" ,#'generate-non-ascii-data "")
          (#p"eucjp" ,#'generate-non-ascii-data "EUC-JP")
          (#p"sjis" ,#'generate-non-ascii-data "CP932"))))
+
+(defvar +data-ext+ "txt")
 
 (defun generate-data (spec here)
   (when (cdr spec)
