@@ -41,6 +41,11 @@ exec ros -Q -- $0 "$@"
      :while (< 0 q)
      :finally (return (nreverse bytes))))
 
+(defun write-integers-as-bytes (stream &rest integers)
+  (loop
+     :for integer :in integers
+     :do (write-sequence (integer-to-bytes integer) stream)))
+
 (defun generate-non-ascii-data (stream encoding)
   (let ((datapath (format nil "~alibiconv-~a/tests/~a.TXT"
                           +libiconv-extract-path+
@@ -51,7 +56,31 @@ exec ros -Q -- $0 "$@"
          :for line := (read-line fin nil :eofp)
          :until (eq line :eofp)
          :for hex := (subseq (first (split-sequence:split-sequence #\tab line)) 2)
-         :do (write-sequence (integer-to-bytes (parse-integer hex :radix 16)) stream)))))
+         :do (write-integers-as-bytes stream (parse-integer hex :radix 16))))))
+
+;; cf. and port of libiconv-1.14/tests/genutf8.c
+(defun generate-utf8 (stream)
+  (loop                               ; range 0x0000..0x007f
+     :for i1 := 0 :then (incf i1)
+     :while (< i1 #x80)
+     :do (write-integers-as-bytes stream i1))
+  (loop                               ; range 0x0080..0x07ff
+     :for i1 := 2 :then (incf i1)
+     :while (< i1 32)
+     :do (loop
+            :for i2 := 0 then (incf i2)
+            :while (< i2 64)
+            :do (write-integers-as-bytes stream (+ #xc0 i1) (+ #x80 i2))))
+  (loop                               ; range 0x0800..0xffff
+     :for i1 := 0 :then (incf i1)
+     :while (< i1 16)
+     :do (loop
+            :for i2 := (if (zerop i1) 32 0) then (incf i2)
+            :while (< i2 64)
+            :do (loop
+                   :for i3 := 0 :then (incf i3)
+                   :while (< i3 64)
+                   :do (write-integers-as-bytes stream (+ #xe0 i1) (+ #x80 i2) (+ #x80 i3))))))
 
 ;;; generate
 (defvar +dir-spec+
@@ -63,8 +92,8 @@ exec ros -Q -- $0 "$@"
          (#p"ascii-lf" ,#'generate-ascii-data ,+eol-lf+)
          (#p"ascii-crlf" ,#'generate-ascii-data ,+eol-crlf+)
          (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))
-      ;; (#p"unicode/"
-      ;;    (#p"utf8" ,#'generate-non-ascii-data ""))
+      (#p"unicode/"
+         (#p"utf8" ,#'generate-utf8))
       (#p"ja/"
          ;; (#p"jis" ,#'generate-non-ascii-data "")
          (#p"eucjp" ,#'generate-non-ascii-data "EUC-JP")
