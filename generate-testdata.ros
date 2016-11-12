@@ -105,6 +105,11 @@ exec ros -Q -- $0 "$@"
          (#p"gb2312" ,#'generate-non-ascii-data "GBK")
          (#p"gb18030" ,#'generate-non-ascii-data "GB18030-BMP")
          ;; (#p"iso2022cn" ,#'generate-non-ascii-data "")
+         )
+      (#p"kr/"
+         (#p"euckr" ,#'generate-non-ascii-data "EUC-KR")
+         (#p"johab" ,#'generate-non-ascii-data "JOHAB")
+         ;; (#p"iso2022cn" ,#'generate-non-ascii-data "")
          )))
 
 (defvar +data-ext+ "txt")
