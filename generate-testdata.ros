@@ -116,7 +116,10 @@ exec ros -Q -- $0 "$@"
          (#p"cp1256" ,#'generate-non-ascii-data "CP1256"))
       (#p"gr/"
          (#p"iso8859-7" ,#'generate-non-ascii-data "ISO-8859-7")
-         (#p"cp1253" ,#'generate-non-ascii-data "CP1253"))))
+         (#p"cp1253" ,#'generate-non-ascii-data "CP1253"))
+      (#p"hw/"
+         (#p"iso8859-8" ,#'generate-non-ascii-data "ISO-8859-8")
+         (#p"cp1255" ,#'generate-non-ascii-data "CP1255"))))
 
 (defvar +data-ext+ "txt")
 
