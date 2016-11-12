@@ -58,6 +58,30 @@ exec ros -Q -- $0 "$@"
          :for hex := (subseq (first (split-sequence:split-sequence #\tab line)) 2)
          :do (write-integers-as-bytes stream (parse-integer hex :radix 16))))))
 
+(defun generate-from-snippet (stream encoding)
+  (let* ((datapath (format nil "~alibiconv-~a/tests/"
+                           +libiconv-extract-path+
+                           +libiconv-version+))
+         (files (remove-if-not (lambda (p) (and (null (pathname-type p))
+                                                (search (format nil "~a-" encoding)
+                                                        (pathname-name p))))
+                               (directory (make-pathname :name :wild
+                                                         :type nil
+                                                         :defaults datapath)))))
+    (loop
+       :for file :in files
+       :do (with-open-file (in file
+                               :direction :input
+                               :element-type '(unsigned-byte 8))
+             (let ((bytes (make-array 2048 :element-type '(unsigned-byte 8))))
+               (loop
+                :for reads := (read-sequence bytes in)
+                :until (zerop reads)
+                :do (write-sequence bytes stream :end reads))))
+       :do (write-sequence (make-array 2 :element-type '(unsigned-byte 8)
+                                       :initial-element (char-code #\linefeed))
+                           stream))))
+
 ;; cf. and port of libiconv-1.14/tests/genutf8.c
 (defun generate-utf8 (stream)
   (loop                               ; range 0x0000..0x007f
@@ -93,9 +117,12 @@ exec ros -Q -- $0 "$@"
          (#p"ascii-crlf" ,#'generate-ascii-data ,+eol-crlf+)
          (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))
       (#p"unicode/"
-         (#p"utf8" ,#'generate-utf8))
+         (#p"utf8" ,#'generate-utf8)
+         (#p"ucs2le" ,#'generate-from-snippet "UCS-2LE")
+         (#p"ucs2be" ,#'generate-from-snippet "UCS-2BE")
+         (#p"utf16" ,#'generate-from-snippet "UTF-16"))
       (#p"ja/"
-         ;; (#p"jis" ,#'generate-non-ascii-data "")
+         (#p"jis" ,#'generate-from-snippet "ISO-2022-JP")
          (#p"eucjp" ,#'generate-non-ascii-data "EUC-JP")
          (#p"sjis" ,#'generate-non-ascii-data "CP932"))
       (#p"tw/"
@@ -104,13 +131,11 @@ exec ros -Q -- $0 "$@"
       (#p"cn/"
          (#p"gb2312" ,#'generate-non-ascii-data "GBK")
          (#p"gb18030" ,#'generate-non-ascii-data "GB18030-BMP")
-         ;; (#p"iso2022cn" ,#'generate-non-ascii-data "")
-         )
+         (#p"iso2022cn" ,#'generate-from-snippet "ISO-2022-CN"))
       (#p"kr/"
          (#p"euckr" ,#'generate-non-ascii-data "EUC-KR")
          (#p"johab" ,#'generate-non-ascii-data "JOHAB")
-         ;; (#p"iso2022cn" ,#'generate-non-ascii-data "")
-         )
+         (#p"iso2022kr" ,#'generate-from-snippet "ISO-2022-KR"))
       (#p"ar/"
          (#p"iso8859-6" ,#'generate-non-ascii-data "ISO-8859-6")
          (#p"cp1256" ,#'generate-non-ascii-data "CP1256"))
