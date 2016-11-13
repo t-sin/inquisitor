@@ -28,7 +28,7 @@
 
 (subtest "detect-encoding"
   (subtest "for stream"
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input)
       (is-error (detect-encoding in :jp) 'error))
     (let ((s (drakma:http-request "http://cliki.net"
@@ -36,7 +36,7 @@
                                   :force-binary t)))
       (is-error (detect-encoding s :jp) 'error))
 
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (let ((pos (file-position in)))
@@ -44,11 +44,11 @@
         (is (file-position in) pos))))
 
   (subtest "for pathname"
-    (is (detect-encoding (get-test-data "dat/ascii.txt") :jp) :utf8)))
+    (is (detect-encoding (get-test-data "data/ascii/ascii.txt") :jp) :utf8)))
 
 (subtest "detect-end-of-line"
   (subtest "for stream"
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input)
       (is-error (detect-end-of-line in) 'error))
     (let ((s (drakma:http-request "http://cliki.net"
@@ -56,7 +56,7 @@
                                   :force-binary t)))
       (is-error (detect-end-of-line s) 'error))
 
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (let ((pos (file-position in)))
@@ -64,7 +64,7 @@
         (is (file-position in) pos))))
 
   (subtest "for pathname"
-    (is (detect-end-of-line (get-test-data "dat/ascii.txt"))
+    (is (detect-end-of-line (get-test-data "data/ascii/ascii.txt"))
         :lf)))
 
 (subtest "detect external-format --- from vector"
@@ -81,7 +81,7 @@
     (is-error (detect-external-format out :jp) 'error))
   (with-input-from-string (in "string")
     (is-error (detect-external-format in :jp) 'error))
-  (with-open-file (in (get-test-data "dat/ascii.txt")
+  (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                       :direction :input
                       :element-type '(unsigned-byte 8))
     (let ((pos (file-position in)))
@@ -90,8 +90,8 @@
       (is (file-position in) pos))))
 
 (subtest "detect external-format --- from pathname"
-  (is-error (detect-external-format "dat/ascii.txt" :jp) 'error)
-  (is (detect-external-format (get-test-data "dat/ascii.txt") :jp)
+  (is-error (detect-external-format "data/ascii/ascii.txt" :jp) 'error)
+  (is (detect-external-format (get-test-data "data/ascii/ascii.txt") :jp)
       (make-external-format :utf8 :lf)))
 
 
