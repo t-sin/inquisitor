@@ -46,7 +46,7 @@ exec ros -Q -- $0 "$@"
      :for integer :in integers
      :do (write-sequence (integer-to-bytes integer) stream)))
 
-(defun generate-non-ascii-data (stream encoding)
+(defun generate-from-hex (stream encoding)
   (let ((datapath (format nil "~alibiconv-~a/tests/~a.TXT"
                           +libiconv-extract-path+
                           +libiconv-version+
@@ -123,43 +123,43 @@ exec ros -Q -- $0 "$@"
          (#p"utf16" ,#'generate-from-snippet "UTF-16"))
       (#p"ja/"
          (#p"jis" ,#'generate-from-snippet "ISO-2022-JP")
-         (#p"eucjp" ,#'generate-non-ascii-data "EUC-JP")
-         (#p"sjis" ,#'generate-non-ascii-data "CP932"))
+         (#p"eucjp" ,#'generate-from-hex "EUC-JP")
+         (#p"sjis" ,#'generate-from-hex "CP932"))
       (#p"tw/"
-         (#p"big5" ,#'generate-non-ascii-data "BIG5")
-         (#p"euctw" ,#'generate-non-ascii-data "EUC-TW"))
+         (#p"big5" ,#'generate-from-hex "BIG5")
+         (#p"euctw" ,#'generate-from-hex "EUC-TW"))
       (#p"cn/"
-         (#p"gb2312" ,#'generate-non-ascii-data "GBK")
-         (#p"gb18030" ,#'generate-non-ascii-data "GB18030-BMP")
+         (#p"gb2312" ,#'generate-from-hex "GBK")
+         (#p"gb18030" ,#'generate-from-hex "GB18030-BMP")
          (#p"iso2022cn" ,#'generate-from-snippet "ISO-2022-CN"))
       (#p"kr/"
-         (#p"euckr" ,#'generate-non-ascii-data "EUC-KR")
-         (#p"johab" ,#'generate-non-ascii-data "JOHAB")
+         (#p"euckr" ,#'generate-from-hex "EUC-KR")
+         (#p"johab" ,#'generate-from-hex "JOHAB")
          (#p"iso2022kr" ,#'generate-from-snippet "ISO-2022-KR"))
       (#p"ar/"
-         (#p"iso8859-6" ,#'generate-non-ascii-data "ISO-8859-6")
-         (#p"cp1256" ,#'generate-non-ascii-data "CP1256"))
+         (#p"iso8859-6" ,#'generate-from-hex "ISO-8859-6")
+         (#p"cp1256" ,#'generate-from-hex "CP1256"))
       (#p"gr/"
-         (#p"iso8859-7" ,#'generate-non-ascii-data "ISO-8859-7")
-         (#p"cp1253" ,#'generate-non-ascii-data "CP1253"))
+         (#p"iso8859-7" ,#'generate-from-hex "ISO-8859-7")
+         (#p"cp1253" ,#'generate-from-hex "CP1253"))
       (#p"hw/"
-         (#p"iso8859-8" ,#'generate-non-ascii-data "ISO-8859-8")
-         (#p"cp1255" ,#'generate-non-ascii-data "CP1255"))
+         (#p"iso8859-8" ,#'generate-from-hex "ISO-8859-8")
+         (#p"cp1255" ,#'generate-from-hex "CP1255"))
       (#p"tr/"
-         (#p"iso8859-9" ,#'generate-non-ascii-data "ISO-8859-9")
-         (#p"cp1254" ,#'generate-non-ascii-data "CP1254"))
+         (#p"iso8859-9" ,#'generate-from-hex "ISO-8859-9")
+         (#p"cp1254" ,#'generate-from-hex "CP1254"))
       (#p"ru/"
-         (#p"iso8859-5" ,#'generate-non-ascii-data "ISO-8859-5")
-         (#p"koi8r" ,#'generate-non-ascii-data "KOI8-R")
-         (#p"koi8u" ,#'generate-non-ascii-data "KOI8-U")
-         (#p"cp866" ,#'generate-non-ascii-data "CP866")
-         (#p"cp1251" ,#'generate-non-ascii-data "CP1251"))
+         (#p"iso8859-5" ,#'generate-from-hex "ISO-8859-5")
+         (#p"koi8r" ,#'generate-from-hex "KOI8-R")
+         (#p"koi8u" ,#'generate-from-hex "KOI8-U")
+         (#p"cp866" ,#'generate-from-hex "CP866")
+         (#p"cp1251" ,#'generate-from-hex "CP1251"))
       (#p"pl/"
-         (#p"iso8859-2" ,#'generate-non-ascii-data "ISO-8859-2")
-         (#p"cp1250" ,#'generate-non-ascii-data "CP1250"))
+         (#p"iso8859-2" ,#'generate-from-hex "ISO-8859-2")
+         (#p"cp1250" ,#'generate-from-hex "CP1250"))
       (#p"bl/"
-         (#p"iso8859-13" ,#'generate-non-ascii-data "ISO-8859-13")
-         (#p"cp1257" ,#'generate-non-ascii-data "CP1257"))))
+         (#p"iso8859-13" ,#'generate-from-hex "ISO-8859-13")
+         (#p"cp1257" ,#'generate-from-hex "CP1257"))))
 
 (defvar +data-ext+ "txt")
 
