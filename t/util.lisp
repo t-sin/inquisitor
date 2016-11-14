@@ -45,13 +45,13 @@
       (ok (not (byte-input-stream-p out))))
     (with-input-from-string (in "string")
       (ok (not (byte-input-stream-p in))))
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input
                         :element-type 'character)
       (ok (not (byte-input-stream-p in)))))
 
   (subtest "return t"
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (ok (byte-input-stream-p in)))))
@@ -66,11 +66,11 @@
       (ok (not (file-position-changable-p s))))
 
   (subtest "return t"
-    (with-open-file (in (get-test-data "dat/empty.txt")
+    (with-open-file (in (get-test-data "data/ascii/empty.txt")
                         :direction :input)
       (ok (file-position-changable-p in)))
     
-    (with-open-file (in (get-test-data "dat/ascii.txt")
+    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
                         :direction :input)
       (let ((pos (file-position in)))
         (ok (file-position-changable-p in))

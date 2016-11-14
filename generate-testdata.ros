@@ -1,0 +1,215 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| This generates test datum for inquisitor.
+exec ros -Q -- $0 "$@"
+|#
+(defpackage :inquisitor.generate-testdata
+  (:use :cl))
+
+(ql:quickload '(:archive
+                :chipz
+                :dexador
+                :split-sequence)
+              :silent t)
+
+(in-package :inquisitor.generate-testdata)
+
+;;; ascii
+(defvar +ascii-data+ "Let it suffice now for me to repeat the classic dictum:~aThe Library is a sphere whose exact center is any one of its hexagons and~awhose circumference is inaccessible.")
+(defvar +eol-cr+ #\return)
+(defvar +eol-lf+ #\newline)
+(defvar +eol-crlf+ (format nil (format nil "~a~a" +eol-cr+ +eol-lf+)))
+(defvar +eol-lfcr+ (format nil (format nil "~a~a" +eol-lf+ +eol-cr+)))
+
+(defun generate-ascii-data (stream eol-string)
+  (let ((s (format nil +ascii-data+ eol-string eol-string)))
+    (loop
+       :for c :across s
+       :do (write-byte (char-code c) stream))))
+
+;;; non-ascii
+(defvar +libiconv-base-url+ "http://ftp.gnu.org/pub/gnu/libiconv/")
+(defvar +libiconv-version+ "1.14")
+(defvar +libiconv-extract-path+ #p"/tmp/")
+
+(defun integer-to-bytes (integer)
+  (loop
+     :for (q r) := (multiple-value-list (truncate integer (expt 2 8)))
+     :with bytes := nil
+     :do (setf integer q
+               bytes (cons r bytes))
+     :while (< 0 q)
+     :finally (return (nreverse bytes))))
+
+(defun write-integers-as-bytes (stream &rest integers)
+  (loop
+     :for integer :in integers
+     :do (write-sequence (integer-to-bytes integer) stream)))
+
+(defun generate-from-hex (stream encoding)
+  (let ((datapath (format nil "~alibiconv-~a/tests/~a.TXT"
+                          +libiconv-extract-path+
+                          +libiconv-version+
+                          encoding)))
+    (with-open-file (fin datapath :direction :input)
+      (loop
+         :for line := (read-line fin nil :eofp)
+         :until (eq line :eofp)
+         :for hex := (subseq (first (split-sequence:split-sequence #\tab line)) 2)
+         :do (write-integers-as-bytes stream (parse-integer hex :radix 16))))))
+
+(defun generate-from-snippet (stream encoding)
+  (let* ((datapath (format nil "~alibiconv-~a/tests/"
+                           +libiconv-extract-path+
+                           +libiconv-version+))
+         (files (remove-if-not (lambda (p) (and (null (pathname-type p))
+                                                (search (format nil "~a-" encoding)
+                                                        (pathname-name p))))
+                               (directory (make-pathname :name :wild
+                                                         :type nil
+                                                         :defaults datapath)))))
+    (loop
+       :for file :in files
+       :do (with-open-file (in file
+                               :direction :input
+                               :element-type '(unsigned-byte 8))
+             (let ((bytes (make-array 2048 :element-type '(unsigned-byte 8))))
+               (loop
+                :for reads := (read-sequence bytes in)
+                :until (zerop reads)
+                :do (write-sequence bytes stream :end reads))))
+       :do (write-sequence (make-array 2 :element-type '(unsigned-byte 8)
+                                       :initial-element (char-code #\linefeed))
+                           stream))))
+
+;; cf. and port of libiconv-1.14/tests/genutf8.c
+(defun generate-utf8 (stream)
+  (loop                               ; range 0x0000..0x007f
+     :for i1 := 0 :then (incf i1)
+     :while (< i1 #x80)
+     :do (write-integers-as-bytes stream i1))
+  (loop                               ; range 0x0080..0x07ff
+     :for i1 := 2 :then (incf i1)
+     :while (< i1 32)
+     :do (loop
+            :for i2 := 0 then (incf i2)
+            :while (< i2 64)
+            :do (write-integers-as-bytes stream (+ #xc0 i1) (+ #x80 i2))))
+  (loop                               ; range 0x0800..0xffff
+     :for i1 := 0 :then (incf i1)
+     :while (< i1 16)
+     :do (loop
+            :for i2 := (if (zerop i1) 32 0) then (incf i2)
+            :while (< i2 64)
+            :do (loop
+                   :for i3 := 0 :then (incf i3)
+                   :while (< i3 64)
+                   :do (write-integers-as-bytes stream (+ #xe0 i1) (+ #x80 i2) (+ #x80 i3))))))
+
+;;; generate
+(defvar +dir-spec+
+  `(#p"t/data/"
+      (#p"ascii/"
+         (#p"empty" ,(lambda (stream) nil))
+         (#p"ascii" ,#'generate-ascii-data " ")
+         (#p"ascii-cr" ,#'generate-ascii-data ,+eol-cr+)
+         (#p"ascii-lf" ,#'generate-ascii-data ,+eol-lf+)
+         (#p"ascii-crlf" ,#'generate-ascii-data ,+eol-crlf+)
+         (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))
+      (#p"unicode/"
+         (#p"utf8" ,#'generate-utf8)
+         (#p"ucs2le" ,#'generate-from-snippet "UCS-2LE")
+         (#p"ucs2be" ,#'generate-from-snippet "UCS-2BE")
+         (#p"utf16" ,#'generate-from-snippet "UTF-16"))
+      (#p"ja/"
+         (#p"jis" ,#'generate-from-snippet "ISO-2022-JP")
+         (#p"eucjp" ,#'generate-from-hex "EUC-JP")
+         (#p"sjis" ,#'generate-from-hex "CP932"))
+      (#p"tw/"
+         (#p"big5" ,#'generate-from-hex "BIG5")
+         (#p"euctw" ,#'generate-from-hex "EUC-TW"))
+      (#p"cn/"
+         (#p"gb2312" ,#'generate-from-hex "GBK")
+         (#p"gb18030" ,#'generate-from-hex "GB18030-BMP")
+         (#p"iso2022cn" ,#'generate-from-snippet "ISO-2022-CN"))
+      (#p"kr/"
+         (#p"euckr" ,#'generate-from-hex "EUC-KR")
+         (#p"johab" ,#'generate-from-hex "JOHAB")
+         (#p"iso2022kr" ,#'generate-from-snippet "ISO-2022-KR"))
+      (#p"ar/"
+         (#p"iso8859-6" ,#'generate-from-hex "ISO-8859-6")
+         (#p"cp1256" ,#'generate-from-hex "CP1256"))
+      (#p"gr/"
+         (#p"iso8859-7" ,#'generate-from-hex "ISO-8859-7")
+         (#p"cp1253" ,#'generate-from-hex "CP1253"))
+      (#p"hw/"
+         (#p"iso8859-8" ,#'generate-from-hex "ISO-8859-8")
+         (#p"cp1255" ,#'generate-from-hex "CP1255"))
+      (#p"tr/"
+         (#p"iso8859-9" ,#'generate-from-hex "ISO-8859-9")
+         (#p"cp1254" ,#'generate-from-hex "CP1254"))
+      (#p"ru/"
+         (#p"iso8859-5" ,#'generate-from-hex "ISO-8859-5")
+         (#p"koi8r" ,#'generate-from-hex "KOI8-R")
+         (#p"koi8u" ,#'generate-from-hex "KOI8-U")
+         (#p"cp866" ,#'generate-from-hex "CP866")
+         (#p"cp1251" ,#'generate-from-hex "CP1251"))
+      (#p"pl/"
+         (#p"iso8859-2" ,#'generate-from-hex "ISO-8859-2")
+         (#p"cp1250" ,#'generate-from-hex "CP1250"))
+      (#p"bl/"
+         (#p"iso8859-13" ,#'generate-from-hex "ISO-8859-13")
+         (#p"cp1257" ,#'generate-from-hex "CP1257"))))
+
+(defvar +data-ext+ "txt")
+
+(defun generate-data (spec here)
+  (when (cdr spec)
+    (let ((path (make-pathname :name (pathname-name (car spec))
+                               :directory (pathname-directory here)
+                               :type +data-ext+))
+          (generate-fn (cadr spec))
+          (args (cddr spec)))
+      (with-open-file (out path
+                           :direction :output
+                           :if-exists :supersede
+                           :element-type '(unsigned-byte 8))
+        (apply generate-fn out args)))))
+
+(defun generate-datum (dir-spec &optional (here #p"."))
+  (let ((spec (car dir-spec)))
+    (if (uiop:directory-pathname-p spec)
+        (loop
+           :for s :in (cdr dir-spec)
+           :with here := (merge-pathnames spec here)
+           :initially (ensure-directories-exist here)
+           :do (generate-datum s here))
+        (generate-data dir-spec here))))
+
+(defun get-libiconv (iconv-path)
+  (let* ((iconv-gz (dex:get (format nil "~alibiconv-~a.tar.gz"
+                                    +libiconv-base-url+
+                                    +libiconv-version+)
+                            :want-stream t))
+         (iconv-tar (chipz:make-decompressing-stream 'chipz:gzip iconv-gz))
+         (arch (archive:open-archive 'archive:tar-archive iconv-tar
+                                     :direction :input))
+         (root-dirname))
+    (ensure-directories-exist iconv-path)
+    (let ((*default-pathname-defaults* iconv-path))
+      (loop
+         :for entry := (archive:read-entry-from-archive arch)
+         :until (null entry)
+         :when (null root-dirname)
+         :do (setf root-dirname (archive:name entry))
+         :do (archive:extract-entry arch entry)))
+    root-dirname))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+
+  (let ((libiconv-dirname))
+    (setf libiconv-dirname (get-libiconv +libiconv-extract-path+))
+
+    (generate-datum +dir-spec+ #p".")))
+;;; vim: set ft=lisp lisp:

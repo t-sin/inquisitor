@@ -23,14 +23,14 @@
       (is (eol-guess-from-vector vec) eol))))
 
 
-(test-eol "dat/ja/utf8-cr.txt" :cr)
-(test-eol "dat/ja/utf8-crlf.txt" :crlf)
-(test-eol "dat/ja/utf8-lf.txt" :lf)
-(test-eol "dat/ascii.txt" :lf)
+(test-eol "data/ascii/ascii-cr.txt" :cr)
+(test-eol "data/ascii/ascii-crlf.txt" :crlf)
+(test-eol "data/ascii/ascii-lf.txt" :lf)
+(test-eol "data/ascii/ascii-lfcr.txt" :lf)
 
 (subtest "If file has no newline then return NIL"
-  (test-eol "dat/ascii-no-eol.txt" nil)
-  (test-eol "dat/empty.txt" nil))
+  (test-eol "data/ascii/ascii.txt" nil)
+  (test-eol "data/ascii/empty.txt" nil))
 
 
 (finalize)
