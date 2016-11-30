@@ -21,6 +21,7 @@
            :unicode-p
            :make-external-format
            :list-available-scheme
+           :name-on-impl
            :detect-encoding
            :detect-end-of-line
            :detect-external-format
