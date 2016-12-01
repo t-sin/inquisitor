@@ -9,6 +9,7 @@
                 :eol-available-p
                 :eol-guess-from-vector)
   (:import-from :inquisitor.names
+                :available-encodings
                 :name-on-impl)
   (:import-from :inquisitor.util
                 :with-byte-array
@@ -21,6 +22,7 @@
            :unicode-p
            :make-external-format
            :list-available-scheme
+           :available-encodings
            :name-on-impl
            :detect-encoding
            :detect-end-of-line
