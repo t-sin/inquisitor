@@ -1,0 +1,30 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| encoding / end-of-line detection for command-line
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp (ql:quickload '(:inquisitor) :silent t))
+
+(defpackage :ros.script.inquisitor.cli
+  (:use :cl))
+(in-package :ros.script.inquisitor.cli)
+
+(defun print-usage ()
+  (format t "~a~%" "Inquisitor - encoding detecter
+inq.ros [OPTIONS] SCHEME [PATH]
+
+DESCRIPTION:
+    inq.ros detect encoding or end-of-line type, from PATH, on SCHEME.
+    SCHEME is a set of languages e.g. Japanese. Not a programming language.
+
+OPTIONS:
+    --list    list available encodings.
+     --eol    detect type of end-of-line type.
+     --enc    detect encoding, because of symmetricity."))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (print-usage))
+;;; vim: set ft=lisp lisp:
