@@ -7,7 +7,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 14)
+(plan 15)
 
 (is (available-encodings)
       ;; unicode
@@ -54,6 +54,8 @@
       ;; baltic
       :iso-8859-13
       :cp1257))
+
+(is (available-eols) '(:lf :cr :crlf))
 
 (defvar +cannot-treat+ :cannot-treat)
 

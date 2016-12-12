@@ -2,6 +2,7 @@
 (defpackage inquisitor.names
   (:nicknames :inq.names)
   (:export :available-encodings
+           :available-eols
            :name-on-impl)
   (:use :cl))
 (in-package :inquisitor.names)
@@ -205,6 +206,12 @@
   (loop
      :for ((name . type) . impl-name) :in +names-on-impls+
      :unless (eq type :eol)
+     :collect name))
+
+(defun available-eols ()
+  (loop
+     :for ((name . type) . impl-name) :in +names-on-impls+
+     :when (eq type :eol)
      :collect name))
 
 (defun name-on-impl (name)

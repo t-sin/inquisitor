@@ -10,6 +10,7 @@
                 :eol-guess-from-vector)
   (:import-from :inquisitor.names
                 :available-encodings
+                :available-eols
                 :name-on-impl)
   (:import-from :inquisitor.util
                 :with-byte-array
@@ -23,6 +24,7 @@
            :make-external-format
            :list-available-scheme
            :available-encodings
+           :available-eols
            :name-on-impl
            :detect-encoding
            :detect-end-of-line
