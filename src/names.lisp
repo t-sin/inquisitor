@@ -3,7 +3,8 @@
   (:nicknames :inq.names)
   (:export :available-encodings
            :available-eols
-           :name-on-impl)
+           :name-on-impl
+           :unicode-p)
   (:use :cl))
 (in-package :inquisitor.names)
 
@@ -216,3 +217,10 @@
 
 (defun name-on-impl (name)
   (cdr (find-if (lambda (n) (eq name (caar n))) +names-on-impls+)))
+
+(defun unicode-p (encoding)
+  (member encoding
+          (loop
+             :for ((name . type) . impl-name) :in +names-on-impls+
+             :when (eq type :unicode)
+             :collect name)))

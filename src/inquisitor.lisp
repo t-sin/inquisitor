@@ -11,7 +11,8 @@
   (:import-from :inquisitor.names
                 :available-encodings
                 :available-eols
-                :name-on-impl)
+                :name-on-impl
+                :unicode-p)
   (:import-from :inquisitor.util
                 :with-byte-array
                 :byte-array-p
@@ -20,25 +21,18 @@
   (:import-from :metabang-bind
                 :bind)
   (:export :*detecting-buffer-size*
-           :unicode-p
            :make-external-format
            :list-available-scheme
            :available-encodings
            :available-eols
            :name-on-impl
+           :unicode-p
            :detect-encoding
            :detect-end-of-line
            :detect-external-format
            :detect-external-format-from-file))
 (in-package :inquisitor)
 
-
-(defun unicode-p (encoding)
-  (member encoding
-          (list :utf8  ;; workaround
-                :ucs-2le
-                :ucs-2be
-                :utf16)))
 
 (defun make-external-format (enc eol)
   (let ((enc-on-impl (name-on-impl enc))
