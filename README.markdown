@@ -150,7 +150,7 @@ In case of pathname (on CCL):
 * [Shiro Kawai](https://github.com/shirok) - original code of encoding detection for [Gauche](https://github.com/shirok/Gauche/tree/master/ext/charconv)
 * [Masayuki Onjo](http://lispuser.net/index) - [porting](http://lispuser.net/commonlisp/japanese.html#sec-2.1) from Gauche to Common Lisp
 * [zqwell](https://github.com/zqwell) - [porting](https://github.com/zqwell/guess) multilingual encoding detection from [libguess](https://github.com/kaniini/libguess)
-* gray (shinichi.tanaka45@gmail.com) - adding end-of-line detection and wrapping external-format
+* Shinichi Tanaka (shinichi.tanaka45@gmail.com) - adding end-of-line detection and wrapping external-format
 
 
 ## Copyright
@@ -158,7 +158,7 @@ In case of pathname (on CCL):
 Copyright (c) 2000-2007 Shiro Kawai (shiro@acm.org)  
 Copyright (c) 2007 Masayuki Onjo (onjo@lispuser.net)  
 Copyright (c) 2011 zqwell (zqwell@gmail.com)  
-Copyright (c) 2015 gray (shinichi.tanaka45@gmail.com)
+Copyright (c) 2015 Shinichi Tanaka (shinichi.tanaka45@gmail.com)
 
 
 ## License

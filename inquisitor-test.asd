@@ -1,6 +1,6 @@
 #|
   This file is a part of inquisitor project.
-  Copyright (c) 2015 gray (shinichi.tanaka45@gmail.com)
+  Copyright (c) 2015 Shinichi Tanaka (shinichi.tanaka45@gmail.com)
 |#
 
 (in-package :cl-user)
@@ -9,7 +9,7 @@
 (in-package :inquisitor-test-asd)
 
 (defsystem inquisitor-test
-  :author "gray"
+  :author "Shinichi Tanaka"
   :license "MIT"
   :depends-on (:inquisitor
                :babel
