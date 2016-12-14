@@ -7,7 +7,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 14)
+(plan 16)
 
 (is (available-encodings)
       ;; unicode
@@ -54,6 +54,8 @@
       ;; baltic
       :iso-8859-13
       :cp1257))
+
+(is (available-eols) '(:lf :cr :crlf))
 
 (defvar +cannot-treat+ :cannot-treat)
 
@@ -292,5 +294,15 @@
       #+sbcl +cannot-treat+
       #+ccl :dos
       #+abcl :crlf))
+
+(subtest "if specified encodings is unicode?"
+  (subtest "only unicode returns t"
+    (ok (unicode-p :utf8))
+    (ok (unicode-p :ucs-2le))
+    (ok (unicode-p :ucs-2be))
+    (ok (unicode-p :utf16)))
+  (subtest "other encodings return nil"
+    (is (unicode-p :cp932) nil)
+    (is (unicode-p :cp932----) nil)))
 
 (finalize)

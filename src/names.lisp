@@ -2,18 +2,11 @@
 (defpackage inquisitor.names
   (:nicknames :inq.names)
   (:export :available-encodings
-           :name-on-impl)
+           :available-eols
+           :name-on-impl
+           :unicode-p)
   (:use :cl))
 (in-package :inquisitor.names)
-
-
-(defun available-encodings ()
-  (loop :for name :in +names-on-impls+
-        :unless (eq (cdar name) :eol)
-        :collect (caar name)))
-
-(defun name-on-impl (name)
-  (cdr (find-if (lambda (n) (eq name (caar n))) +names-on-impls+)))
 
 
 (defvar +names-on-impls+
@@ -147,10 +140,10 @@
      #+clisp ,charset:iso-8859-5
      #-clisp :iso-8859-5)
     ((:koi8-r . :ru) .
-      #+clisp ,charset:koi8-r
-      #+sbcl :koi8-r
-      #+(or ecl ccl) :cannot-treat
-      #-(or clisp sbcl ecl ccl) :koi8-r)
+     #+clisp ,charset:koi8-r
+     #+sbcl :koi8-r
+     #+(or ecl ccl) :cannot-treat
+     #-(or clisp sbcl ecl ccl) :koi8-r)
     ((:koi8-u . :ru) .
      #+clisp ,charset:koi8-u
      #+(or ecl ccl) :cannot-treat
@@ -207,5 +200,27 @@
      ;; #+lispworks :crlf
      #+clisp :dos
      #+sbcl :cannot-treat
-    #+ccl :dos
-    #-(or clisp sbcl ccl) :crlf)))
+     #+ccl :dos
+     #-(or clisp sbcl ccl) :crlf)))
+
+(defun available-encodings ()
+  (loop
+     :for ((name . type) . impl-name) :in +names-on-impls+
+     :unless (eq type :eol)
+     :collect name))
+
+(defun available-eols ()
+  (loop
+     :for ((name . type) . impl-name) :in +names-on-impls+
+     :when (eq type :eol)
+     :collect name))
+
+(defun name-on-impl (name)
+  (cdr (find-if (lambda (n) (eq name (caar n))) +names-on-impls+)))
+
+(defun unicode-p (encoding)
+  (member encoding
+          (loop
+             :for ((name . type) . impl-name) :in +names-on-impls+
+             :when (eq type :unicode)
+             :collect name)))

@@ -1,0 +1,73 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#| encoding / end-of-line detection for command-line
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp (ql:quickload '(:inquisitor) :silent t))
+
+(defpackage :ros.script.inquisitor.cli
+  (:use :cl))
+(in-package :ros.script.inquisitor.cli)
+
+(defun print-usage ()
+  (format t "~a~%" "inquisitor - encoding detecter
+usage:
+       inq.ros SCHEME PATH
+       inq.ros eol PATH
+       inq.ros list TYPE
+
+DESCRIPTION:
+    inq.ros detect encoding or end-of-line type, from PATH, on SCHEME.
+    and also inq.ros list all encodings, end-of-line styles and SCHEME.
+    SCHEME is a language-world (e.g. Japanese). it's not Scheme.
+
+ENCODING DETECTION:
+    inq.ros detect encoding from a file designated PATH with SCHEME.
+    Sadly, inquisitor cannot detect encoding without SCHEME! So SCHEME
+    is used to narrow down candidate encodings. All available SCHEME
+    list shown the list command. See it for detail.
+
+    for example, show how to detect encoding in Japanese:
+
+        $ inq.ros jp /path/to/file.txt
+
+LISTING TYPE:
+    inq.ros list all available encodings, end-of-line styles or SCHEME.
+
+       enc    list available encodings.
+       eol    list available end-of-line types.
+    scheme    list available schema.
+
+"))
+
+
+(defun main (&rest argv)
+  (flet ((to-keyword (string)
+           (when string
+             (intern (string-upcase string) :keyword))))
+    (let ((available-schema (inq:list-available-scheme))
+          (command (to-keyword (nth 0 argv)))
+          (option (nth 1 argv)))
+      (if (null command)
+          (print-usage)
+          (cond ((eq command :list)
+                 (if option
+                     (format t "~{~a~%~}"
+                             (case (to-keyword option)
+                               (:scheme available-schema)
+                               (:enc (inq:available-encodings))
+                               (:eol (inq:available-eols))
+                               (otherwise (format t "error: unknown scheme; \"~a\"~%" option))))
+                     (format t "error: no type supplied. ~%")))
+                ((member command available-schema)
+                 (if (probe-file option)
+                     (format t "~a~%" (inq:detect-encoding (pathname option) command))
+                     (format t "error: no such file ~s~%" option)))
+                ((eq command :eol)
+                 (if (probe-file option)
+                     (format t "~a~%" (inq:detect-end-of-line (pathname option)))
+                     (format t "error: no such file ~s~%" option)))
+                (t (format t "error: unknown command;  \"~a\"~%" option)))))))
+;;; vim: set ft=lisp lisp:
