@@ -8,6 +8,8 @@
   (:import-from :inquisitor.eol
                 :eol-available-p
                 :eol-guess-from-vector)
+  (:import-from :inquisitor.external-format
+                :make-external-format)
   (:import-from :inquisitor.names
                 :available-encodings
                 :available-eols
@@ -32,20 +34,6 @@
            :detect-external-format
            :detect-external-format-from-file))
 (in-package :inquisitor)
-
-
-(defun make-external-format (enc eol)
-  (let ((enc-on-impl (name-on-impl enc))
-        (eol-on-impl (name-on-impl eol)))
-    #+clisp (ext:make-encoding :charset enc-on-impl
-                               :line-terminator eol-on-impl)
-    #+ecl `(,enc-on-impl ,eol-on-impl)
-    #+sbcl enc-on-impl
-    #+ccl (ccl:make-external-format :character-encoding enc-on-impl
-                                    :line-termination eol-on-impl)
-    #+abcl `(,enc-on-impl :eol-style ,eol-on-impl)
-    #-(or clisp ecl sbcl ccl abcl)
-    (error "your implementation is not supported.")))
 
 
 (defparameter *detecting-buffer-size* 1000)

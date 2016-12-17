@@ -2,7 +2,6 @@
 (defpackage inquisitor-test
   (:use :cl
         :inquisitor
-        :inquisitor.names
         :prove)
   (:import-from :inquisitor-test.util
                 :get-test-data)
@@ -14,17 +13,6 @@
 
 (plan 4)
 
-
-(subtest "make-external-format"
-  (let* ((utf8 (name-on-impl :utf8))
-         (lf (name-on-impl :lf)))
-    (is (make-external-format :utf8 :lf)
-        #+clisp (ext:make-encoding :charset utf8 :line-terminator lf)
-        #+ecl (list utf8 lf)
-        #+sbcl utf8
-        #+ccl (ccl:make-external-format :character-encoding utf8
-                                        :line-termination lf)
-        #+abcl (list utf8 :eol-style lf))))
 
 (subtest "detect-encoding"
   (subtest "for stream"

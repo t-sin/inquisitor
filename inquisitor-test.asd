@@ -22,6 +22,7 @@
                  (:test-file "util" :depends-on ("test-util"))
                  (:test-file "eol" :depends-on ("test-util"))
                  (:test-file "encoding" :depends-on ("test-util"))
+                 (:test-file "external-format")
                  (:test-file "inquisitor" :depends-on ("test-util")))))
 
   :defsystem-depends-on (:prove-asdf)

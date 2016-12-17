@@ -30,7 +30,8 @@
                    (:file "guess" :depends-on ("dfa" "table"))))
                  (:file "eol")
                  (:file "names")
+                 (:file "external-format" :depends-on ("names"))
                  (:file "util")
-                 (:file "inquisitor" :depends-on ("util")))))
+                 (:file "inquisitor" :depends-on ("util" "external-format")))))
   :description "Encoding/end-of-line detecter and of external-format wrapper for Common Lisp"
   :in-order-to ((test-op (test-op inquisitor-test))))
