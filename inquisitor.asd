@@ -32,6 +32,7 @@
                  (:file "names")
                  (:file "external-format" :depends-on ("names"))
                  (:file "util")
-                 (:file "inquisitor" :depends-on ("util" "external-format")))))
+                 (:file "inquisitor"
+                  :depends-on ("encoding" "eol" "names" "external-format" "util")))))
   :description "Encoding/end-of-line detecter and of external-format wrapper for Common Lisp"
   :in-order-to ((test-op (test-op inquisitor-test))))
