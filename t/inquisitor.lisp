@@ -11,7 +11,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 4)
+(plan 5)
 
 
 (subtest "detect-encoding"
