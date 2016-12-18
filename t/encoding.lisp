@@ -102,9 +102,10 @@
   (test-enc "data/ascii/empty.txt" :hw :utf8)
   (test-enc "data/ascii/ascii.txt" :hw :utf8)
 
-  (diag "iso8859-8 does not has vowels (called 'nikud')")
   (test-enc "data/hw/iso8859-8.txt" :hw :iso-8859-8)
   (test-enc "data/hw/cp1255.txt" :hw :cp1255)
+
+  (diag "*TODO!* iso8859-8 does not has vowels (called 'nikud'), thus that case must be added.")
 
   (test-enc "data/unicode/utf8.txt" :hw :utf8))
 
