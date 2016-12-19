@@ -39,29 +39,29 @@ CL-USER> (ql:quickload :inquisitor)
 
 ## Usage
 
-### Detecting encoding
+### Encoding detection
 
-To detect encoding, use `(inquisitor:detect-encoding stream scheme)`.
+To detect encoding from stream, use `(inq:detect-encoding stream scheme)`.
 About `scheme`, see `Encoding scheme`.
 
 for example:
 
 ```lisp
-(with-open-file (in "/path/to/utf8-lf.ja"
-                 :direction :input
-                 :element-type '(unsigned-byte 8))
-  (inquisitor:detect-encoding in :jp))
-; => :UTF8
+CL-USER> (with-open-file (in #P"t/data/unicode/utf8.txt"
+                          :direction :input
+                          :element-type '(unsigned-byte 8))
+           (inq:detect-encoding in :jp))
+:UTF8
 ```
 
-You can see the list of available encodings with `inquititor.names:available-encodings`.
+You can see the list of available encodings:
 
 ```lisp
-(inquisitor.names:available-encodings)
-; => (:UTF8 :UCS-2LE :UCS-2BE :UTF16 :ISO-2022-JP :EUC-JP :CP932 :BIG5 :ISO-2022-TW
-;     :GB2312 :GB18030 :ISO-2022-CN :EUC-KR :JOHAB :ISO-2022-KR :ISO-8859-6 :CP1256
-;     :ISO-8859-7 :CP1253 :ISO-8859-8 :CP1255 :ISO-8859-9 :CP1254 :ISO-8859-5
-;     :KOI8-R :KOI8-U :CP866 :CP1251 :ISO-8859-2 :CP1250 :ISO-8859-13 :CP1257)
+CL-USER> (inq:available-encodings)
+(:UTF8 :UCS-2LE :UCS-2BE :UTF16 :ISO-2022-JP :EUC-JP :CP932 :BIG5 :ISO-2022-TW
+ :GB2312 :GB18030 :ISO-2022-CN :EUC-KR :JOHAB :ISO-2022-KR :ISO-8859-6 :CP1256
+ :ISO-8859-7 :CP1253 :ISO-8859-8 :CP1255 :ISO-8859-9 :CP1254 :ISO-8859-5
+ :KOI8-R :KOI8-U :CP866 :CP1251 :ISO-8859-2 :CP1250 :ISO-8859-13 :CP1257)
 ```
 
 #### Encoding scheme
