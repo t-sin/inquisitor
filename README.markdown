@@ -64,22 +64,30 @@ CL-USER> (inq:available-encodings)
  :KOI8-R :KOI8-U :CP866 :CP1251 :ISO-8859-2 :CP1250 :ISO-8859-13 :CP1257)
 ```
 
-#### Encoding scheme
+#### `Scheme`
 
-Scheme is a language speaking-world to detect encoding.
-Supported scheme is as follows:
+`Scheme` is a hint to detect encoding.
 
-* :jp -- japanese
-* :tw -- taiwanese
-* :cn -- chinese
-* :kr -- korean
-* :ru -- russian
-* :ar -- arabic
-* :tr -- turkish
-* :gr -- greek
-* :hw -- hebrew
-* :pl -- polish
-* :bl -- baltic
+It's mostly impossible to detect encoding universally, because there are two encoding such that use same byte sequences to represent other characters.
+So, limitting target encodings has benefit to encoding detection.
+
+Here, in inquisitor, **languages** are used to limit the encodings.
+Where **languages** are, roughly speaking, writing systems used in anywhere arround the world.
+Fixing language is equivalent to fixing possible characters. Becaus of which, encoding detection be slightly eazy.
+
+Supported scheme (languages) is as follows:
+
+- jp: japanese
+- tw: taiwanese
+- cn: chinese
+- kr: korean
+- ru: russian
+- ar: arabic
+- tr: turkish
+- gr: greek
+- hw: hebrew
+- pl: polish
+- bl: baltic
 
 
 ### Detecting end-of-line type
