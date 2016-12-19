@@ -4,7 +4,7 @@
 |#
 
 #|
-  Encoding/end-of-line detecter and wrapper of external-format for Common Lisp
+  Encoding/end-of-line detection and external-format abstraction for Common Lisp
 
   Author: Shinichi Tanaka (shinichi.tanaka45@gmail.com)
 |#
@@ -34,5 +34,5 @@
                  (:file "util")
                  (:file "inquisitor"
                   :depends-on ("encoding" "eol" "names" "external-format" "util")))))
-  :description "Encoding/end-of-line detecter and of external-format wrapper for Common Lisp"
+  :description "Encoding/end-of-line detection and of external-format abstraction for Common Lisp"
   :in-order-to ((test-op (test-op inquisitor-test))))

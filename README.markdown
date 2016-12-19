@@ -5,7 +5,7 @@
 [![Circle CI](https://circleci.com/gh/t-sin/inquisitor.svg?style=svg)](https://circleci.com/gh/t-sin/inquisitor)
 [![Coverage Status](https://coveralls.io/repos/t-sin/inquisitor/badge.svg?branch=master&service=github)](https://coveralls.io/github/t-sin/inquisitor?branch=master)
 
-Encoding/end-of-line detecter and wrapper of external-format for Common Lisp.
+Encoding/end-of-line detection and external-format abstraction for Common Lisp.
 
 
 > The Library is a sphere whose exact center is any one of its hexagons and whose circumference is inaccessible.
