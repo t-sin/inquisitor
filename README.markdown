@@ -30,9 +30,11 @@ Encoding/end-of-line detection and external-format abstraction for Common Lisp.
 
 ## Installation
 
-Put in ASDF-path and type your REPL:
+Get and install via quicklisp:
 
-    (require :inquisitor)
+```
+CL-USER> (ql:quickload :inquisitor)
+```
 
 
 ## Usage
