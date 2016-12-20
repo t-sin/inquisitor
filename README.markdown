@@ -42,6 +42,7 @@ CL-USER> (ql:quickload :inquisitor)
 ### Encoding detection
 
 To detect encoding from stream, use `(inq:detect-encoding stream scheme)`.
+This returns **implementation independent** encoding name.
 About `scheme`, see `Encoding scheme`.
 
 for example:
@@ -93,6 +94,7 @@ Supported scheme (languages) is as follows:
 ### End-of-line type detection
 
 If you want to know end-of-line (line break) type, use `(inq:detect-end-of-line)`.
+This returns **implementation independent** end-of-line name.
 
 ```Lisp
 CL-USER> (with-open-file (in "t/data/ascii/ascii-crlf.txt"
@@ -103,15 +105,18 @@ CL-USER> (with-open-file (in "t/data/ascii/ascii-crlf.txt"
 :CRLF
 ```
 
-### Getting name on your implementation
+### Names on each implementation
+
+If you want to know implementation dependent name of encodings or eol type, use `(inq:name-on-impl)`.
+Returned value can be used as external-format, or its part.
 
 ```lisp
-(inquisitor.names:name-on-impl :cp932)
-; => #<ENCODING "CP932" :UNIX>  ; on CLISP
-; => :WINDOWS-CP932  ; on ECL
-; => :SHIFT_JIS  ; on SBCL
-; => :WINDOWS-31J  ; on CCL
-; => :|X-MS932_0213|  ; on ABCL
+CL-USER> (inq:name-on-impl :cp932)
+#<ENCODING "CP932" :UNIX>  ; on CLISP
+:WINDOWS-CP932  ; on ECL
+:SHIFT_JIS  ; on SBCL
+:WINDOWS-31J  ; on CCL
+:|X-MS932_0213|  ; on ABCL
 ```
 
 #### If you want to know eol is available on your implementation
