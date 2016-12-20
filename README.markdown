@@ -64,9 +64,9 @@ CL-USER> (inq:available-encodings)
  :KOI8-R :KOI8-U :CP866 :CP1251 :ISO-8859-2 :CP1250 :ISO-8859-13 :CP1257)
 ```
 
-#### `Scheme`
+#### Encoding scheme
 
-`Scheme` is a hint to detect encoding.
+Encoding scheme is a hint to detect encoding.
 
 It's mostly impossible to detect encoding universally, because there are two encoding such that use same byte sequences to represent other characters.
 So, limitting target encodings has benefit to encoding detection.
@@ -81,13 +81,13 @@ Supported scheme (languages) is as follows:
 - tw: taiwanese
 - cn: chinese
 - kr: korean
-- ru: russian
-- ar: arabic
-- tr: turkish
-- gr: greek
-- hw: hebrew
-- pl: polish
-- bl: baltic
+- ru: russian (latin-5)
+- ar: arabic (latin-6)
+- tr: turkish (latin-9)
+- gr: greek (latin-7)
+- hw: hebrew (latin-8)
+- pl: polish (latin-2)
+- bl: baltic (latin-7)
 
 
 ### Detecting end-of-line type
