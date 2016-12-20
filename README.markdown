@@ -90,14 +90,17 @@ Supported scheme (languages) is as follows:
 - bl: baltic (latin-7)
 
 
-### Detecting end-of-line type
+### End-of-line type detection
 
-```lisp
-(with-open-file (in "/path/to/utf8-lf.ja"
- :direction :input
- :element-type '(unsigned-byte 8))
-  (inquisitor:detect-end-of-line in))
-; => :LF
+If you want to know end-of-line (line break) type, use `(inq:detect-end-of-line)`.
+
+```Lisp
+CL-USER> (with-open-file (in "t/data/ascii/ascii-crlf.txt"
+                             :direction :input
+                             :element-type '(unsigned-byte 8))
+           (inquisitor:detect-end-of-line in))
+
+:CRLF
 ```
 
 ### Getting name on your implementation
