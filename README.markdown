@@ -1,4 +1,5 @@
 # Inquisitor
+
 [![Quicklisp](http://quickdocs.org/badge/inquisitor.svg)](http://quickdocs.org/inquisitor/)
 
 [![Build Status](https://travis-ci.org/t-sin/inquisitor.svg)](https://travis-ci.org/t-sin/inquisitor)
@@ -154,33 +155,40 @@ CL-USER> (let* ((file #P"t/data/ja/sjis.txt")
 #<EXTERNAL-FORMAT :WINDOWS-31J/:UNIX #x302001C574CD>
 ```
 
-#### Auto detecting and making external-format, from vector, stream and pathname
+#### External-format detection
 
-In case of vector (on CCL):
+Inquisitor provides external-format detection method.
+It detects encoding and eol style, then make external-format from these.
+It can use with vector, byte stream and pathname.
+
+Let's see examples with CCL.
+
+
+##### From vector
 
 ```lisp
-(inquisitor:detect-external-format
-  (encode-string-to-octets "公的な捜索係、調査官がいる。
+CL-USER> (inq:detect-external-format
+          (encode-string-to-octets "公的な捜索係、調査官がいる。
 わたしは彼らが任務を遂行しているところを見た。")
-  :jp)
-; => #<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+          :jp)
+#<EXTERNAL-FORMAT :UTF-8/:UNIX #x30200046719D>
 ```
 
-In case of stream (on CCL):
+##### From stream
 
 ```lisp
-(with-open-file (in "/path/to/utf8-lf.ja"
- :direction :input
- :element-type '(unsigned-byte 8))
-   (inquisitor:detect-external-format in :jp)
-; => #<EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+CL-USER> (with-open-file (in "t/data/unicode/utf8.txt"
+                             :direction :input
+                             :element-type '(unsigned-byte 8))
+           (inq:detect-external-format in :jp))
+#<EXTERNAL-FORMAT :UTF-8/:UNIX #x30200046719D>
 ```
 
-In case of pathname (on CCL):
+##### From pathname
 
 ```lisp
-(inquisitor:detect-external-format #P"/path/to/utf8-lf.ja" :jp)
-; =># <EXTERNAL-FORMAT :UTF-8/:UNIX #xxxxxxxxxx>
+CL-USER> (inq:detect-external-format #P"t/data/unicode/utf8.txt" :jp)
+#<EXTERNAL-FORMAT :UTF-8/:UNIX #x30200046719D>
 ```
 
 ## Author
