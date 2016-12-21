@@ -25,6 +25,7 @@
   (:export :*detecting-buffer-size*
            :make-external-format
            :list-available-scheme
+           :eol-available-p
            :available-encodings
            :available-eols
            :name-on-impl
