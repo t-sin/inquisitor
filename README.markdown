@@ -93,7 +93,7 @@ Supported scheme (languages) is as follows:
 
 ### End-of-line type detection
 
-If you want to know end-of-line (line break) type, use `(inq:detect-end-of-line)`.
+If you want to know end-of-line (line break) type, use `(inq:detect-end-of-line stream)`.
 This returns **implementation independent** end-of-line name.
 
 ```Lisp
@@ -107,7 +107,7 @@ CL-USER> (with-open-file (in "t/data/ascii/ascii-crlf.txt"
 
 ### Names on each implementation
 
-If you want to know implementation dependent name of encodings or eol type, use `(inq:name-on-impl)`.
+If you want to know implementation dependent name of encodings or eol type, use `(inq:name-on-impl name)`.
 Returned value can be used as external-format, or its part.
 
 ```lisp
@@ -119,19 +119,39 @@ CL-USER> (inq:name-on-impl :cp932)
 :|X-MS932_0213|  ; on ABCL
 ```
 
-#### If you want to know eol is available on your implementation
+#### Eol
 
-Use `inquisitor.eol:eol-available-p`.
-
-
-### Making external-format implementation independently
+If you want to know eol is available on your implementation, use `(inq:eol-available-p)`.
 
 ```lisp
-(inquisitor:make-external-format
-  :utf8 ; implementation independent name of UTF-8
-  :lf) ; implementation independent name of LF
-; => :UTF-8  ; on SBCL
-; => #<EXTERNAL-FORMAT :CP932/:DOS #xxxxxxxxxxx>  ; on CCL
+CL-USER> (inq:eol-available-p)
+NIL  ; on SBCL
+```
+
+### Make external-format
+
+To make external-format from impl independent names, use `(inq:make-external-format enc eol)`.
+
+In SBCL and CCL, same code returns different value.
+
+On SBCL:
+
+```lisp
+CL-USER> (let* ((file #P"t/data/ja/sjis.txt")
+                (enc (inq:detect-encoding file :jp))
+                (eol (inq:detect-end-of-line file)))
+           (inq:make-external-format enc eol))
+:SHIFT_JIS
+```
+
+On CCL:
+
+```lisp
+CL-USER> (let* ((file #P"t/data/ja/sjis.txt")
+                (enc (inq:detect-encoding file :jp))
+                (eol (inq:detect-end-of-line file)))
+           (inq:make-external-format enc eol))
+#<EXTERNAL-FORMAT :WINDOWS-31J/:UNIX #x302001C574CD>
 ```
 
 #### Auto detecting and making external-format, from vector, stream and pathname
