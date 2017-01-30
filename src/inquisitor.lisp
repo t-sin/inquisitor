@@ -11,8 +11,8 @@
   (:import-from :inquisitor.external-format
                 :make-external-format)
   (:import-from :inquisitor.names
-                :available-encodings
-                :available-eols
+                :+available-encodings+
+                :+available-eols+
                 :dependent-name
                 :independent-name
                 :unicode-p)
@@ -27,8 +27,8 @@
            :make-external-format
            :list-available-scheme
            :eol-available-p
-           :available-encodings
-           :available-eols
+           :+available-encodings+
+           :+available-eols+
            :independent-name
            :dependent-name
            :unicode-p

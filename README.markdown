@@ -59,7 +59,7 @@ CL-USER> (with-open-file (in #P"t/data/unicode/utf8.txt"
 You can see the list of available encodings:
 
 ```lisp
-CL-USER> (inq:available-encodings)
+CL-USER> inq:+available-encodings+
 (:UTF8 :UCS-2LE :UCS-2BE :UTF16 :ISO-2022-JP :EUC-JP :CP932 :BIG5 :ISO-2022-TW
  :GB2312 :GB18030 :ISO-2022-CN :EUC-KR :JOHAB :ISO-2022-KR :ISO-8859-6 :CP1256
  :ISO-8859-7 :CP1253 :ISO-8859-8 :CP1255 :ISO-8859-9 :CP1254 :ISO-8859-5

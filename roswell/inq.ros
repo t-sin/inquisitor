@@ -57,8 +57,8 @@ LISTING TYPE:
                      (format t "~{~a~%~}"
                              (case (to-keyword option)
                                (:scheme available-schema)
-                               (:enc (inq:available-encodings))
-                               (:eol (inq:available-eols))
+                               (:enc inq:+available-encodings+)
+                               (:eol inq:+available-eols+)
                                (otherwise (format t "error: unknown scheme; \"~a\"~%" option))))
                      (format t "error: no type supplied. ~%")))
                 ((member command available-schema)

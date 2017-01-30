@@ -1,8 +1,8 @@
 (in-package :cl-user)
 (defpackage inquisitor.names
   (:nicknames :inq.names)
-  (:export :available-encodings
-           :available-eols
+  (:export :+available-encodings+
+           :+available-eols+
            :dependent-name
            :independent-name
            :unicode-p)
@@ -204,13 +204,13 @@
      #+ccl :dos
      #-(or clisp sbcl ccl) :crlf)))
 
-(defun available-encodings ()
+(defvar +available-encodings+
   (loop
      :for ((name . type) . impl-name) :in +name-mapping+
      :unless (eq type :eol)
      :collect name))
 
-(defun available-eols ()
+(defvar +available-eols+
   (loop
      :for ((name . type) . impl-name) :in +name-mapping+
      :when (eq type :eol)

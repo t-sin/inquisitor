@@ -9,7 +9,7 @@
 
 (plan 16)
 
-(is (available-encodings)
+(is +available-encodings+
       ;; unicode
     '(:utf8
       :ucs-2le
