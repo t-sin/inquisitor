@@ -14,7 +14,7 @@
                 :available-encodings
                 :available-eols
                 :dependent-name
-                :name-on-impl
+                :independent-name
                 :unicode-p)
   (:import-from :inquisitor.util
                 :with-byte-array
@@ -29,7 +29,7 @@
            :eol-available-p
            :available-encodings
            :available-eols
-           :name-on-impl
+           :independent-name
            :dependent-name
            :unicode-p
            :detect-encoding

@@ -10,8 +10,8 @@
 
 
 (subtest "make-external-format"
-  (let* ((utf8 (name-on-impl :utf8))
-         (lf (name-on-impl :lf)))
+  (let* ((utf8 (independent-name :utf8))
+         (lf (independent-name :lf)))
     (declare (ignorable lf))
     (is (make-external-format :utf8 :lf)
         #+clisp (ext:make-encoding :charset utf8 :line-terminator lf)

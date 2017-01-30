@@ -4,7 +4,7 @@
   (:export :available-encodings
            :available-eols
            :dependent-name
-           :name-on-impl
+           :independent-name
            :unicode-p)
   (:use :cl))
 (in-package :inquisitor.names)
@@ -216,8 +216,8 @@
      :when (eq type :eol)
      :collect name))
 
-(defun name-on-impl (name)
-  (cdr (find-if (lambda (n) (eq name (caar n))) +names-on-impls+)))
+(defun independent-name (dependent-name)
+  (cdr (find-if (lambda (n) (eq dependent-name (caar n))) +names-on-impls+)))
 
 (defun dependent-name (independent-name)
   (caar (find-if (lambda (n) (eq independent-name (cdr n))) +names-on-impls+)))

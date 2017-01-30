@@ -3,13 +3,13 @@
   (:use :cl)
   (:export :make-external-format)
   (:import-from :inquisitor.names
-                :name-on-impl))
+                :independent-name))
 (in-package :inquisitor.external-format)
 
 
 (defun make-external-format (enc eol)
-  (let ((enc-on-impl (name-on-impl enc))
-        (eol-on-impl (name-on-impl eol)))
+  (let ((enc-on-impl (independent-name enc))
+        (eol-on-impl (independent-name eol)))
     #+clisp (ext:make-encoding :charset enc-on-impl
                                :line-terminator eol-on-impl)
     #+ecl `(,enc-on-impl ,eol-on-impl)
