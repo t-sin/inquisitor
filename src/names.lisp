@@ -10,7 +10,7 @@
 (in-package :inquisitor.names)
 
 
-(defvar +names-on-impls+
+(defvar +name-mapping++
   `(;;; unicode
     ((:utf8 . :unicode) .
      #+clisp ,charset:utf-8
@@ -206,25 +206,25 @@
 
 (defun available-encodings ()
   (loop
-     :for ((name . type) . impl-name) :in +names-on-impls+
+     :for ((name . type) . impl-name) :in +name-mapping++
      :unless (eq type :eol)
      :collect name))
 
 (defun available-eols ()
   (loop
-     :for ((name . type) . impl-name) :in +names-on-impls+
+     :for ((name . type) . impl-name) :in +name-mapping++
      :when (eq type :eol)
      :collect name))
 
 (defun independent-name (dependent-name)
-  (cdr (find-if (lambda (n) (eq dependent-name (caar n))) +names-on-impls+)))
+  (cdr (find-if (lambda (n) (eq dependent-name (caar n))) +name-mapping++)))
 
 (defun dependent-name (independent-name)
-  (caar (find-if (lambda (n) (eq independent-name (cdr n))) +names-on-impls+)))
+  (caar (find-if (lambda (n) (eq independent-name (cdr n))) +name-mapping++)))
 
 (defun unicode-p (encoding)
   (member encoding
           (loop
-             :for ((name . type) . impl-name) :in +names-on-impls+
+             :for ((name . type) . impl-name) :in +name-mapping++
              :when (eq type :unicode)
              :collect name)))
