@@ -13,6 +13,7 @@
   (:import-from :inquisitor.names
                 :available-encodings
                 :available-eols
+                :dependent-name
                 :name-on-impl
                 :unicode-p)
   (:import-from :inquisitor.util
@@ -29,6 +30,7 @@
            :available-encodings
            :available-eols
            :name-on-impl
+           :dependent-name
            :unicode-p
            :detect-encoding
            :detect-end-of-line

@@ -3,6 +3,7 @@
   (:nicknames :inq.names)
   (:export :available-encodings
            :available-eols
+           :dependent-name
            :name-on-impl
            :unicode-p)
   (:use :cl))
@@ -217,6 +218,9 @@
 
 (defun name-on-impl (name)
   (cdr (find-if (lambda (n) (eq name (caar n))) +names-on-impls+)))
+
+(defun dependent-name (independent-name)
+  (caar (find-if (lambda (n) (eq independent-name (cdr n))) +names-on-impls+)))
 
 (defun unicode-p (encoding)
   (member encoding
