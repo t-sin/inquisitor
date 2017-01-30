@@ -106,9 +106,9 @@ CL-USER> (with-open-file (in "t/data/ascii/ascii-crlf.txt"
 :CRLF
 ```
 
-### Names on each implementation
+### Implementation dependent/independent names
 
-If you want to know implementation dependent name of encodings or eol type, use `(inq:independent-name name)`.
+If you want to know implementation dependent name of encodings or eol type, use `(inq:independent-name dependent-name)`.
 Returned value can be used as external-format, or its part.
 
 ```lisp
@@ -119,6 +119,9 @@ CL-USER> (inq:independent-name :cp932)
 :WINDOWS-31J  ; on CCL
 :|X-MS932_0213|  ; on ABCL
 ```
+
+If you want to know implementation independent name of encodings or eol type, use `(inq:dependent-name independent-name)`.
+
 
 #### Eol
 
