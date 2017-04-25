@@ -12,7 +12,7 @@
 
 (defvar +name-mapping+
   `(;;; unicode
-    ((:utf8 . :unicode) .
+    ((:utf-8 . :unicode) .
      #+clisp ,charset:utf-8
      #-clisp :utf-8)
     ((:ucs-2le . :unicode) .
@@ -21,7 +21,7 @@
     ((:ucs-2be . :unicode) .
      #+clisp ,charset:unicode-16-big-endian
      #-clisp :utf-16be)
-    ((:utf16 . :unicode) .
+    ((:utf-16 . :unicode) .
      #+clisp ,charset:utf-16
      #+ecl :utf-16
      #+ccl :utf-16

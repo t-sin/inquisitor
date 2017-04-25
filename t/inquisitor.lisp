@@ -28,11 +28,11 @@
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (let ((pos (file-position in)))
-        (is (detect-encoding in :jp) :utf8)
+        (is (detect-encoding in :jp) :utf-8)
         (is (file-position in) pos))))
 
   (subtest "for pathname"
-    (is (detect-encoding (get-test-data "data/ascii/ascii-lf.txt") :jp) :utf8)))
+    (is (detect-encoding (get-test-data "data/ascii/ascii-lf.txt") :jp) :utf-8)))
 
 (subtest "detect-end-of-line"
   (subtest "for stream"
@@ -62,7 +62,7 @@
   (is-error (detect-external-format "" :jp) 'error)
   (let ((str (string-to-octets "string")))
     (is (detect-external-format str :jp)
-        (make-external-format :utf8 :lf))))
+        (make-external-format :utf-8 :lf))))
 
 (subtest "detect external-format --- from stream"
   (with-output-to-string (out)
@@ -74,13 +74,13 @@
                       :element-type '(unsigned-byte 8))
     (let ((pos (file-position in)))
       (is (detect-external-format in :jp)
-          (make-external-format :utf8 :lf))
+          (make-external-format :utf-8 :lf))
       (is (file-position in) pos))))
 
 (subtest "detect external-format --- from pathname"
   (is-error (detect-external-format "data/ascii/ascii-lf.txt" :jp) 'error)
   (is (detect-external-format (get-test-data "data/ascii/ascii-lf.txt") :jp)
-      (make-external-format :utf8 :lf)))
+      (make-external-format :utf-8 :lf)))
 
 
 (finalize)
