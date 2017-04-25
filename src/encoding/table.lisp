@@ -93,7 +93,7 @@
 ;;; UTF-8
 ;;;
 
-  (define-dfa utf8
+  (define-dfa utf-8
     (init
      (((#x00 #x7f)) init         1.0)
      (((#xc2 #xdf)) 1byte_more   1.0)
@@ -153,7 +153,7 @@
 ;;;
 ;;; UTF-16
 ;;;
-  (define-dfa utf16
+  (define-dfa utf-16
     (init
      ((#xfe) bom-be 1.0)
      ((#xff) bom-le 1.0))
