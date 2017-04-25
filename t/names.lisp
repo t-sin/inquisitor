@@ -11,10 +11,10 @@
 
 (is +available-encodings+
       ;; unicode
-    '(:utf8
+    '(:utf-8
       :ucs-2le
       :ucs-2be
-      :utf16
+      :utf-16
       ;; japanese
       :iso-2022-jp
       :euc-jp
@@ -60,7 +60,7 @@
 (defvar +cannot-treat+ :cannot-treat)
 
 (subtest "unicode"
-  (is (independent-name :utf8)
+  (is (independent-name :utf-8)
       #+clisp charset:utf-8
       #+ecl :utf-8
       #+sbcl :utf-8
@@ -78,7 +78,7 @@
       #+sbcl :utf-16be
       #+ccl :utf-16be
       #+abcl :utf-16be)
-  (is (independent-name :utf16)
+  (is (independent-name :utf-16)
       #+clisp charset:utf-16
       #+ecl :utf-16  ;; = :ucs-2
       #+sbcl +cannot-treat+
@@ -297,10 +297,10 @@
 
 (subtest "if specified encodings is unicode?"
   (subtest "only unicode returns t"
-    (ok (unicode-p :utf8))
+    (ok (unicode-p :utf-8))
     (ok (unicode-p :ucs-2le))
     (ok (unicode-p :ucs-2be))
-    (ok (unicode-p :utf16)))
+    (ok (unicode-p :utf-16)))
   (subtest "other encodings return nil"
     (is (unicode-p :cp932) nil)
     (is (unicode-p :cp932) nil)))

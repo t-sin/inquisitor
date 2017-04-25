@@ -10,16 +10,16 @@
 
 
 (subtest "make-external-format"
-  (let* ((utf8 (independent-name :utf8))
+  (let* ((utf-8 (independent-name :utf-8))
          (lf (independent-name :lf)))
     (declare (ignorable lf))
-    (is (make-external-format :utf8 :lf)
-        #+clisp (ext:make-encoding :charset utf8 :line-terminator lf)
-        #+ecl (list utf8 lf)
-        #+sbcl utf8
-        #+ccl (ccl:make-external-format :character-encoding utf8
+    (is (make-external-format :utf-8 :lf)
+        #+clisp (ext:make-encoding :charset utf-8 :line-terminator lf)
+        #+ecl (list utf-8 lf)
+        #+sbcl utf-8
+        #+ccl (ccl:make-external-format :character-encoding utf-8
                                         :line-termination lf)
-        #+abcl (list utf8 :eol-style lf))))
+        #+abcl (list utf-8 :eol-style lf))))
 
 
 (finalize)

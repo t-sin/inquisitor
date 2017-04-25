@@ -83,7 +83,7 @@ exec ros -Q -- $0 "$@"
                            stream))))
 
 ;; cf. and port of libiconv-1.14/tests/genutf8.c
-(defun generate-utf8 (stream)
+(defun generate-utf-8 (stream)
   (loop                               ; range 0x0000..0x007f
      :for i1 := 0 :then (incf i1)
      :while (< i1 #x80)
@@ -117,10 +117,10 @@ exec ros -Q -- $0 "$@"
          (#p"ascii-crlf" ,#'generate-ascii-data ,+eol-crlf+)
          (#p"ascii-lfcr" ,#'generate-ascii-data ,+eol-lfcr+))
       (#p"unicode/"
-         (#p"utf8" ,#'generate-utf8)
+         (#p"utf-8" ,#'generate-utf-8)
          (#p"ucs2le" ,#'generate-from-snippet "UCS-2LE")
          (#p"ucs2be" ,#'generate-from-snippet "UCS-2BE")
-         (#p"utf16" ,#'generate-from-snippet "UTF-16"))
+         (#p"utf-16" ,#'generate-from-snippet "UTF-16"))
       (#p"ja/"
          (#p"jis" ,#'generate-from-snippet "ISO-2022-JP")
          (#p"eucjp" ,#'generate-from-hex "EUC-JP")
