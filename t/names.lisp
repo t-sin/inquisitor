@@ -55,7 +55,7 @@
       :iso-8859-13
       :cp1257))
 
-(is (available-eols) '(:lf :cr :crlf))
+(is +available-eols+ '(:lf :cr :crlf))
 
 (defvar +cannot-treat+ :cannot-treat)
 
@@ -303,6 +303,6 @@
     (ok (unicode-p :utf16)))
   (subtest "other encodings return nil"
     (is (unicode-p :cp932) nil)
-    (is (unicode-p :cp932----) nil)))
+    (is (unicode-p :cp932) nil)))
 
 (finalize)
