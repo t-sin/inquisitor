@@ -10,6 +10,7 @@
 (defun make-external-format (enc eol)
   (let ((enc-on-impl (independent-name enc))
         (eol-on-impl (independent-name eol)))
+    (declare (ignorable eol-on-impl))
     #+clisp (ext:make-encoding :charset enc-on-impl
                                :line-terminator eol-on-impl)
     #+ecl `(,enc-on-impl ,eol-on-impl)

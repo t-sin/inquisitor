@@ -21,8 +21,6 @@
                 :byte-array-p
                 :byte-input-stream-p
                 :file-position-changable-p)
-  (:import-from :metabang-bind
-                :bind)
   (:export :*detecting-buffer-size*
            :make-external-format
            :list-available-scheme
@@ -40,6 +38,10 @@
 
 
 (defparameter *detecting-buffer-size* 1000)
+
+(defgeneric detect-encoding (input symbol))
+(defgeneric detect-end-of-line (input))
+(defgeneric detect-external-format (input symbol))
 
 (defmethod detect-encoding ((stream stream) (scheme symbol))
   (if (byte-input-stream-p stream)
@@ -82,8 +84,9 @@
 
 (defmethod detect-external-format ((vec vector) (scheme symbol))
   (if (byte-array-p vec)
-      (bind (((:values enc enc-ct) (ces-guess-from-vector vec scheme))
-             ((:values eol eol-ct) (eol-guess-from-vector vec)))
+      (let (enc enc-ct eol)
+        (setf (values enc enc-ct) (ces-guess-from-vector vec scheme))
+        (setf eol (eol-guess-from-vector vec))
         (if enc-ct
             (error (format nil "unsupported on ~a: ~{~a~^, ~}"
                            (lisp-implementation-type) enc))

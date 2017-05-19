@@ -19,8 +19,7 @@
   :author "Shinichi Tanaka"
   :license "MIT"
   :depends-on (:alexandria
-               :anaphora
-               :metabang-bind)
+               :anaphora)
   :components ((:module "src"
                 :components
                 ((:module "encoding"
