@@ -21,8 +21,6 @@
                 :byte-array-p
                 :byte-input-stream-p
                 :file-position-changable-p)
-  (:import-from :metabang-bind
-                :bind)
   (:export :*detecting-buffer-size*
            :make-external-format
            :list-available-scheme
