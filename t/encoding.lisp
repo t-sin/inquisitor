@@ -11,7 +11,63 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 13)
+(plan 14)
+
+
+(defvar +bom-first-byte+ #xfe)
+(defvar +bom-second-byte+ #xff)
+
+(defun str2vec (s)
+  (apply #'vector (coerce s 'list)))
+
+
+(subtest "Byte order mark treatment"
+  (diag "For details, see Unicode Standard, 2.13. Special Characters, Byte Order Mark (BOM)")
+  (subtest "Specified vector is too short"
+    (is (check-byte-order-mark (str2vec "")) nil)
+    (is (check-byte-order-mark (str2vec "a")) nil))
+
+  (subtest "return nil for normal string"
+    (is (check-byte-order-mark (str2vec "LE"))
+        nil)
+    (is (check-byte-order-mark (str2vec "Hy!"))
+        nil)
+    (is (check-byte-order-mark (str2vec "Inquisitor"))
+        nil))
+
+  (subtest "partially matched for BOM"
+    (is (check-byte-order-mark #(+bom-first-byte+))
+        nil)
+    (is (check-byte-order-mark #(+bom-second-byte+))
+        nil)
+
+    (is (check-byte-order-mark #(+bom-first-byte+ #x0))
+        nil)
+    (is (check-byte-order-mark #(+bom-second-byte+ #x0))
+        nil)
+
+    (is (check-byte-order-mark #(#x0 +bom-first-byte+))
+        nil)
+    (is (check-byte-order-mark #(#x0 +bom-second-byte+))
+        nil))
+
+  (subtest "BOM exactly"
+    (is (check-byte-order-mark #(+bom-first-byte+ +bom-second-byte+))
+        :be)
+    (is (check-byte-order-mark #(+bom-second-byte+ +bom-first-byte+))
+        :le))
+
+  (subtest "string following BOM"
+    (is (check-byte-order-mark #(+bom-first-byte+ +bom-second-byte+
+                                 #.(char-code #\f)
+                                 #.(char-code #\o)
+                                 #.(char-code #\o)))
+        :be)
+    (is (check-byte-order-mark #(+bom-second-byte+ +bom-first-byte+
+                                 #.(char-code #\f)
+                                 #.(char-code #\o)
+                                 #.(char-code #\o)))
+        :le)))
 
 
 (defun test-enc (path scm enc)
