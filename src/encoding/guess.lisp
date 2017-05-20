@@ -81,6 +81,16 @@
           (error (format nil "scheme parameter (~A): not supported." scheme))))))
 
 
+(defun %check-byte-order-mark (buffer length)
+  (when (>= length 2)
+    (cond ((and (= (aref buffer (the fixnum 0)) (the fixnum #xfe))
+                (= (aref buffer (the fixnum 1)) (the fixnum #xff)))
+           :big-endian)
+          ((and (= (aref buffer (the fixnum 0)) (the fixnum #xff))
+                (= (aref buffer (the fixnum 1)) (the fixnum #xfe)))
+           :little-endian)
+          (t nil))))
+
 (defun guess-jp (buffer)
   (block guess-body
     ;; (let* ((eucj (dfa-init +eucj-st+ +eucj-ar+ (euc-jp)))
