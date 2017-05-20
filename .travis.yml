@@ -14,7 +14,7 @@ env:
     - LISP=ecl
 
 install:
-  - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
+  - curl -L https://raw.githubusercontent.com/roswell/roswell/release/scripts/install-for-ci.sh | sh
   - ros install prove
 
 script:
