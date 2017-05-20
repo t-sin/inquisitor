@@ -18,56 +18,49 @@
 (defvar +bom-second-byte+ #xff)
 
 (defun str2vec (s)
-  (apply #'vector (coerce s 'list)))
+  (apply #'vector (mapcar (lambda (c) (char-code c)) (coerce s 'list))))
 
+(defun test-check-bom (actual-vec expected)
+  (is (inquisitor.encoding.guess::%check-byte-order-mark actual-vec
+                                                        (length actual-vec))
+      expected))
 
 (subtest "Byte order mark treatment"
   (diag "For details, see Unicode Standard, 2.13. Special Characters, Byte Order Mark (BOM)")
   (subtest "Specified vector is too short"
-    (is (check-byte-order-mark (str2vec "")) nil)
-    (is (check-byte-order-mark (str2vec "a")) nil))
+    (test-check-bom (str2vec "") nil)
+    (test-check-bom (str2vec "a") nil))
 
   (subtest "return nil for normal string"
-    (is (check-byte-order-mark (str2vec "LE"))
-        nil)
-    (is (check-byte-order-mark (str2vec "Hy!"))
-        nil)
-    (is (check-byte-order-mark (str2vec "Inquisitor"))
-        nil))
+    (test-check-bom (str2vec "LE") nil)
+    (test-check-bom (str2vec "Hy!") nil)
+    (test-check-bom (str2vec "Inquisitor") nil))
 
   (subtest "partially matched for BOM"
-    (is (check-byte-order-mark #(+bom-first-byte+))
-        nil)
-    (is (check-byte-order-mark #(+bom-second-byte+))
-        nil)
+    (test-check-bom (vector +bom-first-byte+) nil)
+    (test-check-bom (vector +bom-second-byte+) nil)
 
-    (is (check-byte-order-mark #(+bom-first-byte+ #x0))
-        nil)
-    (is (check-byte-order-mark #(+bom-second-byte+ #x0))
-        nil)
+    (test-check-bom (vector +bom-first-byte+ #x0) nil)
+    (test-check-bom (vector +bom-second-byte+ #x0) nil)
 
-    (is (check-byte-order-mark #(#x0 +bom-first-byte+))
-        nil)
-    (is (check-byte-order-mark #(#x0 +bom-second-byte+))
-        nil))
+    (test-check-bom (vector #x0 +bom-first-byte+) nil)
+    (test-check-bom (vector #x0 +bom-second-byte+) nil))
 
   (subtest "BOM exactly"
-    (is (check-byte-order-mark #(+bom-first-byte+ +bom-second-byte+))
-        :be)
-    (is (check-byte-order-mark #(+bom-second-byte+ +bom-first-byte+))
-        :le))
+    (test-check-bom (vector +bom-first-byte+ +bom-second-byte+) :big-endian)
+    (test-check-bom (vector +bom-second-byte+ +bom-first-byte+) :little-endian))
 
   (subtest "string following BOM"
-    (is (check-byte-order-mark #(+bom-first-byte+ +bom-second-byte+
-                                 #.(char-code #\f)
-                                 #.(char-code #\o)
-                                 #.(char-code #\o)))
-        :be)
-    (is (check-byte-order-mark #(+bom-second-byte+ +bom-first-byte+
-                                 #.(char-code #\f)
-                                 #.(char-code #\o)
-                                 #.(char-code #\o)))
-        :le)))
+    (test-check-bom (vector +bom-first-byte+ +bom-second-byte+
+                            #.(char-code #\f)
+                            #.(char-code #\o)
+                            #.(char-code #\o))
+                    :big-endian)
+    (test-check-bom (vector +bom-second-byte+ +bom-first-byte+
+                            #.(char-code #\f)
+                            #.(char-code #\o)
+                            #.(char-code #\o))
+                    :little-endian)))
 
 
 (defun test-enc (path scm enc)
