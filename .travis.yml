@@ -1,9 +1,13 @@
 language: common-lisp
-sudo: required
+sudo: false
 
 env:
+  global:
+    - PATH: $HOME/.roswell/bin:$PATH
+    - ROSWELL_INSTALL: $HOME/.roswell
+    - COVERAGE_EXCLUDE: t:roswell
   matrix:
-    - LISP=sbcl-bin
+    - LISP=sbcl-bin COVERALLS=true
     - LISP=ccl-bin
     - LISP=abcl
     - LISP=clisp
@@ -11,6 +15,7 @@ env:
 
 install:
   - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
+  - ros install prove
 
 script:
-  - ros -s prove -e '(or (prove:run :inquisitor-test) (uiop:quit -1))'
+  - run-prove inquisitor-test.asd
