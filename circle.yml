@@ -18,4 +18,4 @@ dependencies:
 
 test:
   override:
-    - if [ "$CIRCLE_NODE_INDEX" = 0 ]; then COVERALLS=true run-prove inquisitor-test.asd; else run-prove inquisitor-test.asd; fi: {parallel: true}
+    - run-prove inquisitor-test.asd: {parallel: true}
