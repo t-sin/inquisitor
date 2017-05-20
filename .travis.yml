@@ -4,7 +4,7 @@ sudo: false
 env:
   global:
     - PATH: $HOME/.roswell/bin:$PATH
-    - ROSWELL_INSTALL: $HOME/.roswell
+    - ROSWELL_INSTALL_DIR: $HOME/.roswell
     - COVERAGE_EXCLUDE: t:roswell
   matrix:
     - LISP=sbcl-bin COVERALLS=true
