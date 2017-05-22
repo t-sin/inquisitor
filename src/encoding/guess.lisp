@@ -99,37 +99,37 @@
     ;; 	      (top  nil))
     (let ((order (generate-order :utf-8 :cp932 :euc-jp))
           (len (length buffer))
-	  (c nil))
+          (c nil))
       (declare (dynamic-extent order))
       (loop for i of-type fixnum from 0 below len do
-	(setf c (aref buffer (the fixnum i)))
+           (setf c (aref buffer (the fixnum i)))
 
-	;; special treatment of iso-2022 escape sequence
-	(when (and (= (the fixnum c) (the fixnum #x1b)) 
-		   (< (the fixnum i) (the fixnum (1- len))))
-	  (setf c (aref buffer (the fixnum (incf i))))
-	  (when (or (= (the fixnum c) (the fixnum #x24))  ; $
-		    (= (the fixnum c) (the fixnum #x28))) ; (
-	    (return-from guess-body :iso-2022-jp)))
+         ;; special treatment of iso-2022 escape sequence
+           (when (and (= (the fixnum c) (the fixnum #x1b))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (setf c (aref buffer (the fixnum (incf i))))
+             (when (or (= (the fixnum c) (the fixnum #x24))  ; $
+                       (= (the fixnum c) (the fixnum #x28))) ; (
+               (return-from guess-body :iso-2022-jp)))
 
-	;; special treatment of BOM
-	(when (and (= (the fixnum i) (the fixnum 0))
-		   (= (the fixnum c) (the fixnum #xff))
-		   (< (the fixnum i) (the fixnum (1- len))))
-	  (let ((c (aref buffer (the fixnum (1+ i)))))
-	    (when (= (the fixnum c) #xfe)
-	      (return-from guess-body :ucs-2le))))
-	(when (and (= (the fixnum i) (the fixnum 0))
-		   (= (the fixnum c) (the fixnum #xfe))
-		   (< (the fixnum i) (the fixnum (1- len))))
-	  (let ((c (aref buffer (the fixnum (1+ i)))))
-	    (when (= (the fixnum c) #xff)
-	      (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 
-	(awhen (dfa-process order c)
-	  (return-from guess-body it))
-	(when (dfa-none order)
-	  (return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -143,34 +143,34 @@
 	  (c nil))
       (declare (dynamic-extent order))
       (loop for i of-type fixnum from 0 below len do
-	(setf c (aref buffer (the fixnum i)))
+           (setf c (aref buffer (the fixnum i)))
 
-	;; special treatment of iso-2022 escape sequence
-	(when (and (= (the fixnum c) (the fixnum #x1b)) 
-		   (< (the fixnum i) (the fixnum (1- len))))
-	  (setf c (aref buffer (the fixnum (incf i))))
-	  (when (or (= (the fixnum c) (the fixnum #x24))  ; $
-		    (= (the fixnum c) (the fixnum #x28))) ; (
-	    (return-from guess-body :iso-2022-tw)))
+         ;; special treatment of iso-2022 escape sequence
+           (when (and (= (the fixnum c) (the fixnum #x1b))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (setf c (aref buffer (the fixnum (incf i))))
+             (when (or (= (the fixnum c) (the fixnum #x24))  ; $
+                       (= (the fixnum c) (the fixnum #x28))) ; (
+               (return-from guess-body :iso-2022-tw)))
 
-	;; special treatment of BOM
-	(when (and (= (the fixnum i) (the fixnum 0))
-		   (= (the fixnum c) (the fixnum #xff))
-		   (< (the fixnum i) (the fixnum (1- len))))
-	  (let ((c (aref buffer (the fixnum (1+ i)))))
-	    (when (= (the fixnum c) #xfe)
-	      (return-from guess-body :ucs-2le))))
-	(when (and (= (the fixnum i) (the fixnum 0))
-		   (= (the fixnum c) (the fixnum #xfe))
-		   (< (the fixnum i) (the fixnum (1- len))))
-	  (let ((c (aref buffer (the fixnum (1+ i)))))
-	    (when (= (the fixnum c) #xff)
-	      (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 
-	(awhen (dfa-process order c)
-	  (return-from guess-body it))
-	(when (dfa-none order)
-	  (return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -183,40 +183,40 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of iso-2022 escape sequence
-	      (when (and (= (the fixnum c) (the fixnum #x1b)) 
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i))))
-		      (c2 (aref buffer (the fixnum (+ i 2)))))
-		  (when (and (= (the fixnum c) (the fixnum #x24))        ; $
-			     (or (= (the fixnum c2) (the fixnum #x29))   ; )
-				 (= (the fixnum c2) (the fixnum #x2B)))) ; +
-		    (return-from guess-body :iso-2022-cn))))
+         ;; special treatment of iso-2022 escape sequence
+           (when (and (= (the fixnum c) (the fixnum #x1b))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i))))
+                   (c2 (aref buffer (the fixnum (+ i 2)))))
+               (when (and (= (the fixnum c) (the fixnum #x24))        ; $
+                          (or (= (the fixnum c2) (the fixnum #x29))   ; )
+                              (= (the fixnum c2) (the fixnum #x2B)))) ; +
+                 (return-from guess-body :iso-2022-cn))))
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
-
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
+      
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 
 (defun guess-kr (buffer)
@@ -225,35 +225,35 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of iso-2022 escape sequence
-	      (when (and (= (the fixnum c) (the fixnum #x1b)) 
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i))))
-		      (c2 (aref buffer (the fixnum (+ i 2)))))
-		  (when (and (= (the fixnum c) (the fixnum #x24))   ; $
-			     (= (the fixnum c2) (the fixnum #x29))) ; )
-		    (return-from guess-body :iso-2022-kr))))
+         ;; special treatment of iso-2022 escape sequence
+           (when (and (= (the fixnum c) (the fixnum #x1b))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i))))
+                   (c2 (aref buffer (the fixnum (+ i 2)))))
+               (when (and (= (the fixnum c) (the fixnum #x24))   ; $
+                          (= (the fixnum c2) (the fixnum #x29))) ; )
+                 (return-from guess-body :iso-2022-kr))))
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -265,26 +265,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -296,26 +296,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -328,26 +328,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -359,26 +359,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -390,26 +390,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -422,26 +422,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
@@ -454,26 +454,26 @@
           (len (length buffer)))
       (declare (dynamic-extent order))
       (loop for c of-type fixnum across buffer
-	    for i of-type fixnum from 0 do
+         for i of-type fixnum from 0 do
 
-	      ;; special treatment of BOM
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xff))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xfe)
-		    (return-from guess-body :ucs-2le))))
-	      (when (and (= (the fixnum i) (the fixnum 0))
-			 (= (the fixnum c) (the fixnum #xfe))
-			 (< (the fixnum i) (the fixnum (1- len))))
-		(let ((c (aref buffer (the fixnum (1+ i)))))
-		  (when (= (the fixnum c) #xff)
-		    (return-from guess-body :ucs-2be))))
+         ;; special treatment of BOM
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xff))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xfe)
+                 (return-from guess-body :ucs-2le))))
+           (when (and (= (the fixnum i) (the fixnum 0))
+                      (= (the fixnum c) (the fixnum #xfe))
+                      (< (the fixnum i) (the fixnum (1- len))))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (= (the fixnum c) #xff)
+                 (return-from guess-body :ucs-2be))))
 	      
-	      (awhen (dfa-process order c)
-		(return-from guess-body it))
-	      (when (dfa-none order)
-		(return-from guess-body  nil)))
+           (awhen (dfa-process order c)
+                  (return-from guess-body it))
+           (when (dfa-none order)
+             (return-from guess-body  nil)))
 
       (aif (dfa-top order)
 	  (dfa-name it)
