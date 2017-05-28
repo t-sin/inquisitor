@@ -112,10 +112,10 @@
          ;; special treatment of iso-2022 escape sequence
            (when (and (= (the fixnum c) (the fixnum #x1b))
                       (< (the fixnum i) (the fixnum (1- len))))
-             (setf c (aref buffer (the fixnum (incf i))))
-             (when (or (= (the fixnum c) (the fixnum #x24))  ; $
-                       (= (the fixnum c) (the fixnum #x28))) ; (
-               (return-from guess-body :iso-2022-jp)))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (or (= (the fixnum c) (the fixnum #x24))  ; $
+                         (= (the fixnum c) (the fixnum #x28))) ; (
+                 (return-from guess-body :iso-2022-jp))))
 
            (awhen (dfa-process order c)
              (return-from guess-body it))
@@ -145,10 +145,10 @@
          ;; special treatment of iso-2022 escape sequence
            (when (and (= (the fixnum c) (the fixnum #x1b))
                       (< (the fixnum i) (the fixnum (1- len))))
-             (setf c (aref buffer (the fixnum (incf i))))
-             (when (or (= (the fixnum c) (the fixnum #x24))  ; $
-                       (= (the fixnum c) (the fixnum #x28))) ; (
-               (return-from guess-body :iso-2022-tw)))
+             (let ((c (aref buffer (the fixnum (1+ i)))))
+               (when (or (= (the fixnum c) (the fixnum #x24))  ; $
+                         (= (the fixnum c) (the fixnum #x28))) ; (
+                 (return-from guess-body :iso-2022-tw))))
 
            (awhen (dfa-process order c)
              (return-from guess-body it))
