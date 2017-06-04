@@ -56,18 +56,17 @@
            :ces-guess-from-vector))
 (in-package :inquisitor.encoding.guess)
 
-
 (defparameter +schemes+
-  '((:jp guess-jp) ;; japanese
-    (:tw guess-tw) ;; taiwanese
-    (:cn guess-cn) ;; chinese
-    (:kr guess-kr) ;; korean
-    (:ru guess-ru) ;; russian
-    (:ar guess-ar) ;; arabic
-    (:tr guess-tr) ;; turkish
-    (:gr guess-gr) ;; greek
-    (:hw guess-hw) ;; hebrew
-    (:pl guess-pl) ;; polish
+  '((:jp guess-jp)   ;; japanese
+    (:tw guess-tw)   ;; taiwanese
+    (:cn guess-cn)   ;; chinese
+    (:kr guess-kr)   ;; korean
+    (:ru guess-ru)   ;; russian
+    (:ar guess-ar)   ;; arabic
+    (:tr guess-tr)   ;; turkish
+    (:gr guess-gr)   ;; greek
+    (:hw guess-hw)   ;; hebrew
+    (:pl guess-pl)   ;; polish
     (:bl guess-bl))) ;; baltic
 
 (defun list-available-scheme ()
@@ -124,15 +123,15 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 
 (defun guess-tw (buffer)
   (block guess-body
     (let ((order (generate-order :utf-8 :big5))
           (len (length buffer))
-	  (c nil))
+          (c nil))
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
@@ -157,8 +156,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 
 (defun guess-cn (buffer)
@@ -224,8 +223,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 (defun guess-ar (buffer)
   (block guess-body
@@ -246,8 +245,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 (defun guess-gr (buffer)
   (block guess-body
@@ -268,8 +267,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 (defun guess-ru (buffer)
   (block guess-body
@@ -291,8 +290,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 (defun guess-hw (buffer)
   (block guess-body
@@ -313,8 +312,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 (defun guess-pl (buffer)
   (block guess-body
@@ -336,8 +335,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 
 (defun guess-tr (buffer)
@@ -359,8 +358,8 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
 
 
 (defun guess-bl (buffer)
@@ -382,5 +381,5 @@
              (return-from guess-body nil)))
 
       (aif (dfa-top order)
-	  (dfa-name it)
-	  nil))))
+           (dfa-name it)
+           nil))))
