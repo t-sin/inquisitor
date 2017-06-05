@@ -273,7 +273,7 @@
 (defun guess-ru (buffer)
   (block guess-body
     (let ((order (generate-order :utf-8 :cp1251 :koi8-u :koi8-r :cp866
-			     :iso-8859-2 :iso-8859-5))
+                                 :iso-8859-2 :iso-8859-5))
           (len (length buffer)))
       (declare (dynamic-extent order))
 
