@@ -73,21 +73,24 @@ method modifies `stream`'s file position."
     (detect-encoding in scheme)))
 
 (defmethod detect-end-of-line ((stream stream))
+  "Detect end-of-line style from `stream`. Note that this method modifies `stream`'s
+file position."
   (if (byte-input-stream-p stream)
-      (if (file-position-changable-p stream)
-          (let ((pos (file-position stream)))
-            (with-byte-array (vec 500)
-              (prog1
-                  (loop for n = (read-sequence vec stream)
-                     for eol = (eol-guess-from-vector vec)
-                     until (or (zerop n)
-                               (not (null eol)))
-                     finally (return eol))
-                (file-position stream pos))))
-          (error (format nil "supplied stream is not file-position changable.")))
+      (let* ((buffer-length *default-buffer-size*)
+             (buffer (make-array buffer-length :element-type '(unsigned-byte 8))))
+        (loop
+           :for num-read := (read-sequence buffer stream)
+           :if (< num-read buffer-length)
+           :do (return-from detect-end-of-line
+                 (eol-guess-from-vector (subseq buffer 0 num-read)))
+           :else
+           :do (let ((eol (eol-guess-from-vector buffer)))
+                 (when eol
+                   (return-from detect-end-of-line eol)))))
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-end-of-line ((path pathname))
+    "Detect end-of-line style from `pathname`."
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
