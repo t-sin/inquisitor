@@ -37,25 +37,36 @@
 (in-package :inquisitor)
 
 
-(defparameter *detecting-buffer-size* 1000)
+(defparameter *default-buffer-size* 1000
+  "Specifies default buffer size is consed and used by `dedect-encoding`,
+`detect-end-of-line` and `detect-external-format`.")
+
 
 (defgeneric detect-encoding (input symbol))
-(defgeneric detect-end-of-line (input))
-(defgeneric detect-external-format (input symbol))
 
 (defmethod detect-encoding ((stream stream) (scheme symbol))
+  "Detect character encoding scheme under the `scheme` from `stream`. Note that this
+method modifies `stream`'s file position."
   (if (byte-input-stream-p stream)
-      (if (file-position-changable-p stream)
-          (let ((pos (file-position stream)))
-            (with-byte-array (vec *detecting-buffer-size*)
-              (read-sequence vec stream)
-              (prog1
-                  (ces-guess-from-vector vec scheme)
-                (file-position stream pos))))
-          (error (format nil "supplied stream is not file-position changable.")))
+      (let* ((buffer-length *default-buffer-size*)
+             (buffer (make-array buffer-length :element-type '(unsigned-byte 8)))
+             (order)
+             (encoding))
+        (loop
+           :for num-read := (read-sequence buffer stream)
+           :if (< num-read buffer-length)
+           :do (return-from detect-encoding
+                 (ces-guess-from-vector (subseq buffer 0 num-read) scheme))
+           :else
+           :do (multiple-value-bind (enc ord)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme)
+                 (setf encoding enc
+                       order ord)))
+        encoding)
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-encoding ((path pathname) (scheme symbol))
+  "Detect character encoding scheme under the `scheme` from `pathname`."
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
