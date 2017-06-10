@@ -19,8 +19,7 @@
   (:import-from :inquisitor.util
                 :with-byte-array
                 :byte-array-p
-                :byte-input-stream-p
-                :file-position-changable-p)
+                :byte-input-stream-p)
   (:export :*detecting-buffer-size*
            :make-external-format
            :list-available-scheme

@@ -23,9 +23,7 @@
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (let ((pos (file-position in)))
-        (is (detect-encoding in :jp) :utf-8)
-        (is (file-position in) pos))))
+      (is (detect-encoding in :jp) :utf-8)))
 
   (subtest "for pathname"
     (is (detect-encoding (get-test-data "data/ascii/ascii-lf.txt") :jp) :utf-8)))
@@ -39,9 +37,7 @@
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (let ((pos (file-position in)))
-        (is (detect-end-of-line in) :lf)
-        (is (file-position in) pos))))
+      (is (detect-end-of-line in) :lf)))
 
   (subtest "for pathname"
     (is (detect-end-of-line (get-test-data "data/ascii/ascii-lf.txt"))
@@ -64,10 +60,8 @@
   (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                       :direction :input
                       :element-type '(unsigned-byte 8))
-    (let ((pos (file-position in)))
-      (is (detect-external-format in :jp)
-          (make-external-format :utf-8 :lf))
-      (is (file-position in) pos))))
+    (is (detect-external-format in :jp)
+        (make-external-format :utf-8 :lf))))
 
 (subtest "detect external-format --- from pathname"
   (is-error (detect-external-format "data/ascii/ascii-lf.txt" :jp) 'error)

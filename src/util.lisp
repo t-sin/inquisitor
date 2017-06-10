@@ -3,8 +3,7 @@
   (:use :cl)
   (:export :with-byte-array
            :byte-array-p
-           :byte-input-stream-p
-           :file-position-changable-p)
+           :byte-input-stream-p)
   (:import-from :alexandria
                 :type=))
 (in-package :inquisitor.util)
@@ -22,12 +21,3 @@
   (and (typep stream 'stream)
        (input-stream-p stream)
        (type= (stream-element-type stream) '(unsigned-byte 8))))
-
-(defun file-position-changable-p (stream)
-  (and (typep stream 'stream)
-       (input-stream-p stream)
-       (let ((pos (file-position stream)))
-         (prog1
-             (and (not (null pos))
-                  (file-position stream pos))
-           (file-position stream pos)))))
