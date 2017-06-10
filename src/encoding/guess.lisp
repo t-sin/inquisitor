@@ -117,6 +117,29 @@
               (return-from guess-body (values ,little-endian-value ,order)))
              (t nil)))))
 
+(defmacro guess ((buffer order (&rest vars) (&rest encs)) &body specialized-check)
+  (once-only (buffer order)
+    (with-unique-names (order-var)
+      `(block guess-body
+         (let ((,order-var (if ,order
+                               ,order
+                               (generate-order ,@encs))))
+           (declare (dynamic-extent order))
+
+           ;; special treatment of BOM
+           (check-byte-order-mark ,buffer :ucs-2be :ucs-2le ,order-var)
+
+           (do-guess-loop ,vars ,buffer
+             ,@specialized-check
+             (awhen (dfa-process ,order-var ,(first vars))
+               (return-from guess-body (values it ,order-var)))
+             (when (dfa-none ,order-var)
+               (return-from guess-body (values nil ,order-var))))
+
+           (aif (dfa-top ,order-var)
+                (values (dfa-name it) ,order-var)
+                (values nil ,order-var)))))))
+
 
 (defun guess-jp (buffer &optional order)
   "guess character encoding scheme in Japanese. `order` is a list of _states_:
@@ -124,233 +147,56 @@
   `order` means, we can restart guessing from the point of `order`
 
   guess-jp returns `order` when stops guessing process as second value."
-  (block guess-body
-    ;; (let* ((eucj (dfa-init +eucj-st+ +eucj-ar+ (euc-jp)))
-    ;; 	      (sjis (dfa-init +sjis-st+ +sjis-ar+ (shiftjis)))
-    ;; 	      (utf-8 (dfa-init +utf-8-st+ +utf-8-ar+ (utf-8)))
-    ;; 	      (top  nil))
-    (let ((order (if order
-                     order
-                     (generate-order :utf-8 :cp932 :euc-jp))))
-      (declare (dynamic-extent order))
+  (guess (buffer order (c1 c2) (:utf-8 :cp932 :euc-jp))
+    ;; special treatment of iso-2022 escape sequence
+    (when (and (= (the fixnum c1) (the fixnum #x1b))
+               (or (= (the fixnum c2) (the fixnum #x24))   ; $
+                   (= (the fixnum c2) (the fixnum #x28)))) ; (
+      (return-from guess-body (values :iso-2022-jp order)))))
 
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
+(defun guess-tw (buffer &optional order)
+  (guess (buffer order (c1 c2) (:utf-8 :big5))
+    ;; special treatment of iso-2022 escape sequence
+    (when (and (= (the fixnum c1) (the fixnum #x1b))
+               (or (= (the fixnum c2) (the fixnum #x24))   ; $
+                   (= (the fixnum c2) (the fixnum #x28)))) ; (
+      (return-from guess-body :iso-2022-tw))))
 
-      (do-guess-loop (c1 c2) buffer
-        ;; special treatment of iso-2022 escape sequence
-        (when (and (= (the fixnum c1) (the fixnum #x1b))
-                   (or (= (the fixnum c2) (the fixnum #x24))   ; $
-                       (= (the fixnum c2) (the fixnum #x28)))) ; (
-          (return-from guess-body (values :iso-2022-jp order)))
+(defun guess-cn (buffer &optional order)
+  (guess (buffer order (c1 c2 c3) (:utf-8 :gb2312 :gb18030))
+    ;; special treatment of iso-2022 escape sequence
+    (when (and (= (the fixnum c1) (the fixnum #x1b))
+               (= (the fixnum c2) (the fixnum #x24))           ; $
+               (or (= (the fixnum c3) (the fixnum #x29))       ; )
+                   (= (the fixnum c3) (the fixnum #x2B))))     ; +
+      (return-from guess-body :iso-2022-cn))))
 
-        (awhen (dfa-process order c1)
-          (return-from guess-body (values it order)))
-        (when (dfa-none order)
-          (return-from guess-body (values nil order))))
+(defun guess-kr (buffer &optional order)
+  (guess (buffer order (c1 c2 c3) (:utf-8 :euc-kr :johab))
+    ;; special treatment of iso-2022 escape sequence
+    (when (and (= (the fixnum c1) (the fixnum #x1b))
+               (= (the fixnum c2) (the fixnum #x24))      ; $
+               (= (the fixnum c3) (the fixnum #x29)))     ; )
+      (return-from guess-body :iso-2022-kr))))
 
-      (aif (dfa-top order)
-           (values (dfa-name it) order)
-           (values nil order)))))
+(defun guess-ar (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :iso-8859-6 :cp1256))))
 
-(defun guess-tw (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :big5)))
-      (declare (dynamic-extent order))
+(defun guess-gr (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :iso-8859-7 :cp1253))))
 
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
+(defun guess-ru (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :cp1251 :koi8-u :koi8-r :cp866
+                             :iso-8859-2 :iso-8859-5))))
 
-      (do-guess-loop (c1 c2) buffer
-        ;; special treatment of iso-2022 escape sequence
-        (when (and (= (the fixnum c1) (the fixnum #x1b))
-                   (or (= (the fixnum c2) (the fixnum #x24))  ; $
-                       (= (the fixnum c2) (the fixnum #x28)))) ; (
-          (return-from guess-body :iso-2022-tw))
+(defun guess-hw (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :iso-8859-8 :cp1255))))
 
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
+(defun guess-pl (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :cp1250 :iso-8859-2))))
 
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
+(defun guess-tr (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :iso-8859-9 :cp1254))))
 
-(defun guess-cn (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :gb2312 :gb18030)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1 c2 c3) buffer
-        ;; special treatment of iso-2022 escape sequence
-        (when (and (= (the fixnum c1) (the fixnum #x1b))
-                   (= (the fixnum c2) (the fixnum #x24))        ; $
-                   (or (= (the fixnum c3) (the fixnum #x29))   ; )
-                       (= (the fixnum c3) (the fixnum #x2B)))) ; +
-          (return-from guess-body :iso-2022-cn))
-
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-      
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-(defun guess-kr (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :euc-kr :johab)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (Do-guess-loop (c1 c2 c3) buffer
-        ;; special treatment of iso-2022 escape sequence
-        (when (and (= (the fixnum c1) (the fixnum #x1b))
-                   (= (the fixnum c2) (the fixnum #x24))   ; $
-                   (= (the fixnum c3) (the fixnum #x29))) ; )
-          (return-from guess-body :iso-2022-kr))
-
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-(defun guess-ar (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :iso-8859-6 :cp1256)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-(defun guess-gr (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :iso-8859-7 :cp1253)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-(defun guess-ru (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :cp1251 :koi8-u :koi8-r :cp866
-                                 :iso-8859-2 :iso-8859-5)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-           (awhen (dfa-process order c1)
-             (return-from guess-body it))
-           (when (dfa-none order)
-             (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-(defun guess-hw (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :iso-8859-8 :cp1255)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-(defun guess-pl (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :cp1250 :iso-8859-2)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-
-(defun guess-tr (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :iso-8859-9 :cp1254)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
-
-
-(defun guess-bl (buffer)
-  (block guess-body
-    (let ((order (generate-order :utf-8 :iso-8859-13 :cp1257)))
-      (declare (dynamic-extent order))
-
-      ;; special treatment of BOM
-      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
-
-      (do-guess-loop (c1) buffer
-        (awhen (dfa-process order c1)
-          (return-from guess-body it))
-        (when (dfa-none order)
-          (return-from guess-body nil)))
-
-      (aif (dfa-top order)
-           (dfa-name it)
-           nil))))
+(defun guess-bl (buffer &optional order)
+  (guess (buffer order (c1) (:utf-8 :iso-8859-13 :cp1257))))
