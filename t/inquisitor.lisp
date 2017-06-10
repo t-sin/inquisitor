@@ -15,6 +15,14 @@
 
 
 (subtest "detect-encoding"
+  (subtest "for vector"
+    (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (let ((buffer (make-array (file-length in) :element-type '(unsigned-byte 8))))
+        (read-sequence buffer in)
+        (is (detect-encoding buffer :jp) :utf-8))))
+
   (subtest "for stream"
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input)
@@ -29,6 +37,14 @@
     (is (detect-encoding (get-test-data "data/ascii/ascii-lf.txt") :jp) :utf-8)))
 
 (subtest "detect-end-of-line"
+  (subtest "for vector"
+    (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (let ((buffer (make-array (file-length in) :element-type '(unsigned-byte 8))))
+        (read-sequence buffer in)
+        (is (detect-end-of-line buffer) :lf))))
+
   (subtest "for stream"
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input)
