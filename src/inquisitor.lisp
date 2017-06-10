@@ -44,6 +44,12 @@
 
 (defgeneric detect-encoding (input symbol))
 
+(defmethod detect-encoding ((buffer vector)  (scheme symbol))
+  "Detect character encoding scheme under the `scheme` from `buffer`."
+  (if (byte-array-p buffer)
+      (ces-guess-from-vector buffer scheme)
+      (error (format nil "supllied vector is not a byte array."))))
+
 (defmethod detect-encoding ((stream stream) (scheme symbol))
   "Detect character encoding scheme under the `scheme` from `stream`. Note that this
 method modifies `stream`'s file position."
@@ -71,6 +77,15 @@ method modifies `stream`'s file position."
                    :direction :input
                    :element-type '(unsigned-byte 8))
     (detect-encoding in scheme)))
+
+
+(defgeneric detect-end-of-line (input))
+
+(defmethod detect-end-of-line ((buffer vector))
+  "Detect end-of-line style from `buffer`."
+  (if (byte-array-p buffer)
+      (eol-guess-from-vector buffer)
+      (error (format nil "supllied vector is not a byte array."))))
 
 (defmethod detect-end-of-line ((stream stream))
   "Detect end-of-line style from `stream`. Note that this method modifies `stream`'s
