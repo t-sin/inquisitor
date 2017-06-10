@@ -76,6 +76,13 @@
   (mapcar #'car +schemes+))
 
 (defun ces-guess-from-vector (vector scheme &optional order)
+  "Guess character encoding scheme under the language `scheme`. `order` is a list
+of _states_: _states_ is list consist of a) dfa state at the point and b) score.
+Specifying `order` means, we can restart guessing from the point of `order`.
+
+`ces-guess-from-vector` returns `encoding` and `order`: `encoding` is an _implementation
+independent_ name, `order` is a state at this function stops guessing process."
+
   (macrolet ((guess (fn-name) `(funcall ,fn-name vector order)))
     (let ((fn-name (cadr (find scheme +schemes+ :key #'car))))
       (if fn-name
@@ -140,11 +147,6 @@
 
 
 (defun guess-jp (buffer &optional order)
-  "guess character encoding scheme in Japanese. `order` is a list of _states_:
-  _states_ is a pair (list) of a) dfa state at the point and b) score. Specifying
-  `order` means, we can restart guessing from the point of `order`
-
-  guess-jp returns `order` when stops guessing process as second value."
   (guess (buffer order (c1 c2) (:utf-8 :cp932 :euc-jp))
     ;; special treatment of iso-2022 escape sequence
     (when (and (= (the fixnum c1) (the fixnum #x1b))
