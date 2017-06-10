@@ -124,8 +124,6 @@
          (let ((,order-var (if ,order
                                ,order
                                (generate-order ,@encs))))
-           (declare (dynamic-extent order))
-
            ;; special treatment of BOM
            (check-byte-order-mark ,buffer :ucs-2be :ucs-2le ,order-var)
 
