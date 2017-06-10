@@ -75,8 +75,8 @@
 (defun list-available-scheme ()
   (mapcar #'car +schemes+))
 
-(defun ces-guess-from-vector (vector scheme)
-  (macrolet ((guess (fn-name) `(funcall ,fn-name vector)))
+(defun ces-guess-from-vector (vector scheme &optional order)
+  (macrolet ((guess (fn-name) `(funcall ,fn-name vector order)))
     (let ((fn-name (cadr (find scheme +schemes+ :key #'car))))
       (if fn-name
           (guess fn-name)
