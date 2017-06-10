@@ -106,6 +106,16 @@
                   (setf ,last-var (aref ,buffer (the fixnum ,idx)))
                   (incf (the fixnum ,idx)))))))))
 
+(defmacro check-byte-order-mark (buffer big-endian-value little-endian-value order)
+  (once-only (buffer order)
+    `(when (>= (the fixnum (length ,buffer)) (the fixnum 2))
+       (cond ((and (= (aref ,buffer (the fixnum 0)) (the fixnum #xfe))
+                   (= (aref ,buffer (the fixnum 1)) (the fixnum #xff)))
+              (return-from guess-body (values ,big-endian-value ,order)))
+             ((and (= (aref ,buffer (the fixnum 0)) (the fixnum #xff))
+                   (= (aref ,buffer (the fixnum 1)) (the fixnum #xfe)))
+              (return-from guess-body (values ,little-endian-value ,order)))
+             (t nil)))))
 
 
 (defun guess-jp (buffer &optional order)
@@ -125,9 +135,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer (length buffer))
-        (:big-endian (return-from guess-body (values :ucs-2be nil)))
-        (:little-endian (return-from guess-body (values :ucs-2le nil))))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1 c2) buffer
         ;; special treatment of iso-2022 escape sequence
@@ -151,9 +159,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1 c2) buffer
         ;; special treatment of iso-2022 escape sequence
@@ -177,9 +183,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1 c2 c3) buffer
         ;; special treatment of iso-2022 escape sequence
@@ -204,9 +208,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (Do-guess-loop (c1 c2 c3) buffer
         ;; special treatment of iso-2022 escape sequence
@@ -230,9 +232,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
         (awhen (dfa-process order c1)
@@ -250,9 +250,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
         (awhen (dfa-process order c1)
@@ -271,9 +269,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
            (awhen (dfa-process order c1)
@@ -291,9 +287,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
         (awhen (dfa-process order c1)
@@ -311,9 +305,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
         (awhen (dfa-process order c1)
@@ -332,9 +324,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
         (awhen (dfa-process order c1)
@@ -353,9 +343,7 @@
       (declare (dynamic-extent order))
 
       ;; special treatment of BOM
-      (case (%check-byte-order-mark buffer len)
-        (:big-endian (return-from guess-body :ucs-2be))
-        (:little-endian (return-from guess-body :ucs-2le)))
+      (check-byte-order-mark buffer :ucs-2be :ucs-2le order)
 
       (do-guess-loop (c1) buffer
         (awhen (dfa-process order c1)

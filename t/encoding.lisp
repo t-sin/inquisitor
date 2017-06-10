@@ -21,8 +21,9 @@
   (apply #'vector (mapcar (lambda (c) (char-code c)) (coerce s 'list))))
 
 (defun test-check-bom (actual-vec expected)
-  (is (inquisitor.encoding.guess::%check-byte-order-mark actual-vec
-                                                        (length actual-vec))
+  (is (block inquisitor.encoding.guess::guess-body
+        (inquisitor.encoding.guess::check-byte-order-mark
+         actual-vec :big-endian :little-endian nil))
       expected))
 
 (subtest "Byte order mark treatment"
