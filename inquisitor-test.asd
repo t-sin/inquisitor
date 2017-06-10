@@ -13,7 +13,6 @@
   :license "MIT"
   :depends-on (:inquisitor
                :babel
-               :drakma
                :prove)
   :components ((:module "t"
                 :components

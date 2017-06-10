@@ -19,10 +19,6 @@
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input)
       (is-error (detect-encoding in :jp) 'error))
-    (let ((s (drakma:http-request "http://cliki.net"
-                                  :want-stream t
-                                  :force-binary t)))
-      (is-error (detect-encoding s :jp) 'error))
 
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input
@@ -39,10 +35,6 @@
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input)
       (is-error (detect-end-of-line in) 'error))
-    (let ((s (drakma:http-request "http://cliki.net"
-                                  :want-stream t
-                                  :force-binary t)))
-      (is-error (detect-end-of-line s) 'error))
 
     (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
                         :direction :input
