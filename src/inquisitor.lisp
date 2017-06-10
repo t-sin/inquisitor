@@ -84,10 +84,13 @@
 
 (defmethod detect-external-format ((vec vector) (scheme symbol))
   (if (byte-array-p vec)
-      (let (enc enc-ct eol)
-        (setf (values enc enc-ct) (ces-guess-from-vector vec scheme))
+      (let (enc eol)
+        (multiple-value-bind (encoding order)
+            (ces-guess-from-vector vec scheme)
+          (declare (ignore order))
+          (setf enc (dependent-name encoding)))
         (setf eol (eol-guess-from-vector vec))
-        (if enc-ct
+        (if (eq enc :cannot-treat)
             (error (format nil "unsupported on ~a: ~{~a~^, ~}"
                            (lisp-implementation-type) enc))
             (if (null eol)
@@ -108,13 +111,7 @@
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-external-format ((path pathname) (scheme symbol))
-  (detect-external-format-from-file path scheme nil))
-
-(defun detect-external-format-from-file (path scheme &optional all-scan-p)
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
-    (if all-scan-p
-        (let ((*detecting-buffer-size* (file-length in)))
-          (detect-external-format in scheme))
-        (detect-external-format in scheme))))
+    (detect-external-format in scheme)))

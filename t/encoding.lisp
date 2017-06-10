@@ -70,13 +70,7 @@
                    :element-type '(unsigned-byte 8))
     (with-byte-array (vec (file-length in))
       (read-sequence vec in)
-      (multiple-value-bind (encoding treatable)
-          (ces-guess-from-vector vec scm)
-        (is encoding enc)
-        (when treatable
-          (diag (format nil " ; ~a cannot treat ~a"
-                        (lisp-implementation-type)
-                        encoding)))))))
+      (is (ces-guess-from-vector vec scm) enc))))
 
 
 (subtest "list available schemes"
