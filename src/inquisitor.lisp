@@ -61,10 +61,10 @@ method modifies `stream`'s file position."
            :for num-read := (read-sequence buffer stream)
            :if (< num-read buffer-length)
            :do (return-from detect-encoding
-                 (ces-guess-from-vector (subseq buffer 0 num-read) scheme))
+                 (ces-guess-from-vector (subseq buffer 0 num-read) scheme order))
            :else
            :do (multiple-value-bind (enc ord)
-                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme order)
                  (setf encoding enc
                        order ord)))
         encoding)
@@ -143,11 +143,11 @@ method modifies `stream`'s file position."
            :for num-read := (read-sequence buffer stream)
            :if (< num-read buffer-length)
            :do (return-from stride-over-buffer
-                 (setf encoding (ces-guess-from-vector (subseq buffer 0 num-read) scheme)
+                 (setf encoding (ces-guess-from-vector (subseq buffer 0 num-read) scheme order)
                        end-of-line (eol-guess-from-vector (subseq buffer 0 num-read))))
            :else
            :do (multiple-value-bind (enc ord)
-                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme order)
                  (setf encoding enc
                        order ord)
                  (unless end-of-line
