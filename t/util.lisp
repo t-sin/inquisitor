@@ -4,9 +4,7 @@
         :inquisitor.util
         :prove)
   (:import-from :inquisitor.util
-                :with-byte-array)
-  (:import-from :inquisitor-test.util
-                :get-test-data))
+                :with-byte-array))
 (in-package :inquisitor.util-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
@@ -45,13 +43,13 @@
       (ok (not (byte-input-stream-p out))))
     (with-input-from-string (in "string")
       (ok (not (byte-input-stream-p in))))
-    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
+    (with-open-file (in (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii.txt")
                         :direction :input
                         :element-type 'character)
       (ok (not (byte-input-stream-p in)))))
 
   (subtest "return t"
-    (with-open-file (in (get-test-data "data/ascii/ascii.txt")
+    (with-open-file (in (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
       (ok (byte-input-stream-p in)))))

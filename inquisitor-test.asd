@@ -17,12 +17,11 @@
   :components ((:module "t"
                 :components
                 ((:file "names")
-                 (:file "test-util")
-                 (:test-file "util" :depends-on ("test-util"))
-                 (:test-file "eol" :depends-on ("test-util"))
-                 (:test-file "encoding" :depends-on ("test-util"))
+                 (:test-file "util")
+                 (:test-file "eol")
+                 (:test-file "encoding")
                  (:test-file "external-format")
-                 (:test-file "inquisitor" :depends-on ("test-util")))))
+                 (:test-file "inquisitor"))))
 
   :defsystem-depends-on (:prove-asdf)
   :perform (test-op :after (op c)
