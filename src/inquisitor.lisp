@@ -55,18 +55,18 @@ method modifies `stream`'s file position."
   (if (byte-input-stream-p stream)
       (let* ((buffer-length *default-buffer-size*)
              (buffer (make-array buffer-length :element-type '(unsigned-byte 8)))
-             (order)
+             (ces-state)
              (encoding))
         (loop
            :for num-read := (read-sequence buffer stream)
            :if (< num-read buffer-length)
            :do (return-from detect-encoding
-                 (ces-guess-from-vector (subseq buffer 0 num-read) scheme order))
+                 (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state))
            :else
-           :do (multiple-value-bind (enc ord)
-                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme order)
+           :do (multiple-value-bind (enc ces-st)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state)
                  (setf encoding enc
-                       order ord)))
+                       ces-state ces-st)))
         encoding)
       (error (format nil "supplied stream is not a byte input stream."))))
 
@@ -137,19 +137,19 @@ method modifies `stream`'s file position."
       (let* ((buffer-length *default-buffer-size*)
              (buffer (make-array buffer-length :element-type '(unsigned-byte 8)))
              (encoding)
-             (order)
+             (ces-state)
              (end-of-line))
         (loop :named stride-over-buffer
            :for num-read := (read-sequence buffer stream)
            :if (< num-read buffer-length)
            :do (return-from stride-over-buffer
-                 (setf encoding (ces-guess-from-vector (subseq buffer 0 num-read) scheme order)
+                 (setf encoding (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state)
                        end-of-line (eol-guess-from-vector (subseq buffer 0 num-read))))
            :else
-           :do (multiple-value-bind (enc ord)
-                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme order)
+           :do (multiple-value-bind (enc ces-st)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state)
                  (setf encoding enc
-                       order ord)
+                       ces-state ces-st)
                  (unless end-of-line
                    (sef (eol-guess-from-vector buffer)))))
         (let ((enc-impl (dependent-name encoding))
