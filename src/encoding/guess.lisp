@@ -132,7 +132,8 @@ independent_ name, `order` is a state at this function stops guessing process."
                                ,order
                                (generate-order ,@encs))))
            ;; special treatment of BOM
-           (check-byte-order-mark ,buffer :ucs-2be :ucs-2le ,order-var)
+           (unless ,order-var
+             (check-byte-order-mark ,buffer :ucs-2be :ucs-2le ,order-var))
 
            (do-guess-loop ,vars ,buffer
              ,@specialized-check
