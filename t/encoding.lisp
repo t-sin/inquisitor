@@ -9,7 +9,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 14)
+(plan 15)
 
 
 (defvar +bom-first-byte+ #xfe)
@@ -189,5 +189,39 @@
   (test-enc "t/data/bl/cp1257.txt" :bl :cp1257)
 
   (test-enc "t/data/unicode/utf-8.txt" :bl :utf-8))
+
+(subtest "order (detection state) paasing"
+  (diag "segmented detection is equivalent to entirely buffered detection")
+  (let ((path (asdf:system-relative-pathname :inquisitor "t/data/unicode/utf-8.txt")))
+    (let (enc-segmented order-segmented
+          enc-entirely order-entirely)
+      (with-open-file (in path
+                          :direction :input
+                          :element-type '(unsigned-byte 8))
+        (with-byte-array (buffer 1000)
+          (let (encoding order)
+            (loop :named segmented-detection
+               :for num-read := (read-sequence buffer in)
+               :if (< num-read 1000)
+               :do (return-from segmented-detection
+                     (ces-guess-from-vector (subseq buffer 0 num-read) :jp order))
+               :else
+               :do (multiple-value-bind (enc ord)
+                       (ces-guess-from-vector buffer :jp order)
+                     (setf encoding enc
+                           order ord)))
+            (setf enc-segmented encoding
+                  order-segmented order))))
+      (with-open-file (in path
+                          :direction :input
+                          :element-type '(unsigned-byte 8))
+        (with-byte-array (buffer (file-length in))
+          (read-sequence buffer in)
+          (multiple-value-bind (enc ord)
+              (ces-guess-from-vector buffer :jp)
+            (setf enc-entirely enc
+                  order-entirely ord))))
+      (is enc-segmented enc-entirely)
+      (is order-segmented order-entirely :test #'equalp))))
 
 (finalize)
