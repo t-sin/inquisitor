@@ -29,10 +29,11 @@
       (is-error (detect-encoding in :jp) 'error))
 
     (with-open-file (in (asdf:system-relative-pathname
-                         :inquisitor "t/data/ascii/ascii-lf.txt")
+                         :inquisitor "t/data/unicode/utf-8.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (is (detect-encoding in :jp) :utf-8)))
+      (is (detect-encoding in :jp) :utf-8)
+      (is (file-position in) (file-length in))))
 
   (subtest "for pathname"
     (is (detect-encoding (asdf:system-relative-pathname
@@ -52,10 +53,13 @@
                         :direction :input)
       (is-error (detect-end-of-line in) 'error))
 
-    (with-open-file (in (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii-lf.txt")
+    (with-open-file (in (asdf:system-relative-pathname
+                         :inquisitor "t/data/unicode/utf-8.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (is (detect-end-of-line in) :lf)))
+      (is (detect-end-of-line in) :lf)
+      (diag "is this check valid?")
+      (is (file-position in) (file-length in))))
 
   (subtest "for pathname"
     (is (detect-end-of-line (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii-lf.txt"))
