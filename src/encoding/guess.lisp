@@ -75,10 +75,13 @@
 (defun list-available-scheme ()
   (mapcar #'car +schemes+))
 
-(defun ces-guess-from-vector (vector scheme &optional order)
-  "Guess character encoding scheme under the language `scheme`. `order` is a list
-of _states_: _states_ is list consist of a) dfa state at the point and b) score.
-Specifying `order` means, we can restart guessing from the point of `order`.
+(defun ces-guess-from-vector (vector scheme &optional order state)
+  "Guess character encoding scheme under the language `scheme`. `order` is a _dfa state_:
+_dfa state_ is a list consist of a) nodes of dfa, b) arrows of dfa c) score and d) name.
+`state` is a state except dfa state. `state` may be used or not be used by each guess-*
+function of scheme, although you must be pass to this function.
+Specifying `order` and `state` means, we can restart guessing from the point of `order`
+and `state`.
 
 `ces-guess-from-vector` returns `encoding` and `order`: `encoding` is an _implementation
 independent_ name, `order` is a state at this function stops guessing process."
