@@ -199,15 +199,15 @@
                           :direction :input
                           :element-type '(unsigned-byte 8))
         (with-byte-array (buffer 1000)
-          (let (encoding order)
+          (let (encoding order state)
             (loop :named segmented-detection
                :for num-read := (read-sequence buffer in)
                :if (< num-read 1000)
                :do (return-from segmented-detection
-                     (ces-guess-from-vector (subseq buffer 0 num-read) :jp order))
+                     (ces-guess-from-vector (subseq buffer 0 num-read) :jp order state))
                :else
                :do (multiple-value-bind (enc ord)
-                       (ces-guess-from-vector buffer :jp order)
+                       (ces-guess-from-vector buffer :jp order state)
                      (setf encoding enc
                            order ord)))
             (setf enc-segmented encoding
