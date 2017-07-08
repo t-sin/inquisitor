@@ -86,7 +86,7 @@ and `state`.
 `ces-guess-from-vector` returns `encoding` and `order`: `encoding` is an _implementation
 independent_ name, `order` is a state at this function stops guessing process."
 
-  (macrolet ((guess (fn-name) `(funcall ,fn-name vector order)))
+  (macrolet ((guess (fn-name) `(funcall ,fn-name vector order state)))
     (let ((fn-name (cadr (find scheme +schemes+ :key #'car))))
       (if fn-name
           (guess fn-name)
