@@ -19,8 +19,7 @@
   (:import-from :inquisitor.util
                 :with-byte-array
                 :byte-array-p
-                :byte-input-stream-p
-                :file-position-changable-p)
+                :byte-input-stream-p)
   (:export :*detecting-buffer-size*
            :make-external-format
            :list-available-scheme
@@ -37,84 +36,137 @@
 (in-package :inquisitor)
 
 
-(defparameter *detecting-buffer-size* 1000)
+(defparameter *default-buffer-size* 1000
+  "Specifies default buffer size is consed and used by `dedect-encoding`,
+`detect-end-of-line` and `detect-external-format`.")
+
 
 (defgeneric detect-encoding (input symbol))
-(defgeneric detect-end-of-line (input))
-(defgeneric detect-external-format (input symbol))
+
+(defmethod detect-encoding ((buffer vector)  (scheme symbol))
+  "Detect character encoding scheme under the `scheme` from `buffer`."
+  (if (byte-array-p buffer)
+      (ces-guess-from-vector buffer scheme)
+      (error (format nil "supllied vector is not a byte array."))))
 
 (defmethod detect-encoding ((stream stream) (scheme symbol))
+  "Detect character encoding scheme under the `scheme` from `stream`. Note that this
+method modifies `stream`'s file position."
   (if (byte-input-stream-p stream)
-      (if (file-position-changable-p stream)
-          (let ((pos (file-position stream)))
-            (with-byte-array (vec *detecting-buffer-size*)
-              (read-sequence vec stream)
-              (prog1
-                  (ces-guess-from-vector vec scheme)
-                (file-position stream pos))))
-          (error (format nil "supplied stream is not file-position changable.")))
+      (let* ((buffer-length *default-buffer-size*)
+             (buffer (make-array buffer-length :element-type '(unsigned-byte 8)))
+             (ces-state)
+             (encoding))
+        (loop
+           :for num-read := (read-sequence buffer stream)
+           :if (< num-read buffer-length)
+           :do (return-from detect-encoding
+                 (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state))
+           :else
+           :do (multiple-value-bind (enc ces-st)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state)
+                 (setf encoding enc
+                       ces-state ces-st)))
+        encoding)
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-encoding ((path pathname) (scheme symbol))
+  "Detect character encoding scheme under the `scheme` from `pathname`."
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
     (detect-encoding in scheme)))
 
+
+(defgeneric detect-end-of-line (input))
+
+(defmethod detect-end-of-line ((buffer vector))
+  "Detect end-of-line style from `buffer`."
+  (if (byte-array-p buffer)
+      (eol-guess-from-vector buffer)
+      (error (format nil "supllied vector is not a byte array."))))
+
 (defmethod detect-end-of-line ((stream stream))
+  "Detect end-of-line style from `stream`. Note that this method modifies `stream`'s
+file position."
   (if (byte-input-stream-p stream)
-      (if (file-position-changable-p stream)
-          (let ((pos (file-position stream)))
-            (with-byte-array (vec 500)
-              (prog1
-                  (loop for n = (read-sequence vec stream)
-                     for eol = (eol-guess-from-vector vec)
-                     until (or (zerop n)
-                               (not (null eol)))
-                     finally (return eol))
-                (file-position stream pos))))
-          (error (format nil "supplied stream is not file-position changable.")))
+      (let* ((buffer-length *default-buffer-size*)
+             (buffer (make-array buffer-length :element-type '(unsigned-byte 8))))
+        (loop
+           :for num-read := (read-sequence buffer stream)
+           :if (< num-read buffer-length)
+           :do (return-from detect-end-of-line
+                 (eol-guess-from-vector (subseq buffer 0 num-read)))
+           :else
+           :do (let ((eol (eol-guess-from-vector buffer)))
+                 (when eol
+                   (return-from detect-end-of-line eol)))))
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-end-of-line ((path pathname))
+    "Detect end-of-line style from `pathname`."
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
     (detect-end-of-line in)))
 
-(defmethod detect-external-format ((vec vector) (scheme symbol))
-  (if (byte-array-p vec)
-      (let (enc enc-ct eol)
-        (setf (values enc enc-ct) (ces-guess-from-vector vec scheme))
-        (setf eol (eol-guess-from-vector vec))
-        (if enc-ct
-            (error (format nil "unsupported on ~a: ~{~a~^, ~}"
-                           (lisp-implementation-type) enc))
-            (if (null eol)
-                (make-external-format enc :lf)
-                (make-external-format enc eol))))
-      (error (format nil "supplied vector is not a byte array."))))
+
+(defgeneric detect-external-format (input symbol))
+
+(defmethod detect-external-format ((buffer vector) (scheme symbol))
+  "Detect external-format under the `scheme` from `buffer`."
+  (if (byte-array-p buffer)
+      (let* ((enc (ces-guess-from-vector buffer scheme))
+             (eol (eol-guess-from-vector buffer))
+             (enc-impl (dependent-name enc))
+             (eol-impl (dependent-name eol)))
+        (if (or (eq enc-impl :cannot-treat)
+                (eq eol-impl :cannot-treat))
+            (values nil (list enc eol))
+            (values
+             (if eol-impl
+                 (make-external-format enc-impl eol-impl)
+                 (make-external-format enc-impl :lf))
+             (list enc eol))))
+      (error (format nil "supllied vector is not a byte array."))))
 
 (defmethod detect-external-format ((stream stream) (scheme symbol))
+  "Detect external-format under the `scheme` from `buffer`. Note that this method
+method modifies `stream`'s file position."
   (if (byte-input-stream-p stream)
-      (if (file-position-changable-p stream)
-          (let ((pos (file-position stream)))
-            (with-byte-array (vec *detecting-buffer-size*)
-              (read-sequence vec stream)
-              (prog1
-                  (detect-external-format vec scheme)
-                (file-position stream pos))))
-          (error (format nil "supplied stream is not file-position changable.")))
+      (let* ((buffer-length *default-buffer-size*)
+             (buffer (make-array buffer-length :element-type '(unsigned-byte 8)))
+             (encoding)
+             (ces-state)
+             (end-of-line))
+        (loop :named stride-over-buffer
+           :for num-read := (read-sequence buffer stream)
+           :if (< num-read buffer-length)
+           :do (return-from stride-over-buffer
+                 (setf encoding (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state)
+                       end-of-line (eol-guess-from-vector (subseq buffer 0 num-read))))
+           :else
+           :do (multiple-value-bind (enc ces-st)
+                   (ces-guess-from-vector (subseq buffer 0 num-read) scheme ces-state)
+                 (setf encoding enc
+                       ces-state ces-st)
+                 (unless end-of-line
+                   (sef (eol-guess-from-vector buffer)))))
+        (let ((enc-impl (dependent-name encoding))
+              (eol-impl (dependent-name end-of-line)))
+          (if (or (eq enc-impl :cannot-treat)
+                  (eq eol-impl :cannot-treat))
+              (values nil (list encoding end-of-line))
+              (values
+               (if eol-impl
+                   (make-external-format enc-impl eol-impl)
+                   (make-external-format enc-impl :lf))
+               (list encoding end-of-line)))))
       (error (format nil "supplied stream is not a byte input stream."))))
 
 (defmethod detect-external-format ((path pathname) (scheme symbol))
-  (detect-external-format-from-file path scheme nil))
-
-(defun detect-external-format-from-file (path scheme &optional all-scan-p)
+  "Detect external-format from `pathname`."
   (with-open-file (in path
                    :direction :input
                    :element-type '(unsigned-byte 8))
-    (if all-scan-p
-        (let ((*detecting-buffer-size* (file-length in)))
-          (detect-external-format in scheme))
-        (detect-external-format in scheme))))
+    (detect-external-format in scheme)))

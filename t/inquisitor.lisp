@@ -3,8 +3,6 @@
   (:use :cl
         :inquisitor
         :prove)
-  (:import-from :inquisitor-test.util
-                :get-test-data)
   (:import-from :babel
                 :string-to-octets))
 (in-package :inquisitor-test)
@@ -15,44 +13,56 @@
 
 
 (subtest "detect-encoding"
+  (subtest "for vector"
+    (with-open-file (in (asdf:system-relative-pathname
+                         :inquisitor "t/data/ascii/ascii-lf.txt")
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (let ((buffer (make-array (file-length in) :element-type '(unsigned-byte 8))))
+        (read-sequence buffer in)
+        (is (detect-encoding buffer :jp) :utf-8))))
+
   (subtest "for stream"
-    (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
+    (with-open-file (in (asdf:system-relative-pathname
+                         :inquisitor "t/data/ascii/ascii-lf.txt")
                         :direction :input)
       (is-error (detect-encoding in :jp) 'error))
-    (let ((s (drakma:http-request "http://cliki.net"
-                                  :want-stream t
-                                  :force-binary t)))
-      (is-error (detect-encoding s :jp) 'error))
 
-    (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
+    (with-open-file (in (asdf:system-relative-pathname
+                         :inquisitor "t/data/unicode/utf-8.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (let ((pos (file-position in)))
-        (is (detect-encoding in :jp) :utf-8)
-        (is (file-position in) pos))))
+      (is (detect-encoding in :jp) :utf-8)
+      (is (file-position in) (file-length in))))
 
   (subtest "for pathname"
-    (is (detect-encoding (get-test-data "data/ascii/ascii-lf.txt") :jp) :utf-8)))
+    (is (detect-encoding (asdf:system-relative-pathname
+                         :inquisitor "t/data/ascii/ascii-lf.txt") :jp) :utf-8)))
 
 (subtest "detect-end-of-line"
-  (subtest "for stream"
-    (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
-                        :direction :input)
-      (is-error (detect-end-of-line in) 'error))
-    (let ((s (drakma:http-request "http://cliki.net"
-                                  :want-stream t
-                                  :force-binary t)))
-      (is-error (detect-end-of-line s) 'error))
-
-    (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
+  (subtest "for vector"
+    (with-open-file (in (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii-lf.txt")
                         :direction :input
                         :element-type '(unsigned-byte 8))
-      (let ((pos (file-position in)))
-        (is (detect-end-of-line in) :lf)
-        (is (file-position in) pos))))
+      (let ((buffer (make-array (file-length in) :element-type '(unsigned-byte 8))))
+        (read-sequence buffer in)
+        (is (detect-end-of-line buffer) :lf))))
+
+  (subtest "for stream"
+    (with-open-file (in (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii-lf.txt")
+                        :direction :input)
+      (is-error (detect-end-of-line in) 'error))
+
+    (with-open-file (in (asdf:system-relative-pathname
+                         :inquisitor "t/data/unicode/utf-8.txt")
+                        :direction :input
+                        :element-type '(unsigned-byte 8))
+      (is (detect-end-of-line in) :lf)
+      (diag "is this check valid?")
+      (is (file-position in) (file-length in))))
 
   (subtest "for pathname"
-    (is (detect-end-of-line (get-test-data "data/ascii/ascii-lf.txt"))
+    (is (detect-end-of-line (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii-lf.txt"))
         :lf)))
 
 (subtest "detect external-format --- from vector"
@@ -69,17 +79,16 @@
     (is-error (detect-external-format out :jp) 'error))
   (with-input-from-string (in "string")
     (is-error (detect-external-format in :jp) 'error))
-  (with-open-file (in (get-test-data "data/ascii/ascii-lf.txt")
+  (with-open-file (in (asdf:system-relative-pathname :inquisitor "t/data/ascii/ascii-lf.txt")
                       :direction :input
                       :element-type '(unsigned-byte 8))
-    (let ((pos (file-position in)))
-      (is (detect-external-format in :jp)
-          (make-external-format :utf-8 :lf))
-      (is (file-position in) pos))))
+    (is (detect-external-format in :jp)
+        (make-external-format :utf-8 :lf))))
 
 (subtest "detect external-format --- from pathname"
-  (is-error (detect-external-format "data/ascii/ascii-lf.txt" :jp) 'error)
-  (is (detect-external-format (get-test-data "data/ascii/ascii-lf.txt") :jp)
+  (is-error (detect-external-format "t/data/ascii/ascii-lf.txt" :jp) 'error)
+  (is (detect-external-format (asdf:system-relative-pathname
+                               :inquisitor "t/data/ascii/ascii-lf.txt") :jp)
       (make-external-format :utf-8 :lf)))
 
 

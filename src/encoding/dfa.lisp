@@ -53,8 +53,6 @@
            :generate-order))
 (in-package :inquisitor.encoding.dfa)
 
-
-
 (eval-when (:compile-toplevel :load-toplevel :execute)
 
   (defclass <dfa> ()
@@ -76,56 +74,56 @@
 
   (defun resolve-states (state-defs)
     (let ((states (mapcar (lambda (d i)
-			    (make-instance '<state> :name (car d) :index i))
-			  state-defs
-			  (loop for i from 0 below (length state-defs) collect i))))
+                            (make-instance '<state> :name (car d) :index i))
+                          state-defs
+                          (loop for i from 0 below (length state-defs) collect i))))
       (labels ((gen (s d i &aux (num-arcs (length (cdr d))))
-		 (setf (arcs-of s)
-		       (mapcar (lambda (arc aindex)
-				 (make-instance '<arc>
-						:from-state s
-						:to-state (or (find-if (lambda (e)
-									 (eq (name-of e) (cadr arc)))
-								       states)
-							      (error (format nil "no such state ~A" (cadr arc))))
-						:ranges (car arc)
-						:index aindex
-						:score (caddr arc)))
-			       (cdr d)
-			       (loop repeat num-arcs for x from i collect x)))
-		 (+ i num-arcs))
-	       (fold (fun  state arg1 arg2)
-		 (if (or (null arg1) (null arg2))
-		     state
-		     (fold fun
-			   (funcall fun (car arg1) (car arg2) state)
-			   (cdr arg1)
-			   (cdr arg2)))))
-	(fold #'gen 0 states state-defs)
-	states)))
+                 (setf (arcs-of s)
+                       (mapcar (lambda (arc aindex)
+                                 (make-instance '<arc>
+                                                :from-state s
+                                                :to-state (or (find-if (lambda (e)
+                                                                         (eq (name-of e) (cadr arc)))
+                                                                       states)
+                                                              (error (format nil "no such state ~A" (cadr arc))))
+                                                :ranges (car arc)
+                                                :index aindex
+                                                :score (caddr arc)))
+                               (cdr d)
+                               (loop repeat num-arcs for x from i collect x)))
+                 (+ i num-arcs))
+               (fold (fun  state arg1 arg2)
+                 (if (or (null arg1) (null arg2))
+                     state
+                     (fold fun
+                           (funcall fun (car arg1) (car arg2) state)
+                           (cdr arg1)
+                           (cdr arg2)))))
+        (fold #'gen 0 states state-defs)
+        states)))
 
 ;;;;;; DFA
 
   (defmacro define-dfa (name &body states)
     (let ((name-st (intern (string-upcase (format nil "+~A-ST+" name))))
-	  (name-ar (intern (string-upcase (format nil "+~A-AR+" name)))))
+          (name-ar (intern (string-upcase (format nil "+~A-AR+" name)))))
       `(unless (boundp ',name-st)
-	 (let ((dfa (make-instance '<dfa> :name ',name :states (resolve-states ',states))))
-	   (defconstant ,name-st (apply #'vector
-					(loop for state in (states-of dfa)
-					      collect (let ((vec (make-array 256 :initial-element -1)))
-							(flet ((b2i (byte) (if (characterp byte) (char-code byte) byte)))
-							  (dolist (br (arcs-of state))
-							    (dolist (range (ranges-of br))
-							      (if (consp range)
-								  (fill vec (index-of br)
-									:start (b2i (car range))
-									:end   (+ (b2i (cadr range)) 1))
-								  (setf (aref vec (b2i range)) (index-of br)))))
-							  vec)))))
-	   (defconstant ,name-ar (apply #'vector
-					(loop for arc in (loop for state in (states-of dfa) appending (arcs-of state))
-					      collect (cons (index-of (to-state-of arc)) (score-of arc)))))))))
+         (let ((dfa (make-instance '<dfa> :name ',name :states (resolve-states ',states))))
+           (defconstant ,name-st (apply #'vector
+                                        (loop for state in (states-of dfa)
+                                           collect (let ((vec (make-array 256 :initial-element -1)))
+                                                     (flet ((b2i (byte) (if (characterp byte) (char-code byte) byte)))
+                                                       (dolist (br (arcs-of state))
+                                                         (dolist (range (ranges-of br))
+                                                           (if (consp range)
+                                                               (fill vec (index-of br)
+                                                                     :start (b2i (car range))
+                                                                     :end   (+ (b2i (cadr range)) 1))
+                                                               (setf (aref vec (b2i range)) (index-of br)))))
+                                                       vec)))))
+           (defconstant ,name-ar (apply #'vector
+                                        (loop for arc in (loop for state in (states-of dfa) appending (arcs-of state))
+                                           collect (cons (index-of (to-state-of arc)) (score-of arc)))))))))
   ) ;; eval-when
 
 
@@ -146,57 +144,57 @@
 (defmacro dfa-next (dfa ch)
   `(when (dfa-alive ,dfa)
      (let ((temp (svref
-		  (svref (states ,dfa) (state ,dfa))
-		  ,ch)))
+                  (svref (states ,dfa) (state ,dfa))
+                  ,ch)))
        (if (< (the fixnum temp) (the fixnum  0))
-	   (setf (state ,dfa) -1)
-	   (setf (state ,dfa) (the fixnum (car (svref (arcs ,dfa) temp)))
-		 (score ,dfa) (* (the double-float (score ,dfa))
-				 (the single-float (cdr (svref (arcs ,dfa) temp)))))))))
+           (setf (state ,dfa) -1)
+           (setf (state ,dfa) (the fixnum (car (svref (arcs ,dfa) temp)))
+                 (score ,dfa) (* (the double-float (score ,dfa))
+                                 (the single-float (cdr (svref (arcs ,dfa) temp)))))))))
 
 (defmacro dfa-process (order ch)
   (with-gensyms (gorder gch)
-     `(let ((,gorder ,order)
-	   (,gch ,ch))
-	(or (loop for dfa in ,gorder
-		  for i of-type fixnum from 0
-		  do 
-		     (when (dfa-alive dfa)
-		       (when (dfa-alone dfa ,gorder)
-			 (return (dfa-name dfa)))
-		       (dfa-next (nth i ,gorder) ,gch)))
-	    nil))))
+    `(let ((,gorder ,order)
+           (,gch ,ch))
+       (or (loop for dfa in ,gorder
+              for i of-type fixnum from 0
+              do 
+                (when (dfa-alive dfa)
+                  (when (dfa-alone dfa ,gorder)
+                    (return (dfa-name dfa)))
+                  (dfa-next (nth i ,gorder) ,gch)))
+           nil))))
 
 (defun dfa-alone (dfa order)
   (unless (dfa-alive dfa)
     (return-from dfa-alone nil))
   (loop for d in order
-	do (if (and (not (eql dfa d)) (dfa-alive d))
-	       (return-from dfa-alone nil)))
+     do (if (and (not (eql dfa d)) (dfa-alive d))
+            (return-from dfa-alone nil)))
   t)
 
 (defun dfa-top (order)
   (let ((top nil))
     (loop for dfa in order do
-      (if (and (dfa-alive dfa)
-	       (or (null top)
-		   (> (the double-float (score dfa)) (the double-float (score top)))))
-	  (setf top dfa)))
+         (if (and (dfa-alive dfa)
+                  (or (null top)
+                      (> (the double-float (score dfa)) (the double-float (score top)))))
+             (setf top dfa)))
     top))
 
 (defun dfa-none (order)
   (dolist (d order)
     (if (dfa-alive d)
-	(return-from dfa-none nil)))
+        (return-from dfa-none nil)))
   t)
 
 (defmacro generate-order (&rest encodings)
   `(list
     ,@(mapcar (lambda (enc)
-		(let ((dfa-st (find-symbol (string-upcase (format nil "+~A-ST+" (symbol-name enc)))
-                                   :inquisitor.encoding.table))
-		      (dfa-ar (find-symbol (string-upcase (format nil "+~A-AR+" (symbol-name enc)))
-                                   :inquisitor.encoding.table))
-		      (dfa-name enc))
-		  `(dfa-init ,dfa-st ,dfa-ar ,dfa-name)))
-		  encodings)))
+                (let ((dfa-st (find-symbol (string-upcase (format nil "+~A-ST+" (symbol-name enc)))
+                                           :inquisitor.encoding.table))
+                      (dfa-ar (find-symbol (string-upcase (format nil "+~A-AR+" (symbol-name enc)))
+                                           :inquisitor.encoding.table))
+                      (dfa-name enc))
+                  `(dfa-init ,dfa-st ,dfa-ar ,dfa-name)))
+              encodings)))
