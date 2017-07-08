@@ -21,7 +21,7 @@
 (defun test-check-bom (actual-vec expected)
   (is (block inquisitor.encoding.guess::guess-body
         (inquisitor.encoding.guess::check-byte-order-mark
-         actual-vec :big-endian :little-endian nil))
+         actual-vec :big-endian :little-endian nil nil))
       expected))
 
 (subtest "Byte order mark treatment"
