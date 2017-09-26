@@ -267,10 +267,10 @@
      :collect name))
 
 (defun independent-name (dependent-name)
-  (cdr (find-if (lambda (n) (eq dependent-name (caar n))) +name-mapping+)))
+  (caar (find-if (lambda (n) (eql dependent-name (cdr n))) +name-mapping+)))
 
 (defun dependent-name (independent-name)
-  (caar (find-if (lambda (n) (eq independent-name (cdr n))) +name-mapping+)))
+  (cdr (find-if (lambda (n) (eql independent-name (caar n))) +name-mapping+)))
 
 (defun unicode-p (encoding)
   (member encoding

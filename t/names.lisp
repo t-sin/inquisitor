@@ -60,7 +60,7 @@
 (defvar +cannot-treat+ :cannot-treat)
 
 (subtest "unicode"
-  (is (independent-name :utf-8)
+  (is (dependent-name :utf-8)
       #+clisp charset:utf-8
       #+ecl :utf-8
       #+sbcl :utf-8
@@ -68,7 +68,7 @@
       #+abcl :utf-8
       #+allegro :utf8
       #+lispworks :utf-8)
-  (is (independent-name :ucs-2le)
+  (is (dependent-name :ucs-2le)
       #+clisp charset:unicode-16-little-endian  ;; = ucs-2 = unicode-16
       #+ecl :utf-16le  ;; = :ucs-2le
       #+sbcl :utf-16le
@@ -76,7 +76,7 @@
       #+abcl :utf-16le
       #+allegro +cannot-treat+
       #+lispworks '(:unicode :little-endian))
-  (is (independent-name :ucs-2be)
+  (is (dependent-name :ucs-2be)
       #+clisp charset:unicode-16-big-endian
       #+ecl :utf-16be  ;; = :ucs-2be
       #+sbcl :utf-16be
@@ -84,7 +84,7 @@
       #+abcl :utf-16be
       #+allegro +cannot-treat+
       #+lispworks '(:unicode :big-endian))
-  (is (independent-name :utf-16)
+  (is (dependent-name :utf-16)
       #+clisp charset:utf-16
       #+ecl :utf-16  ;; = :ucs-2
       #+sbcl +cannot-treat+
@@ -94,7 +94,7 @@
       #+lispworks +cannot-treat+))
 
 (subtest "japanese"
- (is (independent-name :iso-2022-jp)
+ (is (dependent-name :iso-2022-jp)
       #+clisp charset:iso-2022-jp
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
@@ -102,7 +102,7 @@
       #+abcl :iso-2022-jp
       #+allegro :jis
       #+lispworks :jis)
- (is (independent-name :euc-jp)
+ (is (dependent-name :euc-jp)
       #+clisp charset:euc-jp
       #+ecl +cannot-treat+
       #+sbcl :euc-jp
@@ -110,7 +110,7 @@
       #+abcl :euc-jp
       #+allegro :euc  ; I tried.
       #+lispworks :euc-jp)
- (is (independent-name :cp932)
+ (is (dependent-name :cp932)
       #+clisp charset:cp932
       #+ecl :windows-cp932
       #+sbcl :shift_jis
@@ -120,7 +120,7 @@
       #+lispworks :sjis))
 
 (subtest "tiwanese"
- (is (independent-name :big5)
+ (is (dependent-name :big5)
       #+clisp charset:big5
       #+ecl :windows-cp950
       #+sbcl +cannot-treat+
@@ -128,7 +128,7 @@
       #+abcl :|Big5|
       #+allegro :big5
       #+(and lispworks windows) '(win32:code-page :id 950))
- (is (independent-name :iso-2022-tw)
+ (is (dependent-name :iso-2022-tw)
       #+clisp charset:euc-tw
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
@@ -138,7 +138,7 @@
       #+lispworks +cannot-treat+))
 
 (subtest "chinese"
- (is (independent-name :gb2312)  ;; = EUC-CN, GBK, cp936
+ (is (dependent-name :gb2312)  ;; = EUC-CN, GBK, cp936
       #+clisp charset:gbk
       #+ecl :windows-cp936
       #+sbcl :gbk
@@ -146,7 +146,7 @@
       #+abcl :gbk
       #+allegro +cannot-treat+
       #+lispworks :gbk)
- (is (independent-name :gb18030)
+ (is (dependent-name :gb18030)
       #+clisp charset:gb18030
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
@@ -154,7 +154,7 @@
       #+abcl :gb18030
       #+allegro :gb18030
       #+lispworks +cannot-treat+)
- (is (independent-name :iso-2022-cn)
+ (is (dependent-name :iso-2022-cn)
       #+clisp charset:iso-2022-cn
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
@@ -164,7 +164,7 @@
       #+lispworks +cannot-treat+))
 
 (subtest "korean"
- (is (independent-name :euc-kr)
+ (is (dependent-name :euc-kr)
       #+clisp charset:euc-kr
       #+ecl :windows-cp949
       #+sbcl +cannot-treat+
@@ -172,7 +172,7 @@
       #+abcl :euc-kr
       #+allegro :949
       #+(and lispworks windows) '(win32:code-page :id 949))
- (is (independent-name :johab)
+ (is (dependent-name :johab)
       #+clisp charset:johab
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
@@ -180,7 +180,7 @@
       #+abcl :|x-Johab|
       #+allegro +cannot-treat+
       #+lispworks +cannot-treat+)
- (is (independent-name :iso-2022-kr)
+ (is (dependent-name :iso-2022-kr)
       #+clisp charset:iso-2022-kr
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
@@ -190,7 +190,7 @@
       #+lispworks +cannot-treat+))
 
 (subtest "arabic"
- (is (independent-name :iso-8859-6)
+ (is (dependent-name :iso-8859-6)
       #+clisp charset:iso-8859-6
       #+ecl :iso-8859-6
       #+sbcl :iso-8859-6
@@ -198,7 +198,7 @@
       #+abcl :iso-8859-6
       #+allegro iso8859-6
       #+lispworks +cannot-treat+)
- (is (independent-name :cp1256)
+ (is (dependent-name :cp1256)
       #+clisp charset:windows-1256
       #+ecl :windows-cp1256
       #+sbcl :cp1256
@@ -208,7 +208,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1256)))
 
 (subtest "greek"
- (is (independent-name :iso-8859-7)
+ (is (dependent-name :iso-8859-7)
       #+clisp charset:iso-8859-7
       #+ecl :iso-8859-7
       #+sbcl :iso-8859-7
@@ -216,7 +216,7 @@
       #+abcl :iso-8859-7
       #+allegro :iso8859-7
       #+lispworks +cannot-treat+)
- (is (independent-name :cp1253)
+ (is (dependent-name :cp1253)
       #+clisp charset:windows-1253
       #+ecl :windows-cp1253
       #+sbcl :cp1253
@@ -226,7 +226,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1253)))
 
 (subtest "hebrew"
-  (is (independent-name :iso-8859-8)
+  (is (dependent-name :iso-8859-8)
       #+clisp charset:iso-8859-8
       #+ecl :iso-8859-8
       #+sbcl :iso-8859-8
@@ -234,7 +234,7 @@
       #+abcl :iso-8859-8
       #+allegro :iso8859-8
       #+lispworks +cannot-treat+)
-  (is (independent-name :cp1255)
+  (is (dependent-name :cp1255)
       #+clisp charset:windows-1255
       #+ecl :windows-cp1255
       #+sbcl :cp1255
@@ -244,7 +244,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1255)))
 
 (subtest "turkish"
-  (is (independent-name :iso-8859-9)
+  (is (dependent-name :iso-8859-9)
       #+clisp charset:iso-8859-9
       #+ecl :iso-8859-9
       #+sbcl :iso-8859-9
@@ -252,7 +252,7 @@
       #+abcl :iso-8859-9
       #+allegro :iso8859-9
       #+lispworks +cannot-treat+)
-  (is (independent-name :cp1254)
+  (is (dependent-name :cp1254)
       #+clisp charset:windows-1254
       #+ecl :windows-cp1254
       #+sbcl :cp1254
@@ -262,7 +262,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1254)))
 
 (subtest "russian"
-  (is (independent-name :iso-8859-5)
+  (is (dependent-name :iso-8859-5)
       #+clisp charset:iso-8859-5
       #+ecl :iso-8859-5
       #+sbcl :iso-8859-5
@@ -270,7 +270,7 @@
       #+abcl :iso-8859-5
       #+allegro :iso8859-5
       #+lispworks +cannot-treat+)
-  (is (independent-name :koi8-r)
+  (is (dependent-name :koi8-r)
       #+clisp charset:koi8-r
       #+ecl +cannot-treat+
       #+sbcl :koi8-r
@@ -278,7 +278,7 @@
       #+abcl :koi8-r
       #+allegro :koi8-r
       #+lispworks +cannot-treat+)
-  (is (independent-name :koi8-u)
+  (is (dependent-name :koi8-u)
       #+clisp charset:koi8-u
       #+ecl +cannot-treat+
       #+sbcl :koi8-u
@@ -286,7 +286,7 @@
       #+abcl :koi8-u
       #+allegro +cannot-treat+
       #+lispworks +cannot-treat+)
-  (is (independent-name :cp866)
+  (is (dependent-name :cp866)
       #+clisp charset:cp866
       #+ecl :dos-cp866
       #+sbcl :cp866
@@ -294,7 +294,7 @@
       #+abcl :ibm866
       #+allegro +cannot-treat+
       #+lispworks +cannot-treat+)
-  (is (independent-name :cp1251)
+  (is (dependent-name :cp1251)
       #+clisp charset:windows-1251
       #+ecl :windows-cp1251
       #+sbcl :cp1251
@@ -304,7 +304,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1251)))
 
 (subtest "polish"
-  (is (independent-name :iso-8859-2)
+  (is (dependent-name :iso-8859-2)
       #+clisp charset:iso-8859-2
       #+ecl :iso-8859-2
       #+sbcl :iso-8859-2
@@ -312,7 +312,7 @@
       #+abcl :iso-8859-2
       #+allegro :iso8859-2
       #+lispworks +cannot-treat+)
-  (is (independent-name :cp1250)
+  (is (dependent-name :cp1250)
       #+clisp charset:windows-1250
       #+ecl :windows-cp1250
       #+sbcl :cp1250
@@ -322,7 +322,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1250)))
 
 (subtest "baltic"
-  (is (independent-name :iso-8859-13)
+  (is (dependent-name :iso-8859-13)
       #+clisp charset:iso-8859-13
       #+ecl :iso-8859-13
       #+sbcl :iso-8859-13
@@ -330,7 +330,7 @@
       #+abcl :iso-8859-13
       #+allegro +cannot-treat+
       #+lispworks +cannot-treat+)
-  (is (independent-name :cp1257)
+  (is (dependent-name :cp1257)
       #+clisp charset:windows-1257
       #+ecl :windows-cp1257
       #+sbcl :cp1257
@@ -340,7 +340,7 @@
       #+(and lispworks windows) '(win32:code-page :id 1257)))
 
 (subtest "end of line"
-  (is (independent-name :lf)
+  (is (dependent-name :lf)
       #+clisp :unix
       #+ecl :lf
       #+sbcl +cannot-treat+
@@ -348,7 +348,7 @@
       #+abcl :lf
       #+allegro :unix  ; https://franz.com/support/documentation/10.1/doc/operators/excl/eol-convention.htm
       #+lispworks :lf)
-  (is (independent-name :cr)
+  (is (dependent-name :cr)
       #+clisp :mac
       #+ecl :cr
       #+sbcl +cannot-treat+
@@ -356,7 +356,7 @@
       #+abcl :cr
       #+allegro :mac
       #+lispworks :cr)
-  (is (independent-name :crlf)
+  (is (dependent-name :crlf)
       #+clisp :dos
       #+ecl :crlf
       #+sbcl +cannot-treat+
