@@ -171,7 +171,7 @@
       #+ccl +cannot-treat+
       #+abcl :euc-kr
       #+allegro :949
-      #+(and lispworks windows) '(win32:code-page :id 949)
+      #+(and lispworks windows) '(win32:code-page :id 949))
  (is (independent-name :johab)
       #+clisp charset:johab
       #+ecl +cannot-treat+
@@ -179,7 +179,7 @@
       #+ccl +cannot-treat+
       #+abcl :|x-Johab|
       #+allegro +cannot-treat+
-      #+lispworks +cannot-treat+))
+      #+lispworks +cannot-treat+)
  (is (independent-name :iso-2022-kr)
       #+clisp charset:iso-2022-kr
       #+ecl +cannot-treat+
