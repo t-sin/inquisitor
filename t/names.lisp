@@ -65,25 +65,29 @@
       #+ecl :utf-8
       #+sbcl :utf-8
       #+ccl :utf-8
-      #+abcl :utf-8)
+      #+abcl :utf-8
+      #+allegro :utf8)
   (is (independent-name :ucs-2le)
       #+clisp charset:unicode-16-little-endian  ;; = ucs-2 = unicode-16
       #+ecl :utf-16le  ;; = :ucs-2le
       #+sbcl :utf-16le
       #+ccl :utf-16le
-      #+abcl :utf-16le)
+      #+abcl :utf-16le
+      #+allegro +cannot-treat+)
   (is (independent-name :ucs-2be)
       #+clisp charset:unicode-16-big-endian
       #+ecl :utf-16be  ;; = :ucs-2be
       #+sbcl :utf-16be
       #+ccl :utf-16be
-      #+abcl :utf-16be)
+      #+abcl :utf-16be
+      #+allegro +cannot-treat+)
   (is (independent-name :utf-16)
       #+clisp charset:utf-16
       #+ecl :utf-16  ;; = :ucs-2
       #+sbcl +cannot-treat+
       #+ccl :utf-16
-      #+abcl :utf-16))
+      #+abcl :utf-16
+      #+allegro +cannot-treat+))
 
 (subtest "japanese"
  (is (independent-name :iso-2022-jp)
@@ -91,19 +95,22 @@
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :iso-2022-jp)
+      #+abcl :iso-2022-jp
+      #+allegro :jis)
  (is (independent-name :euc-jp)
       #+clisp charset:euc-jp
       #+ecl +cannot-treat+
       #+sbcl :euc-jp
       #+ccl :euc-jp
-      #+abcl :euc-jp)
+      #+abcl :euc-jp
+      #+allegro :euc)  ; I tried.
  (is (independent-name :cp932)
       #+clisp charset:cp932
       #+ecl :windows-cp932
       #+sbcl :shift_jis
       #+ccl :windows-31j
-      #+abcl :|x-MS932_0213|))
+      #+abcl :|x-MS932_0213|
+      #+allegro :shiftjis))
 
 (subtest "tiwanese"
  (is (independent-name :big5)
@@ -111,13 +118,15 @@
       #+ecl :windows-cp950
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :|Big5|)
+      #+abcl :|Big5|
+      #+allegro :big5)
  (is (independent-name :iso-2022-tw)
       #+clisp charset:euc-tw
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :|x-EUC-TW|))
+      #+abcl :|x-EUC-TW|
+      #+allegro +cannot-treat+))
 
 (subtest "chinese"
  (is (independent-name :gb2312)  ;; = EUC-CN, GBK, cp936
@@ -125,19 +134,22 @@
       #+ecl :windows-cp936
       #+sbcl :gbk
       #+ccl :cp936
-      #+abcl :gbk)
+      #+abcl :gbk
+      #+allegro +cannot-treat+)
  (is (independent-name :gb18030)
       #+clisp charset:gb18030
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :gb18030)
+      #+abcl :gb18030
+      #+allegro :gb18030)
  (is (independent-name :iso-2022-cn)
       #+clisp charset:iso-2022-cn
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :iso-2022-cn))
+      #+abcl :iso-2022-cn
+      #+allegro +cannot-treat+))
 
 (subtest "korean"
  (is (independent-name :euc-kr)
@@ -145,19 +157,22 @@
       #+ecl :windows-cp949
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :euc-kr)
+      #+abcl :euc-kr
+      #+allegro :949)
  (is (independent-name :johab)
       #+clisp charset:johab
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :|x-Johab|)
+      #+abcl :|x-Johab|
+      #+allegro +cannot-treat+)
  (is (independent-name :iso-2022-kr)
       #+clisp charset:iso-2022-kr
       #+ecl +cannot-treat+
       #+sbcl +cannot-treat+
       #+ccl +cannot-treat+
-      #+abcl :iso-2022-kr))
+      #+abcl :iso-2022-kr
+      #+allegro +cannot-treat+))
 
 (subtest "arabic"
  (is (independent-name :iso-8859-6)
@@ -165,13 +180,15 @@
       #+ecl :iso-8859-6
       #+sbcl :iso-8859-6
       #+ccl :iso-8859-6
-      #+abcl :iso-8859-6)
+      #+abcl :iso-8859-6
+      #+allegro iso8859-6)
  (is (independent-name :cp1256)
       #+clisp charset:windows-1256
       #+ecl :windows-cp1256
       #+sbcl :cp1256
       #+ccl +cannot-treat+
-      #+abcl :|windows-1256|))
+      #+abcl :|windows-1256|
+      #+allegro :1256))
 
 (subtest "greek"
  (is (independent-name :iso-8859-7)
@@ -179,13 +196,15 @@
       #+ecl :iso-8859-7
       #+sbcl :iso-8859-7
       #+ccl :iso-8859-7
-      #+abcl :iso-8859-7)
+      #+abcl :iso-8859-7
+      #+allegro :iso8859-7)
  (is (independent-name :cp1253)
       #+clisp charset:windows-1253
       #+ecl :windows-cp1253
       #+sbcl :cp1253
       #+ccl +cannot-treat+
-      #+abcl :|windows-1253|))
+      #+abcl :|windows-1253|
+      #+allegro :1253))
 
 (subtest "hebrew"
   (is (independent-name :iso-8859-8)
@@ -193,13 +212,15 @@
       #+ecl :iso-8859-8
       #+sbcl :iso-8859-8
       #+ccl :iso-8859-8
-      #+abcl :iso-8859-8)
+      #+abcl :iso-8859-8
+      #+allegro :iso8859-8)
   (is (independent-name :cp1255)
       #+clisp charset:windows-1255
       #+ecl :windows-cp1255
       #+sbcl :cp1255
       #+ccl +cannot-treat+
-      #+abcl :|windows-1255|))
+      #+abcl :|windows-1255|
+      #+allegro :1255))
 
 (subtest "turkish"
   (is (independent-name :iso-8859-9)
@@ -207,13 +228,15 @@
       #+ecl :iso-8859-9
       #+sbcl :iso-8859-9
       #+ccl :iso-8859-9
-      #+abcl :iso-8859-9)
+      #+abcl :iso-8859-9
+      #+allegro :iso8859-9)
   (is (independent-name :cp1254)
       #+clisp charset:windows-1254
       #+ecl :windows-cp1254
       #+sbcl :cp1254
       #+ccl +cannot-treat+
-      #+abcl :|windows-1254|))
+      #+abcl :|windows-1254|
+      #+allegro :1254))
 
 (subtest "russian"
   (is (independent-name :iso-8859-5)
@@ -221,31 +244,36 @@
       #+ecl :iso-8859-5
       #+sbcl :iso-8859-5
       #+ccl :iso-8859-5
-      #+abcl :iso-8859-5)
+      #+abcl :iso-8859-5
+      #+allegro :iso8859-5)
   (is (independent-name :koi8-r)
       #+clisp charset:koi8-r
       #+ecl +cannot-treat+
       #+sbcl :koi8-r
       #+ccl +cannot-treat+
-      #+abcl :koi8-r)
+      #+abcl :koi8-r
+      #+allegro :koi8-r)
   (is (independent-name :koi8-u)
       #+clisp charset:koi8-u
       #+ecl +cannot-treat+
       #+sbcl :koi8-u
       #+ccl +cannot-treat+
-      #+abcl :koi8-u)
+      #+abcl :koi8-u
+      #+allegro +cannot-treat+)
   (is (independent-name :cp866)
       #+clisp charset:cp866
       #+ecl :dos-cp866
       #+sbcl :cp866
       #+ccl +cannot-treat+
-      #+abcl :ibm866)
+      #+abcl :ibm866
+      #+allegro +cannot-treat+)
   (is (independent-name :cp1251)
       #+clisp charset:windows-1251
       #+ecl :windows-cp1251
       #+sbcl :cp1251
       #+ccl +cannot-treat+
-      #+abcl :|windows-1251|))
+      #+abcl :|windows-1251|
+      #+allegro :1251))
 
 (subtest "polish"
   (is (independent-name :iso-8859-2)
@@ -253,13 +281,15 @@
       #+ecl :iso-8859-2
       #+sbcl :iso-8859-2
       #+ccl :iso-8859-2
-      #+abcl :iso-8859-2)
+      #+abcl :iso-8859-2
+      #+allegro :iso8859-2)
   (is (independent-name :cp1250)
       #+clisp charset:windows-1250
       #+ecl :windows-cp1250
       #+sbcl :cp1250
       #+ccl +cannot-treat+
-      #+abcl :|windows-1250|))
+      #+abcl :|windows-1250|
+      #+allegro :1250))
 
 (subtest "baltic"
   (is (independent-name :iso-8859-13)
@@ -267,13 +297,15 @@
       #+ecl :iso-8859-13
       #+sbcl :iso-8859-13
       #+ccl :iso-8859-13
-      #+abcl :iso-8859-13)
+      #+abcl :iso-8859-13
+      #+allegro +cannot-treat+)
   (is (independent-name :cp1257)
       #+clisp charset:windows-1257
       #+ecl :windows-cp1257
       #+sbcl :cp1257
       #+ccl +cannot-treat+
-      #+abcl :|windows-1257|))
+      #+abcl :|windows-1257|
+      #+allegro :1257))
 
 (subtest "end of line"
   (is (independent-name :lf)
@@ -281,19 +313,22 @@
       #+ecl :lf
       #+sbcl +cannot-treat+
       #+ccl :unix
-      #+abcl :lf)
+      #+abcl :lf
+      #+allegro :unix)  ; https://franz.com/support/documentation/10.1/doc/operators/excl/eol-convention.htm
   (is (independent-name :cr)
       #+clisp :mac
       #+ecl :cr
       #+sbcl +cannot-treat+
       #+ccl :macos
-      #+abcl :cr)
+      #+abcl :cr
+      #+allegro :mac)
   (is (independent-name :crlf)
       #+clisp :dos
       #+ecl :crlf
       #+sbcl +cannot-treat+
       #+ccl :dos
-      #+abcl :crlf))
+      #+abcl :crlf
+      #+allegro :doc))
 
 (subtest "if specified encodings is unicode?"
   (subtest "only unicode returns t"
