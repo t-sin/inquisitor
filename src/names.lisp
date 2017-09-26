@@ -14,7 +14,8 @@
   `(;;; unicode
     ((:utf-8 . :unicode) .
      #+clisp ,charset:utf-8
-     #-clisp :utf-8)
+     #+allegro :utf8
+     #-(or clisp allegro) :utf-8)
     ((:ucs-2le . :unicode) .
      #+clisp ,charset:unicode-16-little-endian
      #+allegro :cannot-treat
