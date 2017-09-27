@@ -11,20 +11,22 @@ Encoding/end-of-line detection and external-format abstraction for Common Lisp.
 > -- ["The Library of Babel" by Jorge Luis Borges](http://hyperdiscordia.crywalt.com/library_of_babel.html)
 
 
-## Goal
+## Features
 
 * encoding/end-of-line name abstraction
 * encoding/end-of-line detection
 * external-format abstraction
   * make external-format for each implementations
   * make external-format from byte-array, stream and pathname (with auto-detection)
-  * abstract external-format of babel and flexi-stream
-* many implementations support
+  * [TODO] abstract external-format of babel and flexi-stream
+* supports many implementations
   * GNU CLISP
   * Embeddable Common Lisp
   * Steel Bank Common Lisp
-  * Clozure CL
+  * Clozure Common Lisp
   * Armed Bear Common Lisp
+  * Allegro Common Lisp
+  * LispWorks
 
 
 ## Installation
