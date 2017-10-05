@@ -244,7 +244,7 @@
      #+ccl :macos
      #+allegro :mac
      #+lispworks :cr
-     #-(or clisp sbcl allegro lispworks) :cr)
+     #-(or clisp sbcl ccl allegro lispworks) :cr)
     ((:crlf . :eol) .
      ;; #+lispworks :crlf
      #+clisp :dos
