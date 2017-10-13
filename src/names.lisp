@@ -11,270 +11,454 @@
 
 
 (defvar +name-mapping+
-  `(;;; unicode
-    ((:utf-8 . :unicode) .
+  `(
+
+;;; Unicode character set
+
+    (:name :utf-8
+     :type :unicode
+     :impl-name
+     #+sbcl :utf-8
+     #+ccl :utf-8
      #+clisp ,charset:utf-8
-     #+allegro :utf8
-     #-(or clisp allegro) :utf-8)
-    ((:ucs-2le . :unicode) .
+     #+ecl :utf-8
+     #+abcl :utf-8
+     #+lispworks :utf-8
+     #+allegro :utf8)
+
+    ;; TODO: UCS-2 == UTF16? strictly?
+    (:name :ucs-2le
+     :type :unicode
+     :impl-name
+     #+sbcl :utf-16le
+     #+ccl :utf-16le
      #+clisp ,charset:unicode-16-little-endian
-     #+allegro :cannot-treat
+     #+ecl :utf-16le
+     #+abcl :utf-16le
      #+lispworks '(unicode :little-endian)
-     #-(or clisp allegro lispworks) :utf-16le)
-    ((:ucs-2be . :unicode) .
+     #+allegro :cannot-treat)
+
+    (:name :ucs-2be
+     :type :unicode
+     :impl-name
+     #+sbcl :utf-16be
+     #+ccl :utf-16be
      #+clisp ,charset:unicode-16-big-endian
-     #+allegro :cannot-treat
+     #+ecl :utf-16be
+     #+abcl :utf-16be
      #+lispworks '(unicode :big-endian)
-     #-(or clisp allegro lispworks) :utf-16be)
-    ((:utf-16 . :unicode) .
+     #+allegro :cannot-treat)
+
+    (:name :utf-16
+     :type :unicode
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :utf-16
      #+clisp ,charset:utf-16
      #+ecl :utf-16
-     #+ccl :utf-16
      #+abcl :utf-16
-     #-(or clisp ecl ccl abcl) :cannot-treat)
+     #+lispworks :cannot-treat
+     #+allegro :cannot-treat)
 
-    ;;; japanese
-    ((:iso-2022-jp . :jp) .  ; jis
-     ;; #+lispworks :jis
+;;; Japanese
+
+    (:name :iso-2022-jp
+     :type :jp
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
      #+clisp ,charset:iso-2022-jp
      #+ecl :cannot-treat
      #+abcl :iso-2022-jp
-     #+allegro :jis
      #+lispworks :jis
-     #-(or clisp ecl abcl allegro lispworks) :cannot-treat)
-    ((:euc-jp . :jp) .
-     ;; #+lispworks :euc-jp
+     #+allegro :jis)
+
+    (:name :euc-jp
+     :type :jp
+     :impl-name
+     #+sbcl :euc-jp
+     #+ccl :euc-jp
      #+clisp ,charset:euc-jp
      #+ecl :cannot-treat
-     #+allegro :euc
+     #+abcl :euc-jp
      #+lispworks :euc-jp
-     #-(or clisp ecl allegro lispworks) :euc-jp)
-    ((:cp932 . :jp) .
-     ;; #+lispworks :sjis
-     #+clisp ,charset:cp932
-     #+ecl :windows-cp932
+     #+allegro :euc)
+
+    (:name :cp932
+     :type :jp
+     :impl-name
      #+sbcl :shift_jis
      #+ccl :windows-31j
+     #+clisp ,charset:cp932
+     #+ecl :windows-cp932
      #+abcl :|x-MS932_0213|
-     #+allegro :shiftjis
-     #+lispworks :sjis)
+     #+lispworks :sjis
+     #+allegro :shiftjis)
 
-    ;;; taiwanese
-    ((:big5 . :tw) .
+;;; Taiwanese
+
+    (:name :big5
+     :type :tw
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
      #+clisp ,charset:big5
      #+ecl :windows-cp950
      #+abcl :|Big5|
-     #+allegro :big5
-     #-(or clisp ecl abcl allegro) :cannot-treat)
-    ((:iso-2022-tw :tw) .
-     #+clisp ,charset:euc-tw
-     #+abcl :|x-EUC-TW|
-     #-(or clisp abcl) :cannot-treat)
+     #+lispworks :cannot-treat
+     #+allegro :big5)
 
-    ;;; chinese
-    ((:gb2312 . :cn) .
-     #+clisp ,charset:gbk
-     #+ecl :windows-cp936
+    (:name :iso-2022-tw
+     :type :tw
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
+     #+clisp ,charset:euc-tw
+     #+ecl :cannot-treat
+     #+abcl :|x-EUC-TW|
+     #+lispworks :cannot-treat
+     #+allegro :cannot-treat)
+
+;;; Chinese
+
+    (:name :gb2312
+     :type :cn
+     :impl-name
      #+sbcl :gbk
      #+ccl :cp936
+     #+clisp ,charset:gbk
+     #+ecl :windows-cp936
      #+abcl :gbk
-     #+allegro :cannot-treat
-     #+lispworks :gbk)
-    ((:gb18030 . :cn) .
-     #+clisp ,charset:gb18030
-     #+abcl :gb18030
-     #+allegro :gb18030
-     #-(or clisp abcl allegro) :cannot-treat)
-    ((:iso-2022-cn . :cn) .
-     #+clisp ,charset:iso-2022-cn
-     #+abcl :iso-2022-cn
-     #-(or clisp abcl) :cannot-treat)
+     #+lispworks :gbk
+     #+allegro :cannot-treat)
 
-    ;;; korean
-    ((:euc-kr . :kr) .
+    (:name :gb18030
+     :type :cn
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
+     #+clisp ,charset:gb18030
+     #+ecl :cannot-treat
+     #+abcl :gb18030
+     #+lispworks :cannot-treat
+     #+allegro :gb18030)
+
+    (:name :iso-2022-cn
+     :type :cn
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
+     #+clisp ,charset:iso-2022-cn
+     #+ecl :cannot-treat
+     #+abcl :iso-2022-cn
+     #+lispworks :cannot-treat
+     #+allegro :cannot-treat)
+
+;;; Korean
+
+    (:name :euc-kr
+     :type :kr
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
      #+clisp ,charset:euc-kr
      #+ecl :windows-cp949
-     #+allegro :949
-     #+(and lispworks windows) '(win32:code-page :id 949)
-     #+(or sbcl ccl) :cannot-treat
-     #-(or clisp ecl sbcl ccl allegro) :euc-kr)
-    ((:johab . :kr) .
-     #+clisp ,charset:johab
-     #+abcl :|x-Johab|
-     #+(or ecl sbcl ccl allegro lispworks) :cannot-treat
-     #-(or clisp ecl sbcl ccl abcl allegro) :johab)
-    ((:iso-2022-kr . :kr) .
-     #+clisp ,charset:iso-2022-kr
-     #+abcl :iso-2022-kr
-     #-(or clisp abcl) :cannot-treat)
+     #+abcl :euc-kr
+     #+lispworks '(win32:code-page :id 949)
+     #+allegro :949)
 
-    ;;; arabic
-    ((:iso-8859-6 . :ar) .
-     #+clisp ,charset:iso-8859-6
-     #+allegro :iso8859-6
+    (:name :johab
+     :type :kr
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
+     #+clisp ,charset:johab
+     #+ecl :cannot-treat
+     #+abcl :|x-Johab|
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-6)
-    ((:cp1256 . :ar) .
+     #+allegro :cannot-treat)
+
+    (:name :iso-2022-kr
+     :type :kr
+     :impl-name
+     #+sbcl :cannot-treat
+     #+ccl :cannot-treat
+     #+clisp ,charset:iso-2022-kr
+     #+ecl :cannot-treat
+     #+abcl :iso-2022-kr
+     #+lispworks :cannot-treat
+     #+allegro :cannot-treat)
+
+;;; Arabic
+
+    (:name :iso-8859-6
+     :type :ar
+     :impl-name
+     #+sbcl :iso-8859-6
+     #+ccl :iso-8859-6
+     #+clisp ,charset:iso-8859-6
+     #+ecl :iso-8859-6
+     #+abcl :iso-8859-6
+     #+lispworks :cannot-treat
+     #+allegro :iso8859-6)
+
+    (:name :cp1256
+     :type :ar
+     :impl-name
+     #+sbcl :cp1256
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1256
      #+ecl :windows-cp1256
-     #+ccl :cannot-treat
      #+abcl :|windows-1256|
-     #+allegro :1256
-     #+(and lispworks windows) '(win32:code-page :id 1256)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1256)
+     #+lispworks '(win32:code-page :id 1256)
+     #+allegro :1256)
 
-    ;;; greek
-    ((:iso-8859-7 . :gr) .
+;;; Greek
+
+    (:name :iso-8859-7
+     :type :gr
+     :impl-name
+     #+sbcl :iso-8859-7
+     #+ccl :iso-8859-7
      #+clisp ,charset:iso-8859-7
-     #+allegro :iso8859-7
+     #+ecl :iso-8859-7
+     #+abcl :iso-8859-7
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-7)
-    ((:cp1253 . :gr) .
+     #+allegro :iso8859-7)
+
+    (:name :cp1253
+     :type :gr
+     :impl-name
+     #+sbcl :cp1253
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1253
      #+ecl :windows-cp1253
-     #+ccl :cannot-treat
-     #+abcl  :|windows-1253|
-     #+allegro :1253
-     #+(and lispworks windows) '(win32:code-page :id 1253)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1253)
+     #+abcl :|windows-1253|
+     #+lispworks '(win32:code-page :id 1253)
+     #+allegro :1253)
 
-    ;;; hebrew
-    ((:iso-8859-8 . :hw) .
-     #+clisp ,charset:iso-8859-8
-     #+allegro :iso8559-8
+;;; Hebrew
+
+    (:name :iso-8859-8
+     :type :hw
+     :impl-name
+     #+sbcl :iso-8859-8
+     #+ccl :iso-8859-8
+     #+clisp :iso-8859-8
+     #+ecl :iso-8859-8
+     #+abcl :iso-8859-8
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-8)
-    ((:cp1255 . :hw) .
+     #+allegro :iso8559-8)
+
+    (:name :cp1255
+     :type :hw
+     :impl-name
+     #+sbcl :cp1255
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1255
      #+ecl :windows-cp1255
-     #+ccl :cannot-treat
      #+abcl :|windows-1255|
-     #+allegro :1255
-     #+(and lispworks windows) '(win32:code-page :id 1255)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1255)
+     #+lispworks '(win32:code-page :id 1255)
+     #+allegro :1255)
 
-    ;;; turkish
-    ((:iso-8859-9 . :tr) .
+;;; Turkish
+
+    (:name :iso-8859-9
+     :type :tr
+     :impl-name
+     #+sbcl :iso-8859-9
+     #+ccl :iso-8859-9
      #+clisp ,charset:iso-8859-9
-     #+allegro :iso8859-9
+     #+ecl :iso-8859-9
+     #+abcl :iso-8859-9
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-9)
-    ((:cp1254 . :tr) .
+     #+allegro :iso8859-9)
+
+    (:name :cp1254
+     :type :tr
+     :impl-name
+     #+sbcl :cp1254
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1254
      #+ecl :windows-cp1254
-     #+ccl :cannot-treat
      #+abcl :|windows-1254|
-     #+allegro :1254
-     #+(and lispworks windows) '(win32:code-page :id 1254)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1254)
+     #+lispworks '(win32:code-page :id 1254)
+     #+allegro :1254)
 
-    ;;; russian
-    ((:iso-8859-5 . :ru) .
+;;; Russian
+
+    (:name :iso-8859-5
+     :type :ru
+     :impl-name
+     #+sbcl :iso-8859-5
+     #+ccl :iso-8859-5
      #+clisp ,charset:iso-8859-5
-     #+allegro :iso8859-5
+     #+ecl :iso-8859-5
+     #+abcl :iso-8859-5
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-5)
-    ((:koi8-r . :ru) .
-     #+clisp ,charset:koi8-r
+     #+allegro :iso8859-5)
+
+    (:name :koi8-r
+     :type :ru
+     :impl-name
      #+sbcl :koi8-r
-     #+(or ecl ccl lispworks) :cannot-treat
-     #-(or clisp sbcl ecl ccl) :koi8-r)
-    ((:koi8-u . :ru) .
+     #+ccl :cannot-treat
+     #+clisp ,charset:koi8-r
+     #+ecl :cannot-treat
+     #+abcl :koi8-r
+     #+lispworks :cannot-treat
+     #+allegro :koi8-r)
+
+    (:name :koi8-u
+     :type :ru
+     :impl-name
+     #+sbcl :koi8-u
+     #+ccl :cannot-treat
      #+clisp ,charset:koi8-u
-     #+(or ecl ccl allegro lispworks) :cannot-treat
-     #-(or clisp ecl ccl allegro lispworks) :koi8-u)
-    ((:cp866 . :ru) .
+     #+ecl :cannot-treat
+     #+abcl :koi8-u
+     #+lispworks :cannot-treat
+     #+allegro :cannot-treat)
+
+    (:name :cp866
+     :type :ru
+     :impl-name
+     #+sbcl :cp866
+     #+ccl :cannot-treat
      #+clisp ,charset:cp866
      #+ecl :dos-cp866
-     #+ccl :cannot-treat
      #+abcl :ibm866
-     #+allegro :cannot-treat
      #+lispworks :cannot-treat
-     #-(or clisp ecl ccl abcl lispworks) :cp866)
-    ((:cp1251 . :ru) .
+     #+allegro :cannot-treat)
+
+    (:name :cp1251
+     :type :ru
+     :impl-name
+     #+sbcl :cp1251
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1251
      #+ecl :windows-cp1251
-     #+ccl :cannot-treat
      #+abcl :|windows-1251|
-     #+allegro :1251
-     #+(and lispworks windows) '(win32:code-page :id 1251)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1251)
+     #+lispworks '(win32:code-page :id 1251)
+     #+allegro :1251)
 
-    ;;; polish
-    ((:iso-8859-2 . :pl) .
+;;; Polish
+
+    (:name :iso-8859-2
+     :type :pl
+     :impl-name
+     #+sbcl :iso-8859-2
+     #+ccl :iso-8859-2
      #+clisp ,charset:iso-8859-2
-     #+allegro :iso8859-2
+     #+ecl :iso-8859-2
+     #+abcl :iso-8859-2
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-2)
-    ((:cp1250 . :pl) .
+     #+allegro :iso8859-2)
+
+    (:name :cp1250
+     :type :pl
+     :impl-name
+     #+sbcl :cp1250
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1250
      #+ecl :windows-cp1250
-     #+ccl :cannot-treat
      #+abcl :|windows-1250|
-     #+allegro :1250
-     #+(and lispworks windows) '(win32:code-page :id 1250)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1250)
+     #+lispworks '(win32:code-page :id 1250)
+     #+allegro :1250)
 
-    ;;; baltic
-    ((:iso-8859-13 . :bl) .
+;;; Baltic
+
+    (:name :iso-8859-13
+     :type :bl
+     :impl-name
+     #+sbcl :iso-8859-13
+     #+ccl :iso-8859-13
      #+clisp ,charset:iso-8859-13
-     #+allegro :cannot-treat
+     #+ecl :iso-8859-13
+     #+abcl :iso-8859-13
      #+lispworks :cannot-treat
-     #-(or clisp allegro lispworks) :iso-8859-13)
-    ((:cp1257 . :bl) .
+     #+allegro :cannot-treat)
+
+    (:name :cp1257
+     :type :bl
+     :impl-name
+     #+sbcl :cp1257
+     #+ccl :cannot-treat
      #+clisp ,charset:cp1257
      #+ecl :windows-cp1257
-     #+ccl :cannot-treat
      #+abcl :|windows-1257|
-     #+allegro :1257
-     #+(and lispworks windows) '(win32:code-page :id 1257)
-     #-(or clisp ecl ccl abcl allegro lispworks) :cp1257)
+     #+lispworks '(win32:code-page :id 1257)
+     #+allegro :1257)
 
-    ;;; end of line
-    ((:lf . :eol) .
-     #+clisp :unix
+;;; End of line markers
+
+    (:name :lf
+     :type :eol
+     :impl-name
      #+sbcl :cannot-treat
      #+ccl :unix
-     #+allegro :unix
+     #+clisp :unix
+     #+ecl :lf
+     #+abcl :lf
      #+lispworks :lf
-     #-(or clisp sbcl ccl allegro lispworks) :lf)
-    ((:cr . :eol) .
-     #+clisp :mac
+     #+allegro :unix)
+
+    (:name :cr
+     :type :eol
+     :impl-name
      #+sbcl :cannot-treat
      #+ccl :macos
-     #+allegro :mac
+     #+clisp :mac
+     #+ecl :cr
+     #+abcl :cr
      #+lispworks :cr
-     #-(or clisp sbcl ccl allegro lispworks) :cr)
-    ((:crlf . :eol) .
-     ;; #+lispworks :crlf
-     #+clisp :dos
+     #+allegro :mac)
+
+    (:name :crlf
+     :type :eol
+     :impl-name
      #+sbcl :cannot-treat
      #+ccl :dos
-     #+allegro :dos
+     #+clisp :dos
+     #+ecl :crlf
+     #+abcl :crlf
      #+lispworks :crlf
-     #-(or clisp sbcl ccl allegro lispworks) :crlf)))
+     #+allegro :dos)))
 
 (defvar +available-encodings+
   (loop
-     :for ((name . type) . impl-name) :in +name-mapping+
+     :for enc :in +name-mapping+
+     :for name := (getf enc :name)
+     :for type := (getf enc :type)
      :unless (eq type :eol)
      :collect name))
 
 (defvar +available-eols+
   (loop
-     :for ((name . type) . impl-name) :in +name-mapping+
+     :for enc :in +name-mapping+
+     :for name := (getf enc :name)
+     :for type := (getf enc :type)
      :when (eq type :eol)
      :collect name))
 
 (defun independent-name (dependent-name)
-  (caar (find-if (lambda (n) (eql dependent-name (cdr n))) +name-mapping+)))
+  (getf (find-if (lambda (enc)
+                   (let ((impl-name (getf enc :impl-name)))
+                     (and (not (eq impl-name :cannot-treat))
+                          (eq impl-name dependent-name))))
+                 +name-mapping+)
+        :name))
 
 (defun dependent-name (independent-name)
-  (cdr (find-if (lambda (n) (eql independent-name (caar n))) +name-mapping+)))
+  (getf (find-if (lambda (enc) (eq (getf enc :name) independent-name))
+                 +name-mapping+)
+        :impl-name))
 
-(defun unicode-p (encoding)
-  (member encoding
+(defun unicode-p (independent-name)
+  (member independent-name
           (loop
-             :for ((name . type) . impl-name) :in +name-mapping+
+             :for enc :in +name-mapping+
+             :for name := (getf enc :name)
+             :for type := (getf enc :type)
              :when (eq type :unicode)
              :collect name)))
