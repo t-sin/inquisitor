@@ -57,8 +57,6 @@
 
 (is +available-eols+ '(:lf :cr :crlf))
 
-(defvar +cannot-treat+ :cannot-treat)
-
 (subtest "unicode"
   (let ((impl-enc #+sbcl :utf-8
              #+ccl :utf-8
@@ -75,7 +73,7 @@
              #+clisp charset:unicode-16-little-endian
              #+ecl :utf-16le
              #+abcl :utf-16le
-             #+allegro +cannot-treat+
+             #+allegro :cannot-treat
              #+lispworks '(:unicode :little-endian)))
     (is (dependent-name :ucs-2le) impl-enc)
     (unless impl-enc
@@ -85,27 +83,27 @@
              #+clisp charset:unicode-16-big-endian
              #+ecl :utf-16be
              #+abcl :utf-16be
-             #+allegro +cannot-treat+
+             #+allegro :cannot-treat
              #+lispworks '(:unicode :big-endian)))
     (is (dependent-name :ucs-2be) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :ucs-2be)))
-  (let ((impl-enc #+sbcl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
              #+ccl :utf-16
              #+clisp charset:utf-16
              #+ecl :utf-16
              #+abcl :utf-16
-             #+allegro +cannot-treat+
-             #+lispworks +cannot-treat+))
+             #+allegro :cannot-treat
+             #+lispworks :cannot-treat))
     (is (dependent-name :utf-16) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :utf-16))))
 
 (subtest "japanese"
-  (let ((impl-enc #+sbcl +cannot-treat+
-             #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+             #+ccl :cannot-treat
              #+clisp charset:iso-2022-jp
-             #+ecl +cannot-treat+
+             #+ecl :cannot-treat
              #+abcl :iso-2022-jp
              #+allegro :jis
              #+lispworks :jis))
@@ -115,7 +113,7 @@
   (let ((impl-enc #+sbcl :euc-jp
              #+ccl :euc-jp
              #+clisp charset:euc-jp
-             #+ecl +cannot-treat+
+             #+ecl :cannot-treat
              #+abcl :euc-jp
              #+allegro :euc
              #+lispworks :euc-jp))
@@ -134,8 +132,8 @@
       (is (independent-name impl-enc) :cp932))))
 
 (subtest "tiwanese"
-  (let ((impl-enc #+sbcl +cannot-treat+
-                  #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+                  #+ccl :cannot-treat
                   #+clisp charset:big5
                   #+ecl :windows-cp950
                   #+abcl :|Big5|
@@ -145,12 +143,12 @@
     (unless impl-enc
       (is (independent-name impl-enc) :big5)))
    (let ((impl-enc #+clisp charset:euc-tw
-                   #+ecl +cannot-treat+
-                   #+sbcl +cannot-treat+
-                   #+ccl +cannot-treat+
+                   #+ecl :cannot-treat
+                   #+sbcl :cannot-treat
+                   #+ccl :cannot-treat
                    #+abcl :|x-EUC-TW|
-                   #+allegro +cannot-treat+
-                   #+lispworks +cannot-treat+))
+                   #+allegro :cannot-treat
+                   #+lispworks :cannot-treat))
      (is (dependent-name :iso-2022-tw) impl-enc)
      (unless impl-enc
        (is (independent-name impl-enc) :iso-2022-tw))))
@@ -162,35 +160,35 @@
                   #+clisp charset:gbk
                   #+ecl :windows-cp936
                   #+abcl :gbk
-                  #+allegro +cannot-treat+
+                  #+allegro :cannot-treat
                   #+lispworks :gbk))
     (is (dependent-name :gb2312) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :gb2312)))
-  (let ((impl-enc #+sbcl +cannot-treat+
-                  #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+                  #+ccl :cannot-treat
                   #+clisp charset:gb18030
-                  #+ecl +cannot-treat+
+                  #+ecl :cannot-treat
                   #+abcl :gb18030
                   #+allegro :gb18030
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :gb18030) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :gb18030)))
-  (let ((impl-enc #+sbcl +cannot-treat+
-                  #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+                  #+ccl :cannot-treat
                   #+clisp charset:iso-2022-cn
-                  #+ecl +cannot-treat+
+                  #+ecl :cannot-treat
                   #+abcl :iso-2022-cn
-                  #+allegro +cannot-treat+
-                  #+lispworks +cannot-treat+))
+                  #+allegro :cannot-treat
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-2022-cn) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-2022-cn))))
 
 (subtest "korean"
-  (let ((impl-enc #+sbcl +cannot-treat+
-                  #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+                  #+ccl :cannot-treat
                   #+clisp charset:euc-kr
                   #+ecl :windows-cp949
                   #+abcl :euc-kr
@@ -199,23 +197,23 @@
     (is (dependent-name :euc-kr) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :euc-kr)))
-  (let ((impl-enc #+sbcl +cannot-treat+
-                  #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+                  #+ccl :cannot-treat
                   #+clisp charset:johab
-                  #+ecl +cannot-treat+
+                  #+ecl :cannot-treat
                   #+abcl :|x-Johab|
-                  #+allegro +cannot-treat+
-                  #+lispworks +cannot-treat+))
+                  #+allegro :cannot-treat
+                  #+lispworks :cannot-treat))
     (is (dependent-name :johab) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :johab)))
-  (let ((impl-enc #+sbcl +cannot-treat+
-                  #+ccl +cannot-treat+
+  (let ((impl-enc #+sbcl :cannot-treat
+                  #+ccl :cannot-treat
                   #+clisp charset:iso-2022-kr
-                  #+ecl +cannot-treat+
+                  #+ecl :cannot-treat
                   #+abcl :iso-2022-kr
-                  #+allegro +cannot-treat+
-                  #+lispworks +cannot-treat+))
+                  #+allegro :cannot-treat
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-2022-kr) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc):iso-2022-kr))))
@@ -227,12 +225,12 @@
                   #+ecl :iso-8859-6
                   #+abcl :iso-8859-6
                   #+allegro iso8859-6
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-6) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-8859-6)))
   (let ((impl-enc #+sbcl :cp1256
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1256
                   #+ecl :windows-cp1256
                   #+abcl :|windows-1256|
@@ -249,12 +247,12 @@
                   #+ecl :iso-8859-7
                   #+abcl :iso-8859-7
                   #+allegro :iso8859-7
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-7) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-8859-7)))
   (let ((impl-enc #+sbcl :cp1253
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1253
                   #+ecl :windows-cp1253
                   #+abcl :|windows-1253|
@@ -271,12 +269,12 @@
                   #+ecl :iso-8859-8
                   #+abcl :iso-8859-8
                   #+allegro :iso8859-8
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-8) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-8859-8)))
   (let ((impl-enc #+sbcl :cp1255
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1255
                   #+ecl :windows-cp1255
                   #+abcl :|windows-1255|
@@ -293,12 +291,12 @@
                   #+ecl :iso-8859-9
                   #+abcl :iso-8859-9
                   #+allegro :iso8859-9
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-9) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-8859-9)))
   (let ((impl-enc #+sbcl :cp1254
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1254
                   #+ecl :windows-cp1254
                   #+abcl :|windows-1254|
@@ -315,42 +313,42 @@
                   #+ecl :iso-8859-5
                   #+abcl :iso-8859-5
                   #+allegro :iso8859-5
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-5) impl-enc)
     (unless impl-enc
       (is (independent-name  impl-enc):iso-8859-5)))
   (let ((impl-enc #+sbcl :koi8-r
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:koi8-r
-                  #+ecl +cannot-treat+
+                  #+ecl :cannot-treat
                   #+abcl :koi8-r
                   #+allegro :koi8-r
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :koi8-r) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :koi8-r)))
   (let ((impl-enc #+sbcl :koi8-u
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:koi8-u
-                  #+ecl +cannot-treat+
+                  #+ecl :cannot-treat
                   #+abcl :koi8-u
-                  #+allegro +cannot-treat+
-                  #+lispworks +cannot-treat+))
+                  #+allegro :cannot-treat
+                  #+lispworks :cannot-treat))
     (is (dependent-name :koi8-u) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :koi8-u)))
   (let ((impl-enc #+sbcl :cp866
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:cp866
                   #+ecl :dos-cp866
                   #+abcl :ibm866
-                  #+allegro +cannot-treat+
-                  #+lispworks +cannot-treat+))
+                  #+allegro :cannot-treat
+                  #+lispworks :cannot-treat))
     (is (dependent-name :cp866) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :cp866)))
   (let ((impl-enc #+sbcl :cp1251
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1251
                   #+ecl :windows-cp1251
                   #+abcl :|windows-1251|
@@ -367,12 +365,12 @@
                   #+ecl :iso-8859-2
                   #+abcl :iso-8859-2
                   #+allegro :iso8859-2
-                  #+lispworks +cannot-treat+))
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-2) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-8859-2)))
   (let ((impl-enc #+sbcl :cp1250
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1250
                   #+ecl :windows-cp1250
                   #+abcl :|windows-1250|
@@ -388,13 +386,13 @@
                   #+clisp charset:iso-8859-13
                   #+ecl :iso-8859-13
                   #+abcl :iso-8859-13
-                  #+allegro +cannot-treat+
-                  #+lispworks +cannot-treat+))
+                  #+allegro :cannot-treat
+                  #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-13) impl-enc)
     (unless impl-enc
       (is (independent-name impl-enc) :iso-8859-13)))
   (let ((impl-enc #+sbcl :cp1257
-                  #+ccl +cannot-treat+
+                  #+ccl :cannot-treat
                   #+clisp charset:windows-1257
                   #+ecl :windows-cp1257
                   #+abcl :|windows-1257|
@@ -405,7 +403,7 @@
       (is (independent-name impl-enc) :cp1257))))
 
 (subtest "end of line"
-  (let ((impl-eol #+sbcl +cannot-treat+
+  (let ((impl-eol #+sbcl :cannot-treat
                   #+ccl :unix
                   #+clisp :unix
                   #+ecl :lf
@@ -416,7 +414,7 @@
     (is (dependent-name :lf) impl-eol)
     (unless impl-eol
       (is (independent-name impl-eol) :lf)))
-  (let ((impl-eol #+sbcl +cannot-treat+
+  (let ((impl-eol #+sbcl :cannot-treat
                   #+ccl :macos
                   #+clisp :mac
                   #+ecl :cr
@@ -426,7 +424,7 @@
     (is (dependent-name :cr) impl-eol)
     (unless impl-eol
       (is (independent-name impl-eol) :cr)))
-  (let ((impl-eol #+sbcl +cannot-treat+
+  (let ((impl-eol #+sbcl :cannot-treat
                   #+ccl :dos
                   #+clisp :dos
                   #+ecl :crlf
