@@ -238,7 +238,7 @@
                   #+(and lispworks windows) '(win32:code-page :id 1256)))
     (is (dependent-name :cp1256) impl-enc)
     (unless (eq impl-enc :cannot-treat)
-      (is (dependent-name impl-enc) :cp1256))))
+      (is (independent-name impl-enc) :cp1256))))
 
 (subtest "greek"
   (let ((impl-enc #+sbcl :iso-8859-7
