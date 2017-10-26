@@ -3,8 +3,7 @@
   (:use :cl)
   (:export :make-external-format)
   (:import-from :inquisitor.names
-                :dependent-name
-                :independent-name))
+                :dependent-name))
 (in-package :inquisitor.external-format)
 
 
@@ -20,8 +19,8 @@
               (print args)))
               ;;(apply #'flexi-streams:make-external-format args)))
 
-    (:impl (let ((enc-on-impl (independent-name enc))
-                 (eol-on-impl (independent-name eol)))
+    (:impl (let ((enc-on-impl (dependent-name enc))
+                 (eol-on-impl (dependent-name eol)))
              (declare (ignorable eol-on-impl))
              #+clisp (ext:make-encoding :charset enc-on-impl
                                         :line-terminator eol-on-impl)
