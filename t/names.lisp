@@ -66,6 +66,7 @@
              #+allegro :utf8
              #+lispworks :utf-8))
     (is (dependent-name :utf-8) impl-enc)
+    (is (dependent-name :utf-8 :flexi-name) :utf-8)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :utf-8)))
   (let ((impl-enc #+sbcl :utf-16le
@@ -76,6 +77,7 @@
              #+allegro :cannot-treat
              #+lispworks '(:unicode :little-endian)))
     (is (dependent-name :ucs-2le) impl-enc)
+    (is (dependent-name :ucs-2le :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :ucs-2le)))
   (let ((impl-enc #+sbcl :utf-16be
@@ -86,6 +88,7 @@
              #+allegro :cannot-treat
              #+lispworks '(:unicode :big-endian)))
     (is (dependent-name :ucs-2be) impl-enc)
+    (is (dependent-name :ucs-2be :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :ucs-2be)))
   (let ((impl-enc #+sbcl :cannot-treat
@@ -96,6 +99,7 @@
              #+allegro :cannot-treat
              #+lispworks :cannot-treat))
     (is (dependent-name :utf-16) impl-enc)
+    (is (dependent-name :utf-16 :flexi-name) :utf-16)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :utf-16))))
 
@@ -108,6 +112,7 @@
              #+allegro :jis
              #+lispworks :jis))
     (is (dependent-name :iso-2022-jp) impl-enc)
+    (is (dependent-name :iso-2022-jp :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-2022-jp)))
   (let ((impl-enc #+sbcl :euc-jp
@@ -118,6 +123,7 @@
              #+allegro :euc
              #+lispworks :euc-jp))
     (is (dependent-name :euc-jp) impl-enc)
+    (is (dependent-name :euc-jp :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :euc-jp)))
   (let ((impl-enc #+sbcl :shift_jis
@@ -128,6 +134,7 @@
              #+allegro :shiftjis
              #+lispworks :sjis))
     (is (dependent-name :cp932) impl-enc)
+    (is (dependent-name :cp932 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp932))))
 
@@ -140,6 +147,7 @@
                   #+allegro :big5
                   #+(and lispworks windows) '(win32:code-page :id 950)))
     (is (dependent-name :big5) impl-enc)
+    (is (dependent-name :big5 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :big5)))
    (let ((impl-enc #+clisp charset:euc-tw
@@ -150,6 +158,7 @@
                    #+allegro :cannot-treat
                    #+lispworks :cannot-treat))
      (is (dependent-name :iso-2022-tw) impl-enc)
+     (is (dependent-name :iso-2022-tw :flexi-name) nil)
      (unless (eq impl-enc :cannot-treat)
        (is (independent-name impl-enc) :iso-2022-tw))))
 
@@ -163,6 +172,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :gbk))
     (is (dependent-name :gb2312) impl-enc)
+    (is (dependent-name :gb2312 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :gb2312)))
   (let ((impl-enc #+sbcl :cannot-treat
@@ -173,6 +183,7 @@
                   #+allegro :gb18030
                   #+lispworks :cannot-treat))
     (is (dependent-name :gb18030) impl-enc)
+    (is (dependent-name :gb18030 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :gb18030)))
   (let ((impl-enc #+sbcl :cannot-treat
@@ -183,6 +194,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-2022-cn) impl-enc)
+    (is (dependent-name :iso-2022-cn :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-2022-cn))))
 
@@ -195,6 +207,7 @@
                   #+allegro :949
                   #+(and lispworks windows) '(win32:code-page :id 949)))
     (is (dependent-name :euc-kr) impl-enc)
+    (is (dependent-name :euc-kr :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :euc-kr)))
   (let ((impl-enc #+sbcl :cannot-treat
@@ -205,6 +218,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :cannot-treat))
     (is (dependent-name :johab) impl-enc)
+    (is (dependent-name :johab :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :johab)))
   (let ((impl-enc #+sbcl :cannot-treat
@@ -215,6 +229,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-2022-kr) impl-enc)
+    (is (dependent-name :iso-2022-kr :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc):iso-2022-kr))))
 
@@ -227,6 +242,7 @@
                   #+allegro iso8859-6
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-6) impl-enc)
+    (is (dependent-name :iso-8859-6 :flexi-name) :iso-8859-6)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-8859-6)))
   (let ((impl-enc #+sbcl :cp1256
@@ -237,6 +253,7 @@
                   #+allegro :1256
                   #+(and lispworks windows) '(win32:code-page :id 1256)))
     (is (dependent-name :cp1256) impl-enc)
+    (is (dependent-name :cp1256 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1256))))
 
@@ -249,6 +266,7 @@
                   #+allegro :iso8859-7
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-7) impl-enc)
+    (is (dependent-name :iso-8859-7 :flexi-name) :iso-8859-7)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-8859-7)))
   (let ((impl-enc #+sbcl :cp1253
@@ -259,6 +277,7 @@
                   #+allegro :1253
                   #+(and lispworks windows) '(win32:code-page :id 1253)))
     (is (dependent-name :cp1253) impl-enc)
+    (is (dependent-name :cp1253 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1253))))
 
@@ -271,6 +290,7 @@
                   #+allegro :iso8859-8
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-8) impl-enc)
+    (is (dependent-name :iso-8859-8 :flexi-name) :iso-8859-8)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-8859-8)))
   (let ((impl-enc #+sbcl :cp1255
@@ -281,6 +301,7 @@
                   #+allegro :1255
                   #+(and lispworks windows) '(win32:code-page :id 1255)))
     (is (dependent-name :cp1255) impl-enc)
+    (is (dependent-name :cp1255 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1255))))
 
@@ -293,6 +314,7 @@
                   #+allegro :iso8859-9
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-9) impl-enc)
+    (is (dependent-name :iso-8859-9 :flexi-name) :iso-8859-9)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-8859-9)))
   (let ((impl-enc #+sbcl :cp1254
@@ -303,6 +325,7 @@
                   #+allegro :1254
                   #+(and lispworks windows) '(win32:code-page :id 1254)))
     (is (dependent-name :cp1254) impl-enc)
+    (is (dependent-name :cp1254 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1254))))
 
@@ -315,6 +338,7 @@
                   #+allegro :iso8859-5
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-5) impl-enc)
+    (is (dependent-name :iso-8859-5 :flexi-name) :iso-8859-5)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name  impl-enc):iso-8859-5)))
   (let ((impl-enc #+sbcl :koi8-r
@@ -325,6 +349,7 @@
                   #+allegro :koi8-r
                   #+lispworks :cannot-treat))
     (is (dependent-name :koi8-r) impl-enc)
+    (is (dependent-name :koi8-r :flexi-name) :koi8-r)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :koi8-r)))
   (let ((impl-enc #+sbcl :koi8-u
@@ -335,6 +360,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :cannot-treat))
     (is (dependent-name :koi8-u) impl-enc)
+    (is (dependent-name :koi8-u :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :koi8-u)))
   (let ((impl-enc #+sbcl :cp866
@@ -345,6 +371,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :cannot-treat))
     (is (dependent-name :cp866) impl-enc)
+    (is (dependent-name :cp866 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp866)))
   (let ((impl-enc #+sbcl :cp1251
@@ -355,6 +382,7 @@
                   #+allegro :1251
                   #+(and lispworks windows) '(win32:code-page :id 1251)))
     (is (dependent-name :cp1251) impl-enc)
+    (is (dependent-name :cp1251 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1251))))
 
@@ -367,6 +395,7 @@
                   #+allegro :iso8859-2
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-2) impl-enc)
+    (is (dependent-name :iso-8859-2 :flexi-name) :iso-8859-2)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-8859-2)))
   (let ((impl-enc #+sbcl :cp1250
@@ -377,6 +406,7 @@
                   #+allegro :1250
                   #+(and lispworks windows) '(win32:code-page :id 1250)))
     (is (dependent-name :cp1250) impl-enc)
+    (is (dependent-name :cp1250 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1250))))
 
@@ -389,6 +419,7 @@
                   #+allegro :cannot-treat
                   #+lispworks :cannot-treat))
     (is (dependent-name :iso-8859-13) impl-enc)
+    (is (dependent-name :iso-8859-13 :flexi-name) :iso-8859-13)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :iso-8859-13)))
   (let ((impl-enc #+sbcl :cp1257
@@ -399,6 +430,7 @@
                   #+allegro :1257
                   #+(and lispworks windows) '(win32:code-page :id 1257)))
     (is (dependent-name :cp1257) impl-enc)
+    (is (dependent-name :cp1257 :flexi-name) nil)
     (unless (eq impl-enc :cannot-treat)
       (is (independent-name impl-enc) :cp1257))))
 
@@ -412,6 +444,7 @@
                   #+allegro :unix
                   #+lispworks :lf))
     (is (dependent-name :lf) impl-eol)
+    (is (dependent-name :lf :flexi-name) :lf)
     (unless (eq impl-eol :cannot-treat)
       (is (independent-name impl-eol) :lf)))
   (let ((impl-eol #+sbcl :cannot-treat
@@ -422,6 +455,7 @@
                   #+allegro :mac
                   #+lispworks :cr))
     (is (dependent-name :cr) impl-eol)
+    (is (dependent-name :cr :flexi-name) :cr)
     (unless (eq impl-eol :cannot-treat)
       (is (independent-name impl-eol) :cr)))
   (let ((impl-eol #+sbcl :cannot-treat
@@ -432,6 +466,7 @@
                   #+allegro :doc
                   #+lispworks :crlf))
     (is (dependent-name :crlf) impl-eol)
+    (is (dependent-name :crlf :flexi-name) :crlf)
     (unless (eq impl-eol :cannot-treat)
       (is (independent-name impl-eol) :crlf))))
 
