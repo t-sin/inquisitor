@@ -17,6 +17,7 @@
 
     (:name :utf-8
      :type :unicode
+     :flexi-name :utf-8
      :impl-name
      #+sbcl :utf-8
      #+ccl :utf-8
@@ -29,6 +30,7 @@
     ;; TODO: UCS-2 == UTF16? strictly?
     (:name :ucs-2le
      :type :unicode
+     :flexi-name nil
      :impl-name
      #+sbcl :utf-16le
      #+ccl :utf-16le
@@ -40,6 +42,7 @@
 
     (:name :ucs-2be
      :type :unicode
+     :flexi-name nil
      :impl-name
      #+sbcl :utf-16be
      #+ccl :utf-16be
@@ -51,6 +54,7 @@
 
     (:name :utf-16
      :type :unicode
+     :flexi-name :utf-16
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :utf-16
@@ -64,6 +68,7 @@
 
     (:name :iso-2022-jp
      :type :jp
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -75,6 +80,7 @@
 
     (:name :euc-jp
      :type :jp
+     :flexi-name nil
      :impl-name
      #+sbcl :euc-jp
      #+ccl :euc-jp
@@ -86,6 +92,7 @@
 
     (:name :cp932
      :type :jp
+     :flexi-name nil
      :impl-name
      #+sbcl :shift_jis
      #+ccl :windows-31j
@@ -99,6 +106,7 @@
 
     (:name :big5
      :type :tw
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -110,6 +118,7 @@
 
     (:name :iso-2022-tw
      :type :tw
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -123,6 +132,7 @@
 
     (:name :gb2312
      :type :cn
+     :flexi-name nil
      :impl-name
      #+sbcl :gbk
      #+ccl :cp936
@@ -134,6 +144,7 @@
 
     (:name :gb18030
      :type :cn
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -145,6 +156,7 @@
 
     (:name :iso-2022-cn
      :type :cn
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -158,6 +170,7 @@
 
     (:name :euc-kr
      :type :kr
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -169,6 +182,7 @@
 
     (:name :johab
      :type :kr
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -180,6 +194,7 @@
 
     (:name :iso-2022-kr
      :type :kr
+     :flexi-name nil
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :cannot-treat
@@ -193,6 +208,7 @@
 
     (:name :iso-8859-6
      :type :ar
+     :flexi-name :iso-8859-6
      :impl-name
      #+sbcl :iso-8859-6
      #+ccl :iso-8859-6
@@ -204,6 +220,7 @@
 
     (:name :cp1256
      :type :ar
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1256
      #+ccl :cannot-treat
@@ -217,6 +234,7 @@
 
     (:name :iso-8859-7
      :type :gr
+     :flexi-name :iso-8859-7
      :impl-name
      #+sbcl :iso-8859-7
      #+ccl :iso-8859-7
@@ -228,6 +246,7 @@
 
     (:name :cp1253
      :type :gr
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1253
      #+ccl :cannot-treat
@@ -241,6 +260,7 @@
 
     (:name :iso-8859-8
      :type :hw
+     :flexi-name :iso-8859-8
      :impl-name
      #+sbcl :iso-8859-8
      #+ccl :iso-8859-8
@@ -252,6 +272,7 @@
 
     (:name :cp1255
      :type :hw
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1255
      #+ccl :cannot-treat
@@ -265,6 +286,7 @@
 
     (:name :iso-8859-9
      :type :tr
+     :flexi-name :iso-8859-9
      :impl-name
      #+sbcl :iso-8859-9
      #+ccl :iso-8859-9
@@ -276,6 +298,7 @@
 
     (:name :cp1254
      :type :tr
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1254
      #+ccl :cannot-treat
@@ -289,6 +312,7 @@
 
     (:name :iso-8859-5
      :type :ru
+     :flexi-name :iso-8859-5
      :impl-name
      #+sbcl :iso-8859-5
      #+ccl :iso-8859-5
@@ -300,6 +324,7 @@
 
     (:name :koi8-r
      :type :ru
+     :flexi-name :koi8-r
      :impl-name
      #+sbcl :koi8-r
      #+ccl :cannot-treat
@@ -311,6 +336,7 @@
 
     (:name :koi8-u
      :type :ru
+     :flexi-name nil
      :impl-name
      #+sbcl :koi8-u
      #+ccl :cannot-treat
@@ -322,6 +348,7 @@
 
     (:name :cp866
      :type :ru
+     :flexi-name nil
      :impl-name
      #+sbcl :cp866
      #+ccl :cannot-treat
@@ -333,6 +360,7 @@
 
     (:name :cp1251
      :type :ru
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1251
      #+ccl :cannot-treat
@@ -346,6 +374,7 @@
 
     (:name :iso-8859-2
      :type :pl
+     :flexi-name :iso-8859-2
      :impl-name
      #+sbcl :iso-8859-2
      #+ccl :iso-8859-2
@@ -357,6 +386,7 @@
 
     (:name :cp1250
      :type :pl
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1250
      #+ccl :cannot-treat
@@ -370,6 +400,7 @@
 
     (:name :iso-8859-13
      :type :bl
+     :flexi-name :iso-8859-13
      :impl-name
      #+sbcl :iso-8859-13
      #+ccl :iso-8859-13
@@ -381,6 +412,7 @@
 
     (:name :cp1257
      :type :bl
+     :flexi-name nil
      :impl-name
      #+sbcl :cp1257
      #+ccl :cannot-treat
@@ -394,6 +426,7 @@
 
     (:name :lf
      :type :eol
+     :flexi-name :lf
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :unix
@@ -405,6 +438,7 @@
 
     (:name :cr
      :type :eol
+     :flexi-name :cr
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :macos
@@ -416,6 +450,7 @@
 
     (:name :crlf
      :type :eol
+     :flexi-name :crlf
      :impl-name
      #+sbcl :cannot-treat
      #+ccl :dos
@@ -449,10 +484,12 @@
                  +name-mapping+)
         :name))
 
-(defun dependent-name (independent-name)
-  (getf (find-if (lambda (enc) (eq (getf enc :name) independent-name))
-                 +name-mapping+)
-        :impl-name))
+(defun dependent-name (independent-name &optional type)
+  (let ((encoding (find-if (lambda (enc) (eq (getf enc :name) independent-name))
+                           +name-mapping+)))
+    (if type
+        (getf encoding type)
+        (getf encoding :impl-name))))
 
 (defun unicode-p (independent-name)
   (member independent-name
