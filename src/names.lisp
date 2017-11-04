@@ -476,9 +476,9 @@
      :when (eq type :eol)
      :collect name))
 
-(defun independent-name (dependent-name)
+(defun independent-name (dependent-name &optional type)
   (getf (find-if (lambda (enc)
-                   (let ((impl-name (getf enc :impl-name)))
+                   (let ((impl-name (getf enc (if type type :impl-name))))
                      (and (not (eq impl-name :cannot-treat))
                           (eq impl-name dependent-name))))
                  +name-mapping+)
