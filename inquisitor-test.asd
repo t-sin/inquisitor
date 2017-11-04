@@ -13,6 +13,7 @@
   :license "MIT"
   :depends-on (:inquisitor
                :babel
+               :flexi-streams
                :prove)
   :components ((:module "t"
                 :components

@@ -6,8 +6,7 @@
         :prove))
 (in-package :inquisitor-test.external-format)
 
-(plan 1)
-
+(plan 2)
 
 (subtest "make-external-format"
   (let* ((utf-8 (dependent-name :utf-8))
@@ -21,5 +20,14 @@
                                         :line-termination lf)
         #+abcl (list utf-8 :eol-style lf))))
 
+(subtest "make external-format for flexi-streams"
+  #+flexi-streams
+  ;;; how can I run it?
+  (let* ((utf-8 (dependent-name :utf-8 :flexi-name))
+         (lf (dependent-name :lf :flexi-name))
+         (ef (make-external-format utf-8 lf :type :flexi :little-endian nil)))
+    (is (slot-value ef 'flex::name) :utf-8)
+    (is (slot-value ef 'flex::eol-style) :lf)
+    (is (slot-value ef 'flex::little-endian) nil)))
 
 (finalize)

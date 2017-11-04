@@ -16,7 +16,7 @@
                                     :for (k v) :on args :by #'cddr
                                     :unless (eq k :type)
                                     :nconc (list k v)))))
-              #+:flexi-streams (apply #'flexi-streams:make-external-format args)))
+              #+flexi-streams (apply #'flexi-streams:make-external-format args)))
     (:impl (let ((enc-on-impl (dependent-name enc))
                  (eol-on-impl (dependent-name eol)))
              (declare (ignorable eol-on-impl))
