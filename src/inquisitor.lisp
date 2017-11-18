@@ -125,8 +125,8 @@ file position."
             (values nil (list enc eol))
             (values
              (if eol-impl
-                 (make-external-format enc-impl eol-impl)
-                 (make-external-format enc-impl :lf))
+                 (make-external-format :impl enc-impl eol-impl)
+                 (make-external-format :impl enc-impl :lf))
              (list enc eol))))
       (error (format nil "supllied vector is not a byte array."))))
 
@@ -159,8 +159,8 @@ method modifies `stream`'s file position."
               (values nil (list encoding end-of-line))
               (values
                (if eol-impl
-                   (make-external-format enc-impl eol-impl)
-                   (make-external-format enc-impl :lf))
+                   (make-external-format :impl enc-impl eol-impl)
+                   (make-external-format :impl enc-impl :lf))
                (list encoding end-of-line)))))
       (error (format nil "supplied stream is not a byte input stream."))))
 
