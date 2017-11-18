@@ -7,7 +7,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :inquisitor)' in your Lisp.
 
-(plan 18)
+(plan 16)
 
 (is +available-encodings+
       ;; unicode
@@ -403,112 +403,37 @@
       (is (independent-name impl-enc) :cp1257))))
 
 (subtest "end of line"
-  (let ((impl-eol #+sbcl :cannot-treat
-                  #+ccl :unix
-                  #+clisp :unix
-                  #+ecl :lf
-                  #+abcl :lf
-                  ;; https://franz.com/support/documentation/10.1/doc/operators/excl/eol-convention.htm
-                  #+allegro :unix
-                  #+lispworks :lf))
-    (is (dependent-name :lf) impl-eol)
-    (unless (eq impl-eol :cannot-treat)
-      (is (independent-name impl-eol) :lf)))
-  (let ((impl-eol #+sbcl :cannot-treat
-                  #+ccl :macos
-                  #+clisp :mac
-                  #+ecl :cr
-                  #+abcl :cr
-                  #+allegro :mac
-                  #+lispworks :cr))
-    (is (dependent-name :cr) impl-eol)
-    (unless (eq impl-eol :cannot-treat)
-      (is (independent-name impl-eol) :cr)))
-  (let ((impl-eol #+sbcl :cannot-treat
-                  #+ccl :dos
-                  #+clisp :dos
-                  #+ecl :crlf
-                  #+abcl :crlf
-                  #+allegro :doc
-                  #+lispworks :crlf))
-    (is (dependent-name :crlf) impl-eol)
-    (unless (eq impl-eol :cannot-treat)
-      (is (independent-name impl-eol) :crlf))))
-
-(subtest "names on flexi-streams"
-  (subtest "unicode"
-    (is (dependent-name :utf-8 :flexi-name) :utf-8)
-    (is (independent-name :utf-8 :flexi-name) :utf-8)
-    (is (dependent-name :ucs-2le :flexi-name) nil)
-    (is (dependent-name :ucs-2be :flexi-name) nil)
-    (is (dependent-name :utf-16 :flexi-name) :utf-16)
-    (is (independent-name :utf-16 :flexi-name) :utf-16))
-
-  (subtest "japanese"
-    (is (dependent-name :iso-2022-jp :flexi-name) nil)
-    (is (dependent-name :euc-jp :flexi-name) nil)
-    (is (dependent-name :cp932 :flexi-name) nil))
-
-  (subtest "taiwanese"
-    (is (dependent-name :big5 :flexi-name) nil)
-    (is (dependent-name :iso-2022-tw :flexi-name) nil))
-
-  (subtest "chinese"
-    (is (dependent-name :gb2312 :flexi-name) nil)
-    (is (dependent-name :gb18030 :flexi-name) nil)
-    (is (dependent-name :iso-2022-cn :flexi-name) nil))
-
-  (subtest "korean"
-    (is (dependent-name :euc-kr :flexi-name) nil)
-    (is (dependent-name :johab :flexi-name) nil)
-    (is (dependent-name :iso-2022-kr :flexi-name) nil))
-
-  (subtest "arabic"
-    (is (dependent-name :iso-8859-6 :flexi-name) :iso-8859-6)
-    (is (independent-name :iso-8859-6 :flexi-name) :iso-8859-6)
-    (is (dependent-name :cp1256 :flexi-name) nil))
-
-  (subtest "greek"
-    (is (dependent-name :iso-8859-7 :flexi-name) :iso-8859-7)
-    (is (independent-name :iso-8859-7 :flexi-name) :iso-8859-7)
-    (is (dependent-name :cp1253 :flexi-name) nil))
-
-  (subtest "hebrew"
-    (is (dependent-name :iso-8859-8 :flexi-name) :iso-8859-8)
-    (is (independent-name :iso-8859-8 :flexi-name) :iso-8859-8)
-    (is (dependent-name :cp1255 :flexi-name) nil))
-
-  (subtest "turkish"
-    (is (dependent-name :iso-8859-9 :flexi-name) :iso-8859-9)
-    (is (independent-name :iso-8859-9 :flexi-name) :iso-8859-9)
-    (is (dependent-name :cp1254 :flexi-name) nil))
-
-  (subtest "russian"
-    (is (dependent-name :iso-8859-5 :flexi-name) :iso-8859-5)
-    (is (independent-name :iso-8859-5 :flexi-name) :iso-8859-5)
-    (is (dependent-name :koi8-r :flexi-name) :koi8-r)
-    (is (independent-name :koi8-r :flexi-name) :koi8-r)
-    (is (dependent-name :koi8-u :flexi-name) nil)
-    (is (dependent-name :cp866 :flexi-name) nil)
-    (is (dependent-name :cp1251 :flexi-name) nil))
-
-  (subtest "polish"
-    (is (dependent-name :iso-8859-2 :flexi-name) :iso-8859-2)
-    (is (independent-name :iso-8859-2 :flexi-name) :iso-8859-2)
-    (is (dependent-name :cp1250 :flexi-name) nil))
-
-  (subtest "baltic"
-    (is (dependent-name :iso-8859-13 :flexi-name) :iso-8859-13)
-    (is (independent-name :iso-8859-13 :flexi-name) :iso-8859-13)
-    (is (dependent-name :cp1257 :flexi-name) nil))
-
-  (subtest "eol"
-    (is (dependent-name :lf :flexi-name) :lf)
-    (is (independent-name :lf :flexi-name) :lf)
-    (is (dependent-name :cr :flexi-name) :cr)
-    (is (independent-name :cr :flexi-name) :cr)
-    (is (dependent-name :crlf :flexi-name) :crlf)))
-    (is (independent-name :crlf :flexi-name) :crlf)
+         (let ((impl-eol #+sbcl :cannot-treat
+                         #+ccl :unix
+                         #+clisp :unix
+                         #+ecl :lf
+                         #+abcl :lf
+                         ;; https://franz.com/support/documentation/10.1/doc/operators/excl/eol-convention.htm
+                         #+allegro :unix
+                         #+lispworks :lf))
+           (is (dependent-name :lf) impl-eol)
+           (unless (eq impl-eol :cannot-treat)
+             (is (independent-name impl-eol) :lf)))
+         (let ((impl-eol #+sbcl :cannot-treat
+                         #+ccl :macos
+                         #+clisp :mac
+                         #+ecl :cr
+                         #+abcl :cr
+                         #+allegro :mac
+                         #+lispworks :cr))
+           (is (dependent-name :cr) impl-eol)
+           (unless (eq impl-eol :cannot-treat)
+             (is (independent-name impl-eol) :cr)))
+         (let ((impl-eol #+sbcl :cannot-treat
+                         #+ccl :dos
+                         #+clisp :dos
+                         #+ecl :crlf
+                         #+abcl :crlf
+                         #+allegro :doc
+                         #+lispworks :crlf))
+           (is (dependent-name :crlf) impl-eol)
+           (unless (eq impl-eol :cannot-treat)
+             (is (independent-name impl-eol) :crlf))))
 
 (subtest "if specified encodings is unicode?"
   (subtest "only unicode returns t"
