@@ -86,7 +86,7 @@
 (subtest "make external-format for flexi-streams"
   (let* ((utf-8 (dependent-name :utf-8 :flexi-name))
          (lf (dependent-name :lf :flexi-name))
-         (ef (make-external-format :flexi utf-8 lf :little-endian nil)))
+         (ef (make-external-format utf-8 lf :type :flexi :little-endian nil)))
     (is (slot-value ef 'flex::name) :utf-8)
     (is (slot-value ef 'flex::eol-style) :lf)
     (is (slot-value ef 'flex::little-endian) nil)))

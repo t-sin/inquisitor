@@ -12,7 +12,7 @@
   (let* ((utf-8 (dependent-name :utf-8))
          (lf (dependent-name :lf)))
     (declare (ignorable lf))
-    (is (make-external-format :impl :utf-8 :lf)
+    (is (make-external-format :utf-8 :lf)
         #+clisp (ext:make-encoding :charset utf-8 :line-terminator lf)
         #+ecl (list utf-8 lf)
         #+sbcl utf-8

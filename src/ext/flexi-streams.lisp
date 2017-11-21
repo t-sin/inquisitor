@@ -2,8 +2,9 @@
 (defpackage :inquisitor.ext.flexi-steams
   (:use :cl)
   (:import-from :inquisitor
-                :dependent-name
-                :make-external-format))
+                :dependent-name)
+  (:import-from :inquisitor.external-format
+                :%make-external-format))
 (in-package :inquisitor.ext.flexi-steams)
 
 (flet ((name-pos (independent-name)
@@ -75,7 +76,7 @@
   (add-new-value (name-pos :cr) :flexi-name :cr)
   (add-new-value (name-pos :crlf) :flexi-name :crlf))
 
-(defmethod make-external-format
+(defmethod %make-external-format
     ((type (eql :flexi)) enc eol &rest args &key &allow-other-keys)
   (let* ((enc-flexi (dependent-name enc :flexi))
          (eol-flexi (dependent-name eol :flexi))
