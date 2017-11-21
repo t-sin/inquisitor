@@ -151,7 +151,7 @@ method modifies `stream`'s file position."
                  (setf encoding enc
                        ces-state ces-st)
                  (unless end-of-line
-                   (sef (eol-guess-from-vector buffer)))))
+                   (setf end-of-line (eol-guess-from-vector buffer)))))
         (let ((enc-impl (dependent-name encoding))
               (eol-impl (dependent-name end-of-line)))
           (if (or (eq enc-impl :cannot-treat)
