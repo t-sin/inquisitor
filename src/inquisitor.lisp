@@ -154,8 +154,8 @@ method modifies `stream`'s file position."
                    (setf end-of-line (eol-guess-from-vector buffer)))))
         (let ((enc-impl (dependent-name encoding))
               (eol-impl (dependent-name end-of-line)))
-          (if (or (eq enc-impl :cannot-treat)
-                  (eq eol-impl :cannot-treat))
+          (if (and (eq enc-impl :cannot-treat)
+                   (eq eol-impl :cannot-treat))
               (values nil (list encoding end-of-line))
               (values
                (if eol-impl
