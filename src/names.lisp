@@ -441,18 +441,20 @@
      :when (eq type :eol)
      :collect name))
 
-(defun independent-name (dependent-name)
+(defun independent-name (dependent-name &optional type)
   (getf (find-if (lambda (enc)
-                   (let ((impl-name (getf enc :impl-name)))
+                   (let ((impl-name (getf enc (if type type :impl-name))))
                      (and (not (eq impl-name :cannot-treat))
                           (eq impl-name dependent-name))))
                  +name-mapping+)
         :name))
 
-(defun dependent-name (independent-name)
-  (getf (find-if (lambda (enc) (eq (getf enc :name) independent-name))
-                 +name-mapping+)
-        :impl-name))
+(defun dependent-name (independent-name &optional type)
+  (let ((encoding (find-if (lambda (enc) (eq (getf enc :name) independent-name))
+                           +name-mapping+)))
+    (if type
+        (getf encoding type)
+        (getf encoding :impl-name))))
 
 (defun unicode-p (independent-name)
   (member independent-name

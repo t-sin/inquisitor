@@ -72,7 +72,7 @@
   (is-error (detect-external-format "" :jp) 'error)
   (let ((str (string-to-octets "string")))
     (is (detect-external-format str :jp)
-        (make-external-format :utf-8 :lf))))
+        (make-external-format :impl :utf-8 :lf))))
 
 (subtest "detect external-format --- from stream"
   (with-output-to-string (out)
@@ -83,13 +83,13 @@
                       :direction :input
                       :element-type '(unsigned-byte 8))
     (is (detect-external-format in :jp)
-        (make-external-format :utf-8 :lf))))
+        (make-external-format :impl :utf-8 :lf))))
 
 (subtest "detect external-format --- from pathname"
   (is-error (detect-external-format "t/data/ascii/ascii-lf.txt" :jp) 'error)
   (is (detect-external-format (asdf:system-relative-pathname
                                :inquisitor "t/data/ascii/ascii-lf.txt") :jp)
-      (make-external-format :utf-8 :lf)))
+      (make-external-format :impl :utf-8 :lf)))
 
 
 (finalize)

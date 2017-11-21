@@ -403,37 +403,37 @@
       (is (independent-name impl-enc) :cp1257))))
 
 (subtest "end of line"
-  (let ((impl-eol #+sbcl :cannot-treat
-                  #+ccl :unix
-                  #+clisp :unix
-                  #+ecl :lf
-                  #+abcl :lf
-                  ;; https://franz.com/support/documentation/10.1/doc/operators/excl/eol-convention.htm
-                  #+allegro :unix
-                  #+lispworks :lf))
-    (is (dependent-name :lf) impl-eol)
-    (unless (eq impl-eol :cannot-treat)
-      (is (independent-name impl-eol) :lf)))
-  (let ((impl-eol #+sbcl :cannot-treat
-                  #+ccl :macos
-                  #+clisp :mac
-                  #+ecl :cr
-                  #+abcl :cr
-                  #+allegro :mac
-                  #+lispworks :cr))
-    (is (dependent-name :cr) impl-eol)
-    (unless (eq impl-eol :cannot-treat)
-      (is (independent-name impl-eol) :cr)))
-  (let ((impl-eol #+sbcl :cannot-treat
-                  #+ccl :dos
-                  #+clisp :dos
-                  #+ecl :crlf
-                  #+abcl :crlf
-                  #+allegro :doc
-                  #+lispworks :crlf))
-    (is (dependent-name :crlf) impl-eol)
-    (unless (eq impl-eol :cannot-treat)
-      (is (independent-name impl-eol) :crlf))))
+         (let ((impl-eol #+sbcl :cannot-treat
+                         #+ccl :unix
+                         #+clisp :unix
+                         #+ecl :lf
+                         #+abcl :lf
+                         ;; https://franz.com/support/documentation/10.1/doc/operators/excl/eol-convention.htm
+                         #+allegro :unix
+                         #+lispworks :lf))
+           (is (dependent-name :lf) impl-eol)
+           (unless (eq impl-eol :cannot-treat)
+             (is (independent-name impl-eol) :lf)))
+         (let ((impl-eol #+sbcl :cannot-treat
+                         #+ccl :macos
+                         #+clisp :mac
+                         #+ecl :cr
+                         #+abcl :cr
+                         #+allegro :mac
+                         #+lispworks :cr))
+           (is (dependent-name :cr) impl-eol)
+           (unless (eq impl-eol :cannot-treat)
+             (is (independent-name impl-eol) :cr)))
+         (let ((impl-eol #+sbcl :cannot-treat
+                         #+ccl :dos
+                         #+clisp :dos
+                         #+ecl :crlf
+                         #+abcl :crlf
+                         #+allegro :doc
+                         #+lispworks :crlf))
+           (is (dependent-name :crlf) impl-eol)
+           (unless (eq impl-eol :cannot-treat)
+             (is (independent-name impl-eol) :crlf))))
 
 (subtest "if specified encodings is unicode?"
   (subtest "only unicode returns t"
