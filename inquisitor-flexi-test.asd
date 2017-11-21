@@ -1,12 +1,12 @@
 (in-package :cl-user)
-(defpackage inquisitor-flex-test-asd
+(defpackage inquisitor-flexi-test-asd
   (:use :cl :asdf))
-(in-package :inquisitor-flex-test-asd)
+(in-package :inquisitor-flexi-test-asd)
 
-(defsystem inquisitor-flex-test
+(defsystem inquisitor-flexi-test
   :author "Shinichi TANAKA"
   :license "MIT"
-  :depends-on (:inquisitor-flex)
+  :depends-on (:inquisitor-flexi)
   :components ((:module "t"
                 :components
                 ((:module "ext"
