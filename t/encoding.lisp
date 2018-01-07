@@ -89,7 +89,14 @@
   (test-enc "t/data/unicode/utf-8.txt" :jp :utf-8)
   (test-enc "t/data/unicode/ucs2be.txt" :jp :ucs-2be)
   (test-enc "t/data/unicode/ucs2le.txt" :jp :ucs-2le)
-  (test-enc "t/data/unicode/utf-16.txt" :jp :utf-16))
+  (test-enc "t/data/unicode/utf-16.txt" :jp :utf-16)
+
+  (subtest "Kojiki"
+    (test-enc "t/data/ja/kojiki/03gendaigoyaku_kojiki.txt.eucjp" :jp :euc-jp)
+    (test-enc "t/data/ja/kojiki/03gendaigoyaku_kojiki.txt.jis" :jp :iso-2022-jp)
+    (test-enc "t/data/ja/kojiki/03gendaigoyaku_kojiki.txt.sjis" :jp :cp932)
+    (test-enc "t/data/ja/kojiki/03gendaigoyaku_kojiki.txt.utf8" :jp :utf-8)
+    (test-enc "t/data/ja/kojiki/03gendaigoyaku_kojiki.txt.utf16" :jp :utf-16)))
 
 (subtest "encoding -- tw"
   (test-enc "t/data/ascii/empty.txt" :tw :utf-8)
