@@ -6,7 +6,8 @@
 (defsystem inquisitor-flexi-test
   :author "Shinichi TANAKA"
   :license "MIT"
-  :depends-on (:inquisitor-flexi)
+  :depends-on (:inquisitor-flexi
+               :prove)
   :components ((:module "t"
                 :components
                 ((:module "ext"
