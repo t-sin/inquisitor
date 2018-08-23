@@ -26,8 +26,7 @@
      #+lispworks :utf-8
      #+allegro :utf8)
 
-    ;; TODO: UCS-2 == UTF16? strictly?
-    (:name :ucs-2le
+    (:name :utf-16le
      :type :unicode
      :impl-name
      #+sbcl :utf-16le
@@ -35,10 +34,12 @@
      #+clisp ,charset:unicode-16-little-endian
      #+ecl :utf-16le
      #+abcl :utf-16le
+     ;; LispWorks supports Unicode which range on BMP
+     ;; http://www.lispworks.com/documentation/lw61/LW/html/lw-498.htm
      #+lispworks '(unicode :little-endian)
      #+allegro :cannot-treat)
 
-    (:name :ucs-2be
+    (:name :utf-16be
      :type :unicode
      :impl-name
      #+sbcl :utf-16be
