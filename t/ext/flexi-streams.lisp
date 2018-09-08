@@ -12,8 +12,8 @@
   (subtest "unicode"
     (is (dependent-name :utf-8 :flexi-name) :utf-8)
     (is (independent-name :utf-8 :flexi-name) :utf-8)
-    (is (dependent-name :ucs-2le :flexi-name) nil)
-    (is (dependent-name :ucs-2be :flexi-name) nil)
+    (is (dependent-name :utf-16le :flexi-name) nil)
+    (is (dependent-name :utf-16be :flexi-name) nil)
     (is (dependent-name :utf-16 :flexi-name) :utf-16)
     (is (independent-name :utf-16 :flexi-name) :utf-16))
 
