@@ -165,7 +165,7 @@
      #+clisp ,charset:euc-kr
      #+ecl :windows-cp949
      #+abcl :euc-kr
-     #+lispworks #+win32 '(win32:code-page :id 949) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 949) #-win32 :cannot-treat)
      #+allegro :949)
 
     (:name :johab
@@ -211,7 +211,7 @@
      #+clisp ,charset:cp1256
      #+ecl :windows-cp1256
      #+abcl :|windows-1256|
-     #+lispworks #+win32 '(win32:code-page :id 1256) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1256) #-win32 :cannot-treat)
      #+allegro :1256)
 
 ;;; Greek
@@ -235,7 +235,7 @@
      #+clisp ,charset:cp1253
      #+ecl :windows-cp1253
      #+abcl :|windows-1253|
-     #+lispworks #+win32 '(win32:code-page :id 1253) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1253) #-win32 :cannot-treat)
      #+allegro :1253)
 
 ;;; Hebrew
@@ -259,7 +259,7 @@
      #+clisp ,charset:cp1255
      #+ecl :windows-cp1255
      #+abcl :|windows-1255|
-     #+lispworks #+win32 '(win32:code-page :id 1255) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1255) #-win32 :cannot-treat)
      #+allegro :1255)
 
 ;;; Turkish
@@ -283,7 +283,7 @@
      #+clisp ,charset:cp1254
      #+ecl :windows-cp1254
      #+abcl :|windows-1254|
-     #+lispworks #+win32 '(win32:code-page :id 1254) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1254) #-win32 :cannot-treat)
      #+allegro :1254)
 
 ;;; Russian
@@ -340,7 +340,7 @@
      #+clisp ,charset:cp1251
      #+ecl :windows-cp1251
      #+abcl :|windows-1251|
-     #+lispworks #+win32 '(win32:code-page :id 1251) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1251) #-win32 :cannot-treat)
      #+allegro :1251)
 
 ;;; Polish
@@ -364,7 +364,7 @@
      #+clisp ,charset:cp1250
      #+ecl :windows-cp1250
      #+abcl :|windows-1250|
-     #+lispworks #+win32 '(win32:code-page :id 1250) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1250) #-win32 :cannot-treat)
      #+allegro :1250)
 
 ;;; Baltic
@@ -388,7 +388,7 @@
      #+clisp ,charset:cp1257
      #+ecl :windows-cp1257
      #+abcl :|windows-1257|
-     #+lispworks #+win32 '(win32:code-page :id 1257) #-win32 :cannot-treat
+     #+lispworks (progn #+win32 '(win32:code-page :id 1257) #-win32 :cannot-treat)
      #+allegro :1257)
 
 ;;; End of line markers
