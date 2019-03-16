@@ -419,7 +419,7 @@
      :type :eol
      :impl-name
      #+sbcl :cannot-treat
-     #+ccl :dos
+     #+ccl :crlf
      #+clisp :dos
      #+ecl :crlf
      #+abcl :crlf
